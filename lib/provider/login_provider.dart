@@ -33,8 +33,8 @@ class LoginProvider with ChangeNotifier {
     } else {
       error = '';
       auth = true;
+      loginMessage = '';
     }
-    loginMessage = '';
     return '';
   }
 
@@ -93,5 +93,10 @@ class LoginProvider with ChangeNotifier {
 
   int get itemCount {
     return _enterprises.length;
+  }
+
+  Future logout() async {
+    auth = false;
+    notifyListeners();
   }
 }

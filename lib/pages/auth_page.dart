@@ -7,6 +7,7 @@ class AuthPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _key = GlobalKey<FormState>();
     return Scaffold(
       body: Stack(
         children: [
@@ -22,33 +23,32 @@ class AuthPage extends StatelessWidget {
               ),
             ),
           ),
-          Container(
-            width: double.infinity,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  transform: Matrix4.rotationZ(-8 * pi / 180)..translate(-10.0),
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 10,
-                    horizontal: 30,
-                  ),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: Colors.deepOrange.shade900,
-                  ),
-                  child: const Text(
-                    'Celta inventário',
-                    style: TextStyle(
-                      fontSize: 45,
-                      color: Colors.white,
-                    ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                transform: Matrix4.rotationZ(-8 * pi / 180)..translate(-10.0),
+                padding: const EdgeInsets.symmetric(
+                  vertical: 10,
+                  horizontal: 30,
+                ),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: Colors.deepOrange.shade900,
+                ),
+                child: const Text(
+                  'Celta inventário',
+                  style: TextStyle(
+                    fontSize: 45,
+                    color: Colors.white,
                   ),
                 ),
-                const AuthForm(),
-              ],
-            ),
+              ),
+              AuthForm(
+                formKey: _key,
+              ),
+            ],
           ),
         ],
       ),

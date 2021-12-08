@@ -3,8 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class AuthForm extends StatefulWidget {
-  const AuthForm({Key? key}) : super(key: key);
-
+  final GlobalKey<FormState> formKey;
+  const AuthForm({
+    Key? key,
+    required this.formKey,
+  }) : super(key: key);
   @override
   State<AuthForm> createState() => _AuthFormState();
 }
@@ -13,7 +16,7 @@ final Map<String, String> _data = {
   'user': '',
   'password': '',
 };
-final _key = GlobalKey<FormState>();
+// final _key = GlobalKey<FormState>();
 
 class _AuthFormState extends State<AuthForm> {
   bool _isLoading = false;
@@ -33,7 +36,7 @@ class _AuthFormState extends State<AuthForm> {
 
   _submit() async {
     final _loginProvider = Provider.of<LoginProvider>(context, listen: false);
-    bool isValid = _key.currentState!.validate();
+    bool isValid = widget.formKey.currentState!.validate();
 
     if (!isValid) {
       return;
@@ -53,6 +56,10 @@ class _AuthFormState extends State<AuthForm> {
     } finally {
       setState(() {
         _isLoading = false;
+        if (_loginProvider.isAuth) {
+          _data['user'] = '';
+          _data['password'] = '';
+        }
       });
     }
   }
@@ -65,7 +72,7 @@ class _AuthFormState extends State<AuthForm> {
       child: Container(
         padding: const EdgeInsets.all(15),
         child: Form(
-          key: _key,
+          key: widget.formKey,
           child: Column(
             children: [
               TextFormField(

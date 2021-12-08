@@ -9,7 +9,8 @@ class AuthOrHoMePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    LoginProvider loginProvider = Provider.of(context);
+    LoginProvider loginProvider = Provider.of(context, listen: true);
+
     return FutureBuilder(
       future: loginProvider.doAuth(),
       builder: (ctx, snapshot) {
