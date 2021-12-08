@@ -3,10 +3,15 @@ import 'package:celta_inventario/utils/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class EnterpriseWidget extends StatelessWidget {
+class EnterpriseWidget extends StatefulWidget {
   // final Enterprise enterprise;
   const EnterpriseWidget({Key? key}) : super(key: key);
 
+  @override
+  State<EnterpriseWidget> createState() => _EnterpriseWidgetState();
+}
+
+class _EnterpriseWidgetState extends State<EnterpriseWidget> {
   @override
   Widget build(BuildContext context) {
     LoginProvider loginProvider = Provider.of(context, listen: true);
@@ -22,7 +27,10 @@ class EnterpriseWidget extends StatelessWidget {
                 color: Colors.black,
               ),
               ListTile(
-                leading: Text(loginProvider.enterprises[index].codigoEmpresa),
+                leading: Checkbox(
+                  value: loginProvider.enterprises[index].isMarked,
+                  onChanged: (bool? value) {},
+                ),
                 title: Text(loginProvider.enterprises[index].nomeEmpresa),
                 trailing: Text(loginProvider
                     .enterprises[index].codigoInternoEmpresa

@@ -84,6 +84,7 @@ class LoginProvider with ChangeNotifier {
           codigoInternoEmpresa: data['CodigoInterno_Empresa'],
           codigoEmpresa: data['Codigo_Empresa'],
           nomeEmpresa: data['Nome_Empresa'],
+          isMarked: false,
         ),
       );
     });

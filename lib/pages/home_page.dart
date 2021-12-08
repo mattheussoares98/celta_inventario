@@ -63,21 +63,18 @@ class _HomePageState extends State<HomePage> {
       );
     }
 
-    LoginProvider loginProvider =
-        Provider.of<LoginProvider>(context, listen: false);
-
     return Scaffold(
       appBar: AppBar(
         actions: [
           IconButton(
             onPressed: () async {
+              LoginProvider loginProvider =
+                  Provider.of<LoginProvider>(context, listen: false);
               try {
                 await loginProvider.logout();
               } catch (e) {
-                print(e);
                 e;
               } finally {
-                print('authOrHome');
                 Navigator.of(context).pushReplacementNamed(APPROUTES.HOME);
               }
             },
