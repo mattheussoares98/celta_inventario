@@ -61,8 +61,10 @@ class LoginProvider with ChangeNotifier {
     }
   }
 
-  getEnterprises() async {
-    _enterprises.clear();
+  Future getEnterprises() async {
+    if (_enterprises.isNotEmpty) {
+      _enterprises.clear();
+    }
 
     var headers = {'Content-Type': 'application/json'};
     var request = http.Request(

@@ -75,6 +75,7 @@ class _HomePageState extends State<HomePage> {
               } catch (e) {
                 e;
               } finally {
+                await loginProvider.getEnterprises();
                 Navigator.of(context).pushReplacementNamed(APPROUTES.HOME);
               }
             },
@@ -94,7 +95,7 @@ class _HomePageState extends State<HomePage> {
             imagem(
               imagePath: 'lib/assets/inventory.jpg',
               routine: 'Inventário',
-              route: APPROUTES.INVENTORY,
+              route: APPROUTES.ENTERPRISES,
             ),
             const Divider(color: Colors.black),
             imagem(

@@ -2,7 +2,7 @@ class Enterprise {
   final int codigoInternoEmpresa;
   final String codigoEmpresa;
   final String nomeEmpresa;
-  final bool isMarked;
+  bool isMarked;
 
   Enterprise({
     required this.codigoInternoEmpresa,
