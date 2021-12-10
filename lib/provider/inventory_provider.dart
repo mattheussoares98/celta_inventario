@@ -10,7 +10,13 @@ class InventoryProvider with ChangeNotifier {
     return [..._inventorys];
   }
 
+  int get inventoryCount {
+    return _inventorys.length;
+  }
+
   Future<void> getInventory(String enterpriseCode) async {
+    _inventorys.clear();
+
     var headers = {'Content-Type': 'application/json'};
     var request = http.Request(
       'POST',
@@ -22,12 +28,26 @@ class InventoryProvider with ChangeNotifier {
     request.headers.addAll(headers);
 
     http.StreamedResponse response = await request.send();
-    print(await response.stream.bytesToString());
+    String responseAsString = await response.stream.bytesToString();
+    List responseAsList = json.decode(responseAsString.toString());
+    Map responseAsMap = responseAsList.asMap();
 
-    if (response.statusCode == 200) {
-    } else {
-      print(response.reasonPhrase);
-    }
+    responseAsMap.forEach((id, data) {
+      _inventorys.add(
+        Inventory(
+          codigoInternoInventario: data['CodigoInterno_Inventario'],
+          dataCriacaoInventario: DateTime.parse(data['DataCriacao_Inventario']),
+          dataCongelamentoInventario:
+              DateTime.parse(data['DataCongelamento_Inventario']),
+          nomeTipoEstoque: data['Nome_TipoEstoque'],
+          obsInventario: data['Obs_Inventario'] ?? '',
+          nomefuncionario: data['Nome_Funcionario'],
+          nomeempresa: data['Nome_Empresa'],
+          codigoInternoEmpresa: data['CodigoInterno_Empresa1'],
+        ),
+      );
+    });
+
     notifyListeners();
   }
 }

@@ -67,19 +67,45 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         actions: [
           IconButton(
+            icon: const Icon(Icons.logout),
             onPressed: () async {
               LoginProvider loginProvider =
                   Provider.of<LoginProvider>(context, listen: false);
-              try {
-                await loginProvider.logout();
-              } catch (e) {
-                e;
-              } finally {
-                await loginProvider.getEnterprises();
-                Navigator.of(context).pushReplacementNamed(APPROUTES.HOME);
-              }
+              showDialog(
+                  context: context,
+                  builder: (ctx) {
+                    return AlertDialog(
+                      actionsAlignment: MainAxisAlignment.center,
+                      title: const FittedBox(
+                          child: Text('Deseja realmente fazer o logout?')),
+                      actions: [
+                        ElevatedButton(
+                          onPressed: () async {
+                            await loginProvider.logout();
+                            Navigator.of(context)
+                                .pushReplacementNamed(APPROUTES.HOME);
+                            Navigator.of(context).pop();
+                          },
+                          child: const Text('Sim'),
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: const Text('Não'),
+                        ),
+                      ],
+                    );
+                  });
+              // try {
+              //   await loginProvider.logout();
+              // } catch (e) {
+              //   e;
+              // } finally {
+              //   await loginProvider.getEnterprises();
+              //
+              // }
             },
-            icon: const Icon(Icons.logout),
           ),
         ],
         title: const Center(
