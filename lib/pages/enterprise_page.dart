@@ -19,13 +19,14 @@ class EnterprisePageState extends State<EnterprisePage> {
 
   @override
   Widget build(BuildContext context) {
+    LoginProvider loginProvider = Provider.of<LoginProvider>(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text('EMPRESAS'),
       ),
       body: Column(
-        children: const [
-          Padding(
+        children:  [
+          const Padding(
             padding: EdgeInsets.all(8.0),
             child: Text(
               'Selecione a empresa',
@@ -35,10 +36,12 @@ class EnterprisePageState extends State<EnterprisePage> {
               ),
             ),
           ),
-          Divider(
+         const Divider(
             color: Colors.black,
           ),
-          EnterpriseWidget(),
+          loginProvider.isChargingEnterprises
+              ? const CircularProgressIndicator()
+              : const EnterpriseWidget(),
         ],
       ),
     );

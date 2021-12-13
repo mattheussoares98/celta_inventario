@@ -71,6 +71,7 @@ class LoginProvider with ChangeNotifier {
     }
   }
 
+  bool isChargingEnterprises = true;
   Future getEnterprises() async {
     if (_enterprises.isNotEmpty) {
       _enterprises.clear();
@@ -104,7 +105,9 @@ class LoginProvider with ChangeNotifier {
     } catch (e) {
       e;
       print(e.toString());
-    } finally {}
+    } finally {
+      isChargingEnterprises = false;
+    }
 
     notifyListeners();
   }
