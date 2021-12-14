@@ -48,8 +48,8 @@ class _AuthFormState extends State<AuthForm> {
 
     try {
       await _loginProvider.login(_data['user']!, _data['password']!);
-      if (_loginProvider.loginMessage != '') {
-        errorMessage(_loginProvider.loginMessage);
+      if (_loginProvider.loginErrorMessage != '') {
+        errorMessage(_loginProvider.loginErrorMessage);
       }
     } catch (e) {
       e;

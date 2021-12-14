@@ -47,14 +47,14 @@ class EnterprisePageState extends State<EnterprisePage> {
                   ),
                 ),
               ),
-            if (enterpriseProvider.enterpriseMessage != '')
+            if (enterpriseProvider.enterpriseErrorMessage != '')
               Column(
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(20.0),
                     child: Center(
                       child: Text(
-                        enterpriseProvider.enterpriseMessage,
+                        enterpriseProvider.enterpriseErrorMessage,
                         style: const TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,

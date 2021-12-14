@@ -15,12 +15,12 @@ class EnterpriseProvider with ChangeNotifier {
     return _enterprises.length;
   }
 
-  String enterpriseMessage = '';
+  String enterpriseErrorMessage = '';
 
   bool isChargingEnterprises = false;
 
   Future getEnterprises() async {
-    //se não criar essa variável pra usar dentro do erro, não da certo tratar o erro e atribuir à variável enterpriseMessage
+    //se não criar essa variável pra usar dentro do erro, não da certo tratar o erro e atribuir à variável enterpriseErrorMessage
     isChargingEnterprises = true;
 
     if (_enterprises.isNotEmpty) {
@@ -54,16 +54,16 @@ class EnterpriseProvider with ChangeNotifier {
       });
     } catch (e) {
       if (e.toString().contains('No route')) {
-        enterpriseMessage =
+        enterpriseErrorMessage =
             'Servidor não encontrado. Acione o suporte técnico. (11) 3125-6767';
       } else if (e.toString().contains('Connection timed')) {
-        enterpriseMessage = 'Time out. Tente novamente';
+        enterpriseErrorMessage = 'Time out. Tente novamente';
       } else {
-        enterpriseMessage = 'Verifique a sua internet!';
+        enterpriseErrorMessage = 'Verifique a sua internet!';
       }
     } finally {
       isChargingEnterprises = false;
-      enterpriseMessage = '';
+      enterpriseErrorMessage = '';
     }
 
     notifyListeners();

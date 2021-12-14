@@ -13,21 +13,21 @@ class LoginProvider with ChangeNotifier {
     }
   }
 
-  String loginMessage = '';
+  String loginErrorMessage = '';
 
   String errorMessage(String error) {
     if (error ==
         '{Message: O usuário não foi encontrado durante a tentativa de efetuar o login no Celta Business Solutions. Fale com nosso suporte técnico para que o problema seja resolvido.}') {
-      loginMessage = 'Usuário não encontrado!';
+      loginErrorMessage = 'Usuário não encontrado!';
     } else if (error ==
         '{Message: A senha está incorreta. Verifique a configuração do teclado e se a tecla [CAPS LOCK] está pressionada. Caso você tenha esquecido sua senha entre em contato com o administrador do seu sistema.}') {
-      loginMessage = 'A senha está incorreta!';
+      loginErrorMessage = 'A senha está incorreta!';
     } else if (error.contains('Connection timed')) {
-      loginMessage = 'Servidor não encontrado. Verifique a sua internet';
+      loginErrorMessage = 'Servidor não encontrado. Verifique a sua internet';
     } else {
       error = '';
       auth = true;
-      loginMessage = '';
+      loginErrorMessage = '';
     }
     auth = true;
     return '';
@@ -43,14 +43,14 @@ class LoginProvider with ChangeNotifier {
       );
       var responseOfUser = json.decode(response.body);
       String responseInString = responseOfUser.toString();
-      loginMessage = responseInString;
+      loginErrorMessage = responseInString;
     } catch (e) {
       print(e);
       error = e.toString();
-      loginMessage = error;
-      errorMessage(loginMessage);
+      loginErrorMessage = error;
+      errorMessage(loginErrorMessage);
     } finally {
-      //pega o retorno do login e coloca na variável "loginMessage" pra ter acesso a mensagem na tela de autenticação e exibir a mensagem de erro
+      //pega o retorno do login e coloca na variável "loginErrorMessage" pra ter acesso a mensagem na tela de autenticação e exibir a mensagem de erro
       errorMessage(error);
     }
 
