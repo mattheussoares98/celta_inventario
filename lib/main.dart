@@ -4,6 +4,7 @@ import 'package:celta_inventario/pages/enterprise_page.dart';
 import 'package:celta_inventario/pages/inventory_page.dart';
 import 'package:celta_inventario/pages/sales_page.dart';
 import 'package:celta_inventario/pages/stock_page.dart';
+import 'package:celta_inventario/provider/enterprise_provider.dart';
 import 'package:celta_inventario/provider/inventory_provider.dart';
 import 'package:celta_inventario/provider/login_provider.dart';
 import 'package:celta_inventario/utils/app_routes.dart';
@@ -16,6 +17,7 @@ void main() {
       providers: [
         ChangeNotifierProvider(create: (_) => LoginProvider()),
         ChangeNotifierProvider(create: (_) => InventoryProvider()),
+        ChangeNotifierProvider(create: (_) => EnterpriseProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

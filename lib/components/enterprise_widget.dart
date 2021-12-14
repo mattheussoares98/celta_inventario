@@ -1,4 +1,4 @@
-import 'package:celta_inventario/provider/login_provider.dart';
+import 'package:celta_inventario/provider/enterprise_provider.dart';
 import 'package:celta_inventario/utils/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -13,13 +13,13 @@ class EnterpriseWidget extends StatefulWidget {
 class _EnterpriseWidgetState extends State<EnterpriseWidget> {
   @override
   Widget build(BuildContext context) {
-    LoginProvider loginProvider = Provider.of(context, listen: true);
+    EnterpriseProvider loginProvider = Provider.of(context, listen: true);
 
     return SizedBox(
       height: loginProvider.enterprises.length * 71,
       width: 400,
       child: ListView.builder(
-        itemCount: loginProvider.itemCount,
+        itemCount: loginProvider.enterpriseCount,
         itemBuilder: (ctx, index) {
           return Column(
             children: [
