@@ -25,24 +25,6 @@ class _InventoryPageState extends State<InventoryPage> {
       ),
       body: Column(
         children: [
-          if (inventoryProvider.isChargingInventorys)
-            Center(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  children: const [
-                    Text(
-                      'Carregando inventários',
-                      style: TextStyle(
-                        fontSize: 20,
-                      ),
-                    ),
-                    SizedBox(height: 20),
-                    CircularProgressIndicator(),
-                  ],
-                ),
-              ),
-            ),
           InventoryWidget(
             enterpriseCode: enterprise.codigoInternoEmpresa.toString(),
           ),
