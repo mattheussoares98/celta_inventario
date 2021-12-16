@@ -1,5 +1,7 @@
 import 'package:celta_inventario/provider/inventory_provider.dart';
+import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class InventoryWidget extends StatefulWidget {
@@ -25,8 +27,23 @@ class _InventoryWidgetState extends State<InventoryWidget> {
   @override
   Widget build(BuildContext context) {
     InventoryProvider inventoryProvider = Provider.of(context, listen: true);
-    return inventoryProvider.isChargingInventorys
-        ? Center(
+    return Column(
+      children: [
+        if (!inventoryProvider.isChargingInventorys &&
+            inventoryProvider.inventoryCount > 0)
+          const Padding(
+            padding: EdgeInsets.all(15.0),
+            child: Text(
+              'Selecione o inventário',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        const Divider(color: Colors.black),
+        if (inventoryProvider.isChargingInventorys)
+          Center(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
@@ -42,34 +59,122 @@ class _InventoryWidgetState extends State<InventoryWidget> {
                 ],
               ),
             ),
-          )
-        : SizedBox(
-            height: 500,
-            child: ListView.builder(
-              itemCount: inventoryProvider.inventoryCount,
-              itemBuilder: (context, index) {
-                return Column(
-                  children: [
-                    Text(inventoryProvider.inventorys[index].nomeTipoEstoque),
-                    Text(inventoryProvider.inventorys[index].nomeempresa),
-                    Text(inventoryProvider.inventorys[index].nomefuncionario),
-                    Text(inventoryProvider.inventorys[index].obsInventario),
-                    Text(inventoryProvider
-                        .inventorys[index].codigoInternoEmpresa
-                        .toString()),
-                    Text(inventoryProvider
-                        .inventorys[index].codigoInternoInventario
-                        .toString()),
-                    Text(inventoryProvider
-                        .inventorys[index].dataCongelamentoInventario
-                        .toString()),
-                    Text(inventoryProvider
-                        .inventorys[index].dataCriacaoInventario
-                        .toString()),
-                  ],
-                );
-              },
+          ),
+        if (!inventoryProvider.isChargingInventorys &&
+            inventoryProvider.inventoryCount > 0)
+          GestureDetector(
+            onTap: () {
+              print('x');
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.grey[350],
+                border: Border.all(
+                  color: Colors.black,
+                ),
+              ),
+              height: 200,
+              child: ListView.builder(
+                itemCount: inventoryProvider.inventoryCount,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            const Text('Empresa: '),
+                            const SizedBox(height: 25),
+                            Text(
+                              inventoryProvider.inventorys[index].codigoEmpresa,
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            const Text('Tipo de estoque: '),
+                            const SizedBox(height: 25),
+                            Text(inventoryProvider
+                                .inventorys[index].nomeTipoEstoque),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            const Text('Responsável: '),
+                            const SizedBox(height: 25),
+                            Text(inventoryProvider
+                                .inventorys[index].nomefuncionario),
+                          ],
+                        ),
+                        Row(children: [
+                          const Text('Data de congelamento: '),
+                          const SizedBox(height: 25),
+                          Text(
+                            formatDate(
+                              inventoryProvider
+                                  .inventorys[index].dataCongelamentoInventario,
+                              [
+                                dd,
+                                '-',
+                                mm,
+                                '-',
+                                yyyy,
+                                ' ',
+                                hh,
+                                ':',
+                                mm,
+                                ':',
+                                ss
+                              ],
+                            ),
+                          ),
+                        ]),
+                        Row(children: [
+                          const Text('Data de criação: '),
+                          const SizedBox(height: 25),
+                          Text(
+                            formatDate(
+                              inventoryProvider
+                                  .inventorys[index].dataCriacaoInventario,
+                              [
+                                dd,
+                                '-',
+                                mm,
+                                '-',
+                                yyyy,
+                                ' ',
+                                hh,
+                                ':',
+                                mm,
+                                ':',
+                                ss
+                              ],
+                            ),
+                          ),
+                        ]),
+                        Text(inventoryProvider.inventorys[index].obsInventario),
+                      ],
+                    ),
+                  );
+                },
+              ),
             ),
-          );
+          ),
+        if (inventoryProvider.inventoryErrorMessage != '' &&
+            !inventoryProvider.isChargingInventorys)
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Center(
+              child: Text(
+                inventoryProvider.inventoryErrorMessage,
+                style: const TextStyle(
+                  fontSize: 20,
+                ),
+              ),
+            ),
+          )
+      ],
+    );
   }
 }

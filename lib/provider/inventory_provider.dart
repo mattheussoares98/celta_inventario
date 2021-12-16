@@ -15,9 +15,11 @@ class InventoryProvider with ChangeNotifier {
   }
 
   bool isChargingInventorys = false;
+  String inventoryErrorMessage = '';
   Future<void> getInventory(String enterpriseCode) async {
     isChargingInventorys = true;
     _inventorys.clear();
+    inventoryErrorMessage = '';
 
     try {
       var headers = {'Content-Type': 'application/json'};
@@ -33,12 +35,16 @@ class InventoryProvider with ChangeNotifier {
       http.StreamedResponse response = await request.send();
       String responseAsString = await response.stream.bytesToString();
 
-      print(responseAsString);
       //esse if serve para quando não houver um inventário congelado para a empresa, não continunar o processo senão dará erro na aplicação
       if (responseAsString
           .contains('Nenhum processo de inventário foi encontrado')) {
+        inventoryErrorMessage =
+            'Não há processos de inventário para essa empresa. Somente processos de inventário congelados ficarão disponíveis para consulta e seleção.';
+        isChargingInventorys = false;
+        notifyListeners();
         return;
       }
+
       List responseAsList = json.decode(responseAsString.toString());
       Map responseAsMap = responseAsList.asMap();
 
@@ -55,14 +61,20 @@ class InventoryProvider with ChangeNotifier {
             nomefuncionario: data['Nome_Funcionario'],
             nomeempresa: data['Nome_Empresa'],
             codigoInternoEmpresa: data['CodigoInterno_Empresa1'],
+            codigoEmpresa: data['Codigo_Empresa'],
           ),
         );
       });
     } catch (e) {
+      //sempre que cair aqui no erro, é porque não conseguiu acessar o servidor
+      //por isso vou deixar essa mensagem padrão
       print('error $e');
-      e;
-    } finally {}
-    isChargingInventorys = false;
+
+      inventoryErrorMessage =
+          'O servidor não foi encontrado! Verifique a sua internet!';
+    } finally {
+      isChargingInventorys = false;
+    }
 
     notifyListeners();
   }

@@ -1,3 +1,4 @@
+// @dart=2.9
 import 'package:celta_inventario/pages/auth_or_home_page.dart';
 import 'package:celta_inventario/pages/auth_page.dart';
 import 'package:celta_inventario/pages/enterprise_page.dart';

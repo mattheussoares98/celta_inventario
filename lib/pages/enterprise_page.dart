@@ -84,7 +84,7 @@ class EnterprisePageState extends State<EnterprisePage> {
                   ),
                 ),
               ),
-            const Divider(color: Colors.black),
+            // const Divider(color: Colors.black),
             const EnterpriseWidget(),
           ],
         ),

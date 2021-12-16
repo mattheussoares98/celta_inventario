@@ -17,8 +17,6 @@ class _InventoryPageState extends State<InventoryPage> {
     Enterprise enterprise =
         ModalRoute.of(context)!.settings.arguments as Enterprise;
 
-    InventoryProvider inventoryProvider = Provider.of(context, listen: true);
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('INVENTÁRIOS'),

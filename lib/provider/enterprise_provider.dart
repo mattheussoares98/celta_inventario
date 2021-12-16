@@ -20,6 +20,7 @@ class EnterpriseProvider with ChangeNotifier {
   bool isChargingEnterprises = false;
 
   Future getEnterprises() async {
+    enterpriseErrorMessage = '';
     //se não criar essa variável pra usar dentro do erro, não da certo tratar o erro e atribuir à variável enterpriseErrorMessage
     isChargingEnterprises = true;
 
@@ -61,9 +62,9 @@ class EnterpriseProvider with ChangeNotifier {
       } else {
         enterpriseErrorMessage = 'Verifique a sua internet!';
       }
+      print(enterpriseErrorMessage);
     } finally {
       isChargingEnterprises = false;
-      enterpriseErrorMessage = '';
     }
 
     notifyListeners();

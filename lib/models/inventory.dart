@@ -7,6 +7,7 @@ class Inventory {
   final String obsInventario;
   final String nomefuncionario;
   final String nomeempresa;
+  final String codigoEmpresa;
 
   Inventory({
     required this.codigoInternoInventario,
@@ -17,6 +18,7 @@ class Inventory {
     required this.nomefuncionario,
     required this.nomeempresa,
     required this.codigoInternoEmpresa,
+    required this.codigoEmpresa,
   });
 }
 

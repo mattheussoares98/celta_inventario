@@ -29,7 +29,6 @@ class LoginProvider with ChangeNotifier {
       auth = true;
       loginErrorMessage = '';
     }
-    auth = true;
     return '';
   }
 
@@ -45,7 +44,7 @@ class LoginProvider with ChangeNotifier {
       String responseInString = responseOfUser.toString();
       loginErrorMessage = responseInString;
     } catch (e) {
-      print(e);
+      print('erro $e');
       error = e.toString();
       loginErrorMessage = error;
       errorMessage(loginErrorMessage);
