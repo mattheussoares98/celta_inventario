@@ -25,9 +25,8 @@ class _EnterpriseWidgetState extends State<EnterpriseWidget> {
             children: [
               ListTile(
                 title: Text(loginProvider.enterprises[index].nomeEmpresa),
-                trailing: Text(loginProvider
-                    .enterprises[index].codigoInternoEmpresa
-                    .toString()),
+                trailing: Text(
+                    loginProvider.enterprises[index].codigoEmpresa.toString()),
                 onTap: () {
                   Navigator.of(context).pushNamed(
                     APPROUTES.INVENTORY,

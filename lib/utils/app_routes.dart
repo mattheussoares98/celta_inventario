@@ -5,4 +5,6 @@ class APPROUTES {
   static const SALES = '/SALES';
   static const STOCK = '/STOCK';
   static const AUTH = '/AUTH';
+  static const COUNTINGS = '/COUNTINGS';
+  static const PRODUCTS = '/PRODUCTS';
 }

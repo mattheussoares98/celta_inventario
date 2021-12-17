@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:celta_inventario/utils/base_url.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 
@@ -37,14 +38,14 @@ class LoginProvider with ChangeNotifier {
     try {
       final response = await http.post(
         Uri.parse(
-          'http://192.168.100.174:34603/api/Security/UserCanLoginPlain?user=$user&password=$password',
+          '${BaseUrl.baseUrl}/Security/UserCanLoginPlain?user=$user&password=$password',
         ),
       );
       var responseOfUser = json.decode(response.body);
       String responseInString = responseOfUser.toString();
       loginErrorMessage = responseInString;
     } catch (e) {
-      print(e);
+      print('erro $e');
       error = e.toString();
       loginErrorMessage = error;
       errorMessage(loginErrorMessage);
