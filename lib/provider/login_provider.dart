@@ -29,7 +29,6 @@ class LoginProvider with ChangeNotifier {
       auth = true;
       loginErrorMessage = '';
     }
-    auth = true;
     return '';
   }
 

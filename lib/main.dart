@@ -23,7 +23,7 @@ void main() {
         debugShowCheckedModeBanner: false,
         // home: const AuthOrHoMePage(),
         routes: {
-          APPROUTES.HOME: (ctx) => const AuthOrHoMePage(),
+          APPROUTES.HOME: (ctx) => const InventoryPage(),
           APPROUTES.AUTH: (ctx) => const AuthPage(),
           APPROUTES.ENTERPRISES: (ctx) => const EnterprisePage(),
           APPROUTES.INVENTORY: (ctx) => const InventoryPage(),
