@@ -16,8 +16,11 @@ class InventoryProvider with ChangeNotifier {
   }
 
   bool isChargingInventorys = false;
+  bool haveError = false;
   String inventoryErrorMessage = '';
+
   Future<void> getInventory(String enterpriseCode) async {
+    haveError = false;
     isChargingInventorys = true;
     _inventorys.clear();
     inventoryErrorMessage = '';
@@ -73,6 +76,7 @@ class InventoryProvider with ChangeNotifier {
 
       inventoryErrorMessage =
           'O servidor não foi encontrado! Verifique a sua internet!';
+      haveError = true;
     } finally {
       isChargingInventorys = false;
     }

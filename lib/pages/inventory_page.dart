@@ -21,12 +21,8 @@ class _InventoryPageState extends State<InventoryPage> {
       appBar: AppBar(
         title: const Text('INVENTÁRIOS'),
       ),
-      body: Column(
-        children: [
-          InventoryWidget(
-            enterpriseCode: enterprise.codigoInternoEmpresa.toString(),
-          ),
-        ],
+      body: InventoryWidget(
+        enterpriseCode: enterprise.codigoInternoEmpresa.toString(),
       ),
     );
   }
