@@ -1,7 +1,7 @@
 import 'package:celta_inventario/provider/inventory_provider.dart';
+import 'package:celta_inventario/utils/app_routes.dart';
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class InventoryWidget extends StatefulWidget {
@@ -62,117 +62,154 @@ class _InventoryWidgetState extends State<InventoryWidget> {
           ),
         if (!inventoryProvider.isChargingInventorys &&
             inventoryProvider.inventoryCount > 0)
-          GestureDetector(
-            onTap: () {
-              print('x');
-            },
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.grey[350],
-                border: Border.all(
-                  color: Colors.black,
-                ),
+          Container(
+            height: 200,
+            decoration: BoxDecoration(
+              color: Colors.grey[350],
+              border: Border.all(
+                color: Colors.black,
               ),
-              height: 200,
-              child: ListView.builder(
-                itemCount: inventoryProvider.inventoryCount,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            const Text('Empresa: '),
+            ),
+            child: ListView.builder(
+              itemCount: inventoryProvider.inventoryCount,
+              itemBuilder: (context, index) {
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).pushNamed(
+                      APPROUTES.COUNTINGS,
+                      arguments: inventoryProvider.inventorys[index],
+                    );
+                  },
+                  //sem esse container, não funciona o gesture detector no campo inteiro
+                  child: Container(
+                    height: 200,
+                    decoration: BoxDecoration(
+                      color: Colors.grey[350],
+                      border: Border.all(
+                        color: Colors.black,
+                      ),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              const Text('Empresa: '),
+                              const SizedBox(height: 25),
+                              Text(
+                                inventoryProvider
+                                    .inventorys[index].codigoEmpresa,
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              const Text('Tipo de estoque: '),
+                              const SizedBox(height: 25),
+                              Text(inventoryProvider
+                                  .inventorys[index].nomeTipoEstoque),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              const Text('Responsável: '),
+                              const SizedBox(height: 25),
+                              Text(inventoryProvider
+                                  .inventorys[index].nomefuncionario),
+                            ],
+                          ),
+                          Row(children: [
+                            const Text('Data de congelamento: '),
                             const SizedBox(height: 25),
                             Text(
-                              inventoryProvider.inventorys[index].codigoEmpresa,
+                              formatDate(
+                                inventoryProvider.inventorys[index]
+                                    .dataCongelamentoInventario,
+                                [
+                                  dd,
+                                  '-',
+                                  mm,
+                                  '-',
+                                  yyyy,
+                                  ' ',
+                                  hh,
+                                  ':',
+                                  mm,
+                                  ':',
+                                  ss
+                                ],
+                              ),
                             ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            const Text('Tipo de estoque: '),
+                          ]),
+                          Row(children: [
+                            const Text('Data de criação: '),
                             const SizedBox(height: 25),
-                            Text(inventoryProvider
-                                .inventorys[index].nomeTipoEstoque),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            const Text('Responsável: '),
-                            const SizedBox(height: 25),
-                            Text(inventoryProvider
-                                .inventorys[index].nomefuncionario),
-                          ],
-                        ),
-                        Row(children: [
-                          const Text('Data de congelamento: '),
-                          const SizedBox(height: 25),
-                          Text(
-                            formatDate(
-                              inventoryProvider
-                                  .inventorys[index].dataCongelamentoInventario,
-                              [
-                                dd,
-                                '-',
-                                mm,
-                                '-',
-                                yyyy,
-                                ' ',
-                                hh,
-                                ':',
-                                mm,
-                                ':',
-                                ss
-                              ],
+                            Text(
+                              formatDate(
+                                inventoryProvider
+                                    .inventorys[index].dataCriacaoInventario,
+                                [
+                                  dd,
+                                  '-',
+                                  mm,
+                                  '-',
+                                  yyyy,
+                                  ' ',
+                                  hh,
+                                  ':',
+                                  mm,
+                                  ':',
+                                  ss
+                                ],
+                              ),
                             ),
+                          ]),
+                          Row(
+                            children: [
+                              const Text('Observações: '),
+                              Text(
+                                inventoryProvider
+                                        .inventorys[index].obsInventario.isEmpty
+                                    ? 'Não há observações'
+                                    : inventoryProvider
+                                        .inventorys[index].obsInventario,
+                              ),
+                            ],
                           ),
-                        ]),
-                        Row(children: [
-                          const Text('Data de criação: '),
-                          const SizedBox(height: 25),
-                          Text(
-                            formatDate(
-                              inventoryProvider
-                                  .inventorys[index].dataCriacaoInventario,
-                              [
-                                dd,
-                                '-',
-                                mm,
-                                '-',
-                                yyyy,
-                                ' ',
-                                hh,
-                                ':',
-                                mm,
-                                ':',
-                                ss
-                              ],
-                            ),
-                          ),
-                        ]),
-                        Text(inventoryProvider.inventorys[index].obsInventario),
-                      ],
+                        ],
+                      ),
                     ),
-                  );
-                },
-              ),
+                  ),
+                );
+              },
             ),
           ),
         if (inventoryProvider.inventoryErrorMessage != '' &&
             !inventoryProvider.isChargingInventorys)
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Center(
-              child: Text(
-                inventoryProvider.inventoryErrorMessage,
-                style: const TextStyle(
-                  fontSize: 20,
+          Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Center(
+                  child: Text(
+                    inventoryProvider.inventoryErrorMessage,
+                    style: const TextStyle(
+                      fontSize: 20,
+                    ),
+                  ),
                 ),
               ),
-            ),
+              TextButton(
+                onPressed: () {
+                  setState(() {
+                    inventoryProvider.getInventory(widget.enterpriseCode!);
+                  });
+                },
+                child: const Text('Tentar novamente'),
+              ),
+            ],
           )
       ],
     );
