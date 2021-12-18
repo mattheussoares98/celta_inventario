@@ -6,10 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class InventoryWidget extends StatefulWidget {
-  final String? enterpriseCode;
+  final String enterpriseCode;
   const InventoryWidget({
     Key? key,
-    this.enterpriseCode,
+    required this.enterpriseCode,
   }) : super(key: key);
 
   @override
@@ -21,7 +21,7 @@ class _InventoryWidgetState extends State<InventoryWidget> {
   void initState() {
     super.initState();
     Provider.of<InventoryProvider>(context, listen: false).getInventory(
-      widget.enterpriseCode!,
+      widget.enterpriseCode,
     );
   }
 
@@ -59,7 +59,7 @@ class _InventoryWidgetState extends State<InventoryWidget> {
                 TextButton(
                   onPressed: () {
                     setState(() {
-                      inventoryProvider.getInventory(widget.enterpriseCode!);
+                      inventoryProvider.getInventory(widget.enterpriseCode);
                     });
                   },
                   child: const Text('Tentar novamente'),
