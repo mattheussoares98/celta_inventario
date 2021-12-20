@@ -1,4 +1,5 @@
 import 'package:celta_inventario/provider/inventory_provider.dart';
+import 'package:celta_inventario/provider/product_provider.dart';
 import 'package:celta_inventario/utils/app_routes.dart';
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,7 @@ class InventoryItems extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     InventoryProvider inventoryProvider = Provider.of(context);
+    ProductProvider productProvider = Provider.of(context);
 
     return Container(
       height: 200,
@@ -24,6 +26,9 @@ class InventoryItems extends StatelessWidget {
         itemBuilder: (context, index) {
           return GestureDetector(
             onTap: () {
+              productProvider.codigoInternoInventario =
+                  inventoryProvider.inventorys[index].codigoInternoInventario;
+
               Navigator.of(context).pushNamed(
                 APPROUTES.COUNTINGS,
                 arguments: inventoryProvider.inventorys[index],
