@@ -8,14 +8,10 @@ class CountingItems extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    CountingProvider countingProvider = Provider.of(context);
-    return Container(
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: Colors.black,
-        ),
-      ),
-      height: 200,
+    CountingProvider countingProvider = Provider.of(context, listen: true);
+
+    return SizedBox(
+      height: countingProvider.countings[0].obsInvCont.length > 30 ? 200 : 100,
       child: ListView.builder(
         itemCount: countingProvider.countingsQuantity,
         itemBuilder: (ctx, index) {
@@ -26,25 +22,38 @@ class CountingItems extends StatelessWidget {
                 arguments: countingProvider.countings[index],
               );
             },
-            child: Container(
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: Colors.black,
+            child: Card(
+              elevation: 10,
+              color: Colors.lightBlue[100],
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Número da contagem: ${countingProvider.countings[index].numeroContagemInvCont}',
+                      style: const TextStyle(fontSize: 20),
+                    ),
+                    const SizedBox(height: 10),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Observação: ',
+                          style: TextStyle(fontSize: 20),
+                        ),
+                        Expanded(
+                          child: Text(
+                            countingProvider.countings[index].obsInvCont,
+                            style: const TextStyle(
+                              fontSize: 20,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
-              ),
-              height: 200,
-              child: Column(
-                children: [
-                  Text(countingProvider.countings[index].obsInvCont),
-                  Text(countingProvider.countings[index].codigoInternoInvCont
-                      .toString()),
-                  Text(countingProvider.countings[index].codigoInternoInventario
-                      .toString()),
-                  Text(countingProvider.countings[index].flagTipoContagemInvCont
-                      .toString()),
-                  Text(countingProvider.countings[index].numeroContagemInvCont
-                      .toString()),
-                ],
               ),
             ),
           );

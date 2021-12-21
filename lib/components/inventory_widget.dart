@@ -29,27 +29,36 @@ class _InventoryWidgetState extends State<InventoryWidget> {
   Widget build(BuildContext context) {
     InventoryProvider inventoryProvider = Provider.of(context, listen: true);
     return Column(
+      mainAxisAlignment: inventoryProvider.isChargingInventorys ||
+              (inventoryProvider.inventoryErrorMessage != '' &&
+                  !inventoryProvider.isChargingInventorys)
+          ? MainAxisAlignment.center
+          : MainAxisAlignment.start,
       children: [
-        if (!inventoryProvider.isChargingInventorys &&
-            inventoryProvider.inventoryCount > 0)
-          const Padding(
-            padding: EdgeInsets.all(15.0),
-            child: Text(
-              'Selecione o inventário',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-        const Divider(color: Colors.black),
         if (inventoryProvider.isChargingInventorys)
           const LoadingProcess(
             text: 'Carregando inventários',
           ),
         if (!inventoryProvider.isChargingInventorys &&
             inventoryProvider.inventoryCount > 0)
-          const InventoryItems(),
+          Column(
+            children: const [
+              Padding(
+                padding: EdgeInsets.all(15.0),
+                child: Text(
+                  'Selecione o inventário',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.all(8.0),
+                child: InventoryItems(),
+              ),
+            ],
+          ),
         if (inventoryProvider.inventoryErrorMessage != '' &&
             !inventoryProvider.isChargingInventorys)
           Column(

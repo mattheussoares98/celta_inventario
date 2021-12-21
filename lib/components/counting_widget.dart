@@ -49,7 +49,21 @@ class _CountingWidgetState extends State<CountingWidget> {
           ),
         if (!countingProvider.isChargingCountings &&
             countingProvider.countingsQuantity > 0)
-          const CountingItems(),
+          Column(
+            children: const [
+              Padding(
+                padding: EdgeInsets.all(15.0),
+                child: Text(
+                  'Selecione a contagem',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              CountingItems(),
+            ],
+          ),
       ],
     );
   }

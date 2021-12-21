@@ -12,6 +12,7 @@ import 'package:celta_inventario/provider/enterprise_provider.dart';
 import 'package:celta_inventario/provider/inventory_provider.dart';
 import 'package:celta_inventario/provider/login_provider.dart';
 import 'package:celta_inventario/provider/product_provider.dart';
+import 'package:celta_inventario/provider/quantity_provider.dart';
 import 'package:celta_inventario/utils/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -25,6 +26,7 @@ void main() {
         ChangeNotifierProvider(create: (_) => EnterpriseProvider()),
         ChangeNotifierProvider(create: (_) => CountingProvider()),
         ChangeNotifierProvider(create: (_) => ProductProvider()),
+        ChangeNotifierProvider(create: (_) => QuantityProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

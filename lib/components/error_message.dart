@@ -16,6 +16,7 @@ class ErrorMessage extends StatelessWidget {
           text,
           style: const TextStyle(
             fontSize: 20,
+            fontWeight: FontWeight.bold,
           ),
         ),
       ),

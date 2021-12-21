@@ -1,4 +1,5 @@
 import 'package:celta_inventario/components/enterprise_widget.dart';
+import 'package:celta_inventario/components/error_message.dart';
 import 'package:celta_inventario/provider/enterprise_provider.dart';
 import 'package:celta_inventario/provider/login_provider.dart';
 import 'package:flutter/material.dart';
@@ -26,68 +27,59 @@ class EnterprisePageState extends State<EnterprisePage> {
       appBar: AppBar(
         title: const Text('EMPRESAS'),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            if (enterpriseProvider.isChargingEnterprises)
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Center(
-                  child: Column(
-                    children: const [
-                      Text(
-                        'Carregando empresas',
-                        style: TextStyle(
-                          fontSize: 20,
-                        ),
-                      ),
-                      SizedBox(height: 20),
-                      CircularProgressIndicator(),
-                    ],
-                  ),
-                ),
-              ),
-            if (enterpriseProvider.enterpriseErrorMessage != '')
-              Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Center(
-                      child: Text(
-                        enterpriseProvider.enterpriseErrorMessage,
-                        style: const TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
+      body: Column(
+        mainAxisAlignment: (!enterpriseProvider.isChargingEnterprises &&
+                enterpriseProvider.enterpriseCount > 0)
+            ? MainAxisAlignment.start
+            : MainAxisAlignment.center,
+        children: [
+          if (enterpriseProvider.isChargingEnterprises)
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Center(
+                child: Column(
+                  children: const [
+                    Text(
+                      'Carregando empresas',
+                      style: TextStyle(
+                        fontSize: 20,
                       ),
                     ),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      setState(() {
-                        enterpriseProvider.getEnterprises();
-                      });
-                    },
-                    child: const Text('Tentar novamente'),
-                  ),
-                ],
-              ),
-            if (!enterpriseProvider.isChargingEnterprises &&
-                enterpriseProvider.enterpriseCount > 0)
-              const Padding(
-                padding: EdgeInsets.all(15.0),
-                child: Text(
-                  'Selecione a empresa',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
+                    SizedBox(height: 20),
+                    CircularProgressIndicator(),
+                  ],
                 ),
               ),
-            // const Divider(color: Colors.black),
-            const EnterpriseWidget(),
-          ],
-        ),
+            ),
+          if (enterpriseProvider.enterpriseErrorMessage != '')
+            Column(
+              children: [
+                ErrorMessage(text: enterpriseProvider.enterpriseErrorMessage),
+                TextButton(
+                  onPressed: () {
+                    setState(() {
+                      enterpriseProvider.getEnterprises();
+                    });
+                  },
+                  child: const Text('Tentar novamente'),
+                ),
+              ],
+            ),
+          if (!enterpriseProvider.isChargingEnterprises &&
+              enterpriseProvider.enterpriseCount > 0)
+            const Padding(
+              padding: EdgeInsets.all(15.0),
+              child: Text(
+                'Selecione a empresa',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          // const Divider(color: Colors.black),
+          const EnterpriseWidget(),
+        ],
       ),
     );
   }

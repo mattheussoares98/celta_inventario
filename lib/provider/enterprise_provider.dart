@@ -55,7 +55,7 @@ class EnterpriseProvider with ChangeNotifier {
     } catch (e) {
       if (e.toString().contains('No route')) {
         enterpriseErrorMessage =
-            'Servidor não encontrado. Acione o suporte técnico. (11) 3125-6767';
+            'O servidor não foi encontrado. Verifique a sua internet.';
       } else if (e.toString().contains('Connection timed')) {
         enterpriseErrorMessage = 'Time out. Tente novamente';
       } else {

@@ -25,14 +25,9 @@ class ProductProvider with ChangeNotifier {
     int inventoryProcessCode,
     int inventoryCountingCode,
   ) async {
+    _products.clear();
     productErrorMessage = '';
     isChargingEan = true;
-    if (ean.length > 13) {
-      productErrorMessage = 'EAN $ean inválido';
-      isChargingEan = false;
-      notifyListeners();
-      return;
-    }
 
     try {
       var headers = {'Content-Type': 'application/json'};
@@ -47,7 +42,6 @@ class ProductProvider with ChangeNotifier {
 
       http.StreamedResponse response = await request.send();
       String responseInString = await response.stream.bytesToString();
-      print('responseInStringEAN $responseInString');
 
       //tratando a mensagem de retorno aqui mesmo
       if (responseInString.contains('O produto não foi encontrado')) {
@@ -60,6 +54,21 @@ class ProductProvider with ChangeNotifier {
         productErrorMessage =
             'Ocorreu um erro durante a tentativa de atender um serviço de integração "cross". Fale com seu administrador de sistemas, para resolver o problema.';
       }
+
+      List responseInList = json.decode(responseInString);
+      Map responseInMap = responseInList.asMap();
+
+      responseInMap.forEach((key, value) {
+        _products.add(
+          Product(
+            productName: value['Nome_Produto'],
+            codigoInternoProEmb: value['CodigoInterno_ProEmb'],
+            plu: value['CodigoPlu_ProEmb'],
+            codigoProEmb: value['Codigo_ProEmb'],
+            quantidadeInvContProEmb: value['Quantidade_InvContProEmb'],
+          ),
+        );
+      });
     } catch (e) {
       productErrorMessage = 'Servidor não encontrado. Verifique a sua internet';
     } finally {
@@ -74,6 +83,7 @@ class ProductProvider with ChangeNotifier {
     int inventoryProcessCode,
     int inventoryCountingCode,
   ) async {
+    _products.clear();
     isChargingPlu = true;
     productErrorMessage = '';
 
@@ -94,9 +104,27 @@ class ProductProvider with ChangeNotifier {
       if (responseInString.contains('O produto não foi encontrado')) {
         productErrorMessage =
             'O PLU $plu não foi encontrado na contagem do proceddo de inventário.';
+        notifyListeners();
+        return;
       }
-      print('responseInStringPLU $responseInString');
+
+      List responseInList = json.decode(responseInString);
+      Map responseInMap = responseInList.asMap();
+
+      responseInMap.forEach((key, value) {
+        _products.add(
+          Product(
+            productName: value['Nome_Produto'],
+            codigoInternoProEmb: value['CodigoInterno_ProEmb'],
+            plu: value['CodigoPlu_ProEmb'],
+            codigoProEmb: value['Codigo_ProEmb'],
+            quantidadeInvContProEmb: value['Quantidade_InvContProEmb'],
+          ),
+        );
+      });
+      print('responseInMap $responseInMap');
     } catch (e) {
+      print(e.toString());
       productErrorMessage = 'Servidor não encontrado. Verifique a sua internet';
     } finally {
       isChargingPlu = false;

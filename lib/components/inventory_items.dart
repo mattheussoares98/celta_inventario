@@ -13,79 +13,121 @@ class InventoryItems extends StatelessWidget {
     InventoryProvider inventoryProvider = Provider.of(context);
     ProductProvider productProvider = Provider.of(context);
 
-    return Container(
-      height: 200,
-      decoration: BoxDecoration(
-        color: Colors.grey[350],
-        border: Border.all(
-          color: Colors.black,
-        ),
-      ),
-      child: ListView.builder(
-        itemCount: inventoryProvider.inventoryCount,
-        itemBuilder: (context, index) {
-          return GestureDetector(
-            onTap: () {
-              productProvider.codigoInternoInventario =
-                  inventoryProvider.inventorys[index].codigoInternoInventario;
+    double height =
+        inventoryProvider.inventorys[0].obsInventario.length > 30 ? 300 : 220;
 
-              Navigator.of(context).pushNamed(
-                APPROUTES.COUNTINGS,
-                arguments: inventoryProvider.inventorys[index],
-              );
-            },
-            //sem esse container, não funciona o gesture detector no campo inteiro
-            child: Container(
-              height: 200,
-              decoration: BoxDecoration(
-                color: Colors.grey[350],
-                border: Border.all(
-                  color: Colors.black,
+    TextStyle _fontSizeStyle = const TextStyle(
+      fontSize: 20,
+    );
+    TextStyle _fontSizeAndBoldStyle = const TextStyle(
+      fontSize: 20,
+      fontWeight: FontWeight.bold,
+    );
+
+    return SizedBox(
+      height: height,
+      // decoration: BoxDecoration(
+      //   color: Colors.grey[350],
+      //   border: Border.all(
+      //     color: Colors.black,
+      //   ),
+      // ),
+      child: Card(
+        elevation: 10,
+        color: Colors.blue[100],
+        child: ListView.builder(
+          itemCount: inventoryProvider.inventoryCount,
+          itemBuilder: (context, index) {
+            return GestureDetector(
+              onTap: () {
+                productProvider.codigoInternoInventario =
+                    inventoryProvider.inventorys[index].codigoInternoInventario;
+
+                Navigator.of(context).pushNamed(
+                  APPROUTES.COUNTINGS,
+                  arguments: inventoryProvider.inventorys[index],
+                );
+              },
+              //sem esse container, não funciona o gesture detector no campo inteiro
+              child: Container(
+                padding: const EdgeInsets.all(10),
+                height: height,
+                decoration: BoxDecoration(
+                  // color: Colors.grey[350],
+                  border: Border.all(
+                    color: Colors.lightBlue[100]!,
+                  ),
                 ),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
+                    FittedBox(
+                      child: Row(
+                        children: [
+                          Text(
+                            'Empresa: ',
+                            style: _fontSizeStyle,
+                          ),
+                          const SizedBox(height: 25),
+                          Text(
+                            inventoryProvider.inventorys[index].nomeempresa,
+                            style: _fontSizeAndBoldStyle,
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 5),
                     Row(
                       children: [
-                        const Text('Empresa: '),
+                        Text(
+                          'Tipo de estoque: ',
+                          style: _fontSizeStyle,
+                        ),
+                        Text(
+                          inventoryProvider.inventorys[index].nomeTipoEstoque,
+                          style: _fontSizeAndBoldStyle,
+                        )
+                      ],
+                    ),
+                    const SizedBox(height: 5),
+                    Row(
+                      children: [
+                        Text(
+                          'Responsável: ',
+                          style: _fontSizeStyle,
+                        ),
                         const SizedBox(height: 25),
                         Text(
-                          inventoryProvider.inventorys[index].codigoEmpresa,
+                          inventoryProvider.inventorys[index].nomefuncionario,
+                          style: _fontSizeAndBoldStyle,
                         ),
                       ],
                     ),
-                    Row(
-                      children: [
-                        const Text('Tipo de estoque: '),
+                    const SizedBox(height: 5),
+                    FittedBox(
+                      child: Row(children: [
+                        Text(
+                          'Congelado em: ',
+                          style: _fontSizeStyle,
+                        ),
                         const SizedBox(height: 25),
-                        Text(inventoryProvider
-                            .inventorys[index].nomeTipoEstoque),
-                      ],
+                        Text(
+                          formatDate(
+                            inventoryProvider
+                                .inventorys[index].dataCongelamentoInventario,
+                            [dd, '-', mm, '-', yyyy, ' ', hh, ':', mm, ':', ss],
+                          ),
+                          style: _fontSizeAndBoldStyle,
+                        ),
+                      ]),
                     ),
-                    Row(
-                      children: [
-                        const Text('Responsável: '),
-                        const SizedBox(height: 25),
-                        Text(inventoryProvider
-                            .inventorys[index].nomefuncionario),
-                      ],
-                    ),
+                    const SizedBox(height: 5),
                     Row(children: [
-                      const Text('Data de congelamento: '),
-                      const SizedBox(height: 25),
                       Text(
-                        formatDate(
-                          inventoryProvider
-                              .inventorys[index].dataCongelamentoInventario,
-                          [dd, '-', mm, '-', yyyy, ' ', hh, ':', mm, ':', ss],
-                        ),
+                        'Criado em: ',
+                        style: _fontSizeStyle,
                       ),
-                    ]),
-                    Row(children: [
-                      const Text('Data de criação: '),
                       const SizedBox(height: 25),
                       Text(
                         formatDate(
@@ -93,26 +135,36 @@ class InventoryItems extends StatelessWidget {
                               .inventorys[index].dataCriacaoInventario,
                           [dd, '-', mm, '-', yyyy, ' ', hh, ':', mm, ':', ss],
                         ),
+                        style: _fontSizeAndBoldStyle,
                       ),
                     ]),
+                    const SizedBox(height: 5),
                     Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text('Observações: '),
                         Text(
-                          inventoryProvider
-                                  .inventorys[index].obsInventario.isEmpty
-                              ? 'Não há observações'
-                              : inventoryProvider
-                                  .inventorys[index].obsInventario,
+                          'Observações: ',
+                          style: _fontSizeStyle,
+                        ),
+                        Expanded(
+                          child: Text(
+                            inventoryProvider
+                                    .inventorys[index].obsInventario.isEmpty
+                                ? 'Não há observações'
+                                : inventoryProvider
+                                    .inventorys[index].obsInventario,
+                            style: _fontSizeAndBoldStyle,
+                          ),
                         ),
                       ],
                     ),
+                    const SizedBox(height: 5),
                   ],
                 ),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }

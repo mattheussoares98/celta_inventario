@@ -1,6 +1,5 @@
+import 'package:celta_inventario/components/product_item.dart';
 import 'package:celta_inventario/models/countings.dart';
-import 'package:celta_inventario/models/enterprise.dart';
-import 'package:celta_inventario/models/inventory.dart';
 import 'package:celta_inventario/provider/product_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -17,7 +16,7 @@ class ProductPage extends StatefulWidget {
 class _ProductPageState extends State<ProductPage> {
   String _scanBarcode = '';
 
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formEanOrPlu = GlobalKey<FormState>();
 
   Future<void> scanBarcodeNormal() async {
     setState(() {
@@ -40,6 +39,8 @@ class _ProductPageState extends State<ProductPage> {
         print('scanbarcode$_scanBarcode');
       }
     });
+
+    _controllerProduct.text = _scanBarcode;
   }
 
   showErrorMessage(String error) {
@@ -52,6 +53,8 @@ class _ProductPageState extends State<ProductPage> {
       ),
     );
   }
+
+  final TextEditingController _controllerProduct = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -66,29 +69,46 @@ class _ProductPageState extends State<ProductPage> {
         children: [
           Padding(
             padding: const EdgeInsets.all(12.0),
-            child: Form(
-              key: _formKey,
-              child: TextFormField(
-                initialValue: _scanBarcode,
-                onChanged: (value) => setState(() {
-                  _scanBarcode = value;
-                }),
-                key: const ValueKey('key'),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Digite o EAN ou PLU';
-                  } else if (value.contains(',') ||
-                      value.contains('.') ||
-                      value.contains('-')) {
-                    return 'A pesquisa deve conter somente números';
-                  }
-                  return null;
-                },
-                decoration: const InputDecoration(
-                  labelText: 'Digite o EAN ou PLU',
+            child: Row(
+              children: [
+                Expanded(
+                  child: Form(
+                    key: _formEanOrPlu,
+                    child: TextFormField(
+                      style: const TextStyle(
+                        fontSize: 20,
+                      ),
+                      maxLength: 13,
+                      controller: _controllerProduct,
+                      // initialValue: _scanBarcode,
+                      onChanged: (value) => setState(() {
+                        _scanBarcode = value;
+                      }),
+
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Digite o EAN ou o PLU';
+                        } else if (value.contains(',') ||
+                            value.contains('.') ||
+                            value.contains('-')) {
+                          return 'A pesquisa deve conter somente números';
+                        }
+                        return null;
+                      },
+                      decoration: const InputDecoration(
+                        labelText: 'Digite o EAN ou o PLU',
+                      ),
+                      keyboardType: TextInputType.number,
+                    ),
+                  ),
                 ),
-                keyboardType: TextInputType.number,
-              ),
+                TextButton(
+                  onPressed: () {
+                    _controllerProduct.text = '';
+                  },
+                  child: const Text('   Limpar'),
+                ),
+              ],
             ),
           ),
           Row(
@@ -98,7 +118,7 @@ class _ProductPageState extends State<ProductPage> {
                 onPressed: productProvider.isChargingEan
                     ? null
                     : () async {
-                        bool isValid = _formKey.currentState!.validate();
+                        bool isValid = _formEanOrPlu.currentState!.validate();
                         if (!isValid) return;
 
                         setState(() {
@@ -130,10 +150,17 @@ class _ProductPageState extends State<ProductPage> {
                     : const Text('Consultar EAN'),
               ),
               TextButton(
+                child: productProvider.isChargingPlu
+                    ? const SizedBox(
+                        height: 20,
+                        width: 20,
+                        child: CircularProgressIndicator(),
+                      )
+                    : const Text('Consultar PLU'),
                 onPressed: productProvider.isChargingEan
                     ? null
                     : () async {
-                        bool isValid = _formKey.currentState!.validate();
+                        bool isValid = _formEanOrPlu.currentState!.validate();
                         if (!isValid) return;
 
                         setState(() {
@@ -156,13 +183,6 @@ class _ProductPageState extends State<ProductPage> {
                           }
                         }
                       },
-                child: productProvider.isChargingPlu
-                    ? const SizedBox(
-                        height: 20,
-                        width: 20,
-                        child: CircularProgressIndicator(),
-                      )
-                    : const Text('Consultar PLU'),
               ),
               Row(
                 children: [
@@ -184,6 +204,7 @@ class _ProductPageState extends State<ProductPage> {
                                 productProvider.codigoInternoInventario!,
                                 countings.codigoInternoInvCont,
                               );
+
                               if (productProvider.productErrorMessage != '') {
                                 showErrorMessage(
                                     productProvider.productErrorMessage);
@@ -202,10 +223,11 @@ class _ProductPageState extends State<ProductPage> {
               ),
             ],
           ),
-          // if (productProvider.productErrorMessage != '')
-          //   Container(
-          //     child: Text('Produto $_scanBarcode não encontrado'),
-          //   ),
+          if (productProvider.products.isNotEmpty)
+            ProductItem(
+              countingCode: countings.codigoInternoInvCont,
+              productPackingCode: 1,
+            ),
         ],
       ),
     );

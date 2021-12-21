@@ -25,23 +25,32 @@ class _EnterpriseWidgetState extends State<EnterpriseWidget> {
         itemBuilder: (ctx, index) {
           return Column(
             children: [
-              ListTile(
-                title: Text(loginProvider.enterprises[index].nomeEmpresa),
-                trailing: Text(
-                    loginProvider.enterprises[index].codigoEmpresa.toString()),
-                onTap: () {
-                  productProvider.codigoInternoEmpresa =
-                      loginProvider.enterprises[index].codigoInternoEmpresa;
+              Card(
+                elevation: 6,
+                color: Colors.lightBlue[100],
+                child: ListTile(
+                  title: Text(
+                    loginProvider.enterprises[index].nomeEmpresa,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  leading: Text(loginProvider.enterprises[index].codigoEmpresa
+                      .toString()),
+                  onTap: () {
+                    productProvider.codigoInternoEmpresa =
+                        loginProvider.enterprises[index].codigoInternoEmpresa;
 
-                  Navigator.of(context).pushNamed(
-                    APPROUTES.INVENTORY,
-                    arguments: loginProvider.enterprises[index],
-                  );
-                },
+                    Navigator.of(context).pushNamed(
+                      APPROUTES.INVENTORY,
+                      arguments: loginProvider.enterprises[index],
+                    );
+                  },
+                ),
               ),
-              const Divider(
-                color: Colors.black,
-              ),
+              // const Divider(
+              //   color: Colors.black,
+              // ),
             ],
           );
         },

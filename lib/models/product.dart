@@ -3,13 +3,13 @@ class Product {
   final int codigoInternoProEmb;
   final String plu;
   final String codigoProEmb;
-  final int quantidadeInvContProEmb;
+  final double quantidadeInvContProEmb;
 
-  Product(
-    this.productName,
-    this.codigoInternoProEmb,
-    this.plu,
-    this.codigoProEmb,
-    this.quantidadeInvContProEmb,
-  );
+  Product({
+    required this.productName,
+    required this.codigoInternoProEmb,
+    required this.plu,
+    required this.codigoProEmb,
+    required this.quantidadeInvContProEmb,
+  });
 }
