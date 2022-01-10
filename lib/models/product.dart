@@ -3,7 +3,7 @@ class Product {
   final int codigoInternoProEmb;
   final String plu;
   final String codigoProEmb;
-  final double quantidadeInvContProEmb;
+  double quantidadeInvContProEmb;
 
   Product({
     required this.productName,

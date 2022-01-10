@@ -85,8 +85,18 @@ class _AuthFormState extends State<AuthForm> {
                 },
                 initialValue: _data['user'],
                 onChanged: (value) => _data['user'] = value,
+                style: TextStyle(
+                  decorationColor: Colors.black,
+                  color: Colors.black,
+                ),
                 decoration: const InputDecoration(
+                  labelStyle: TextStyle(
+                    color: Colors.black,
+                  ),
                   labelText: 'Usuário',
+                  counterStyle: TextStyle(
+                    color: Colors.black,
+                  ),
                 ),
               ),
               TextFormField(
@@ -101,6 +111,9 @@ class _AuthFormState extends State<AuthForm> {
                 onChanged: (value) => _data['password'] = value,
                 decoration: const InputDecoration(
                   labelText: 'Senha',
+                  labelStyle: TextStyle(
+                    color: Colors.black,
+                  ),
                 ),
                 obscureText: true,
               ),

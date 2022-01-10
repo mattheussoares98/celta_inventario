@@ -27,16 +27,21 @@ class _EnterpriseWidgetState extends State<EnterpriseWidget> {
             children: [
               Card(
                 elevation: 6,
-                color: Colors.lightBlue[100],
+                color: Theme.of(context).colorScheme.primary,
                 child: ListTile(
                   title: Text(
                     loginProvider.enterprises[index].nomeEmpresa,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontWeight: FontWeight.bold,
+                      color: Theme.of(context).colorScheme.secondary,
                     ),
                   ),
-                  leading: Text(loginProvider.enterprises[index].codigoEmpresa
-                      .toString()),
+                  leading: Text(
+                    loginProvider.enterprises[index].codigoEmpresa.toString(),
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
+                  ),
                   onTap: () {
                     productProvider.codigoInternoEmpresa =
                         loginProvider.enterprises[index].codigoInternoEmpresa;

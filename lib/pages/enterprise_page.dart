@@ -25,7 +25,14 @@ class EnterprisePageState extends State<EnterprisePage> {
         Provider.of<EnterpriseProvider>(context, listen: true);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('EMPRESAS'),
+        title: const Text(
+          'EMPRESAS',
+          style: TextStyle(
+            color: Colors.black,
+            // fontFamily: 'BebasNeue',
+            fontSize: 30,
+          ),
+        ),
       ),
       body: Column(
         mainAxisAlignment: (!enterpriseProvider.isChargingEnterprises &&
@@ -67,14 +74,11 @@ class EnterprisePageState extends State<EnterprisePage> {
             ),
           if (!enterpriseProvider.isChargingEnterprises &&
               enterpriseProvider.enterpriseCount > 0)
-            const Padding(
+            Padding(
               padding: EdgeInsets.all(15.0),
               child: Text(
                 'Selecione a empresa',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: Theme.of(context).textTheme.headline6,
               ),
             ),
           // const Divider(color: Colors.black),

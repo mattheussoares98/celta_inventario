@@ -2,7 +2,6 @@ import 'package:celta_inventario/components/counting_items.dart';
 import 'package:celta_inventario/components/error_message.dart';
 import 'package:celta_inventario/components/loading_process.dart';
 import 'package:celta_inventario/provider/counting_provider.dart';
-import 'package:celta_inventario/utils/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -29,9 +28,12 @@ class _CountingWidgetState extends State<CountingWidget> {
   Widget build(BuildContext context) {
     CountingProvider countingProvider = Provider.of(context, listen: true);
     return Column(
+      mainAxisAlignment: countingProvider.isChargingCountings
+          ? MainAxisAlignment.center
+          : MainAxisAlignment.start,
       children: [
         if (countingProvider.isChargingCountings)
-          const LoadingProcess(text: 'Carregando contagens'),
+          LoadingProcess(text: 'Carregando contagens'),
         if (countingProvider.countingsErrorMessage != '')
           Column(
             children: [
@@ -50,15 +52,12 @@ class _CountingWidgetState extends State<CountingWidget> {
         if (!countingProvider.isChargingCountings &&
             countingProvider.countingsQuantity > 0)
           Column(
-            children: const [
+            children: [
               Padding(
-                padding: EdgeInsets.all(15.0),
+                padding: const EdgeInsets.all(15.0),
                 child: Text(
                   'Selecione a contagem',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: Theme.of(context).textTheme.headline6,
                 ),
               ),
               CountingItems(),

@@ -29,6 +29,30 @@ void main() {
         ChangeNotifierProvider(create: (_) => QuantityProvider()),
       ],
       child: MaterialApp(
+        theme: ThemeData(
+          appBarTheme: AppBarTheme(
+            // color: Colors.white,
+            titleTextStyle: TextStyle(
+              letterSpacing: 0.7,
+              fontFamily: 'BebasNeue',
+            ),
+          ),
+          fontFamily: 'OpenSans',
+        ).copyWith(
+          textTheme: ThemeData.light().textTheme.copyWith(
+                headline6: TextStyle(
+                  letterSpacing: 1,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                  fontSize: 40,
+                  fontFamily: 'BebasNeue',
+                ),
+              ),
+          colorScheme: ThemeData().colorScheme.copyWith(
+                primary: Colors.amber[300],
+                secondary: Colors.black,
+              ),
+        ),
         debugShowCheckedModeBanner: false,
         // home: const AuthOrHoMePage(),
         routes: {

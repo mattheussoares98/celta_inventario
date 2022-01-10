@@ -32,21 +32,27 @@ class _AuthPageState extends State<AuthPage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
-                transform: Matrix4.rotationZ(-8 * pi / 180)..translate(-10.0),
-                padding: const EdgeInsets.symmetric(
-                  vertical: 10,
-                  horizontal: 30,
-                ),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  color: Colors.deepOrange.shade900,
-                ),
-                child: const Text(
-                  'Celta inventário',
-                  style: TextStyle(
-                    fontSize: 45,
-                    color: Colors.white,
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Container(
+                  transform: Matrix4.rotationZ(-8 * pi / 180)..translate(-10.0),
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 10,
+                    horizontal: 30,
+                  ),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    color: Colors.deepOrange.shade900,
+                  ),
+                  child: const FittedBox(
+                    child: Text(
+                      'Celta inventário',
+                      style: TextStyle(
+                        fontSize: 55,
+                        color: Colors.white,
+                        fontFamily: 'BebasNeue',
+                      ),
+                    ),
                   ),
                 ),
               ),

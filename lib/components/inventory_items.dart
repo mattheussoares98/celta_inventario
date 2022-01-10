@@ -16,25 +16,21 @@ class InventoryItems extends StatelessWidget {
     double height =
         inventoryProvider.inventorys[0].obsInventario.length > 30 ? 300 : 220;
 
-    TextStyle _fontSizeStyle = const TextStyle(
+    TextStyle _fontSizeStyle = TextStyle(
       fontSize: 20,
+      color: Theme.of(context).colorScheme.secondary,
     );
-    TextStyle _fontSizeAndBoldStyle = const TextStyle(
+    TextStyle _fontSizeAndBoldStyle = TextStyle(
       fontSize: 20,
       fontWeight: FontWeight.bold,
+      color: Theme.of(context).colorScheme.secondary,
     );
 
     return SizedBox(
       height: height,
-      // decoration: BoxDecoration(
-      //   color: Colors.grey[350],
-      //   border: Border.all(
-      //     color: Colors.black,
-      //   ),
-      // ),
       child: Card(
         elevation: 10,
-        color: Colors.blue[100],
+        color: Theme.of(context).colorScheme.primary,
         child: ListView.builder(
           itemCount: inventoryProvider.inventoryCount,
           itemBuilder: (context, index) {
@@ -78,31 +74,35 @@ class InventoryItems extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 5),
-                    Row(
-                      children: [
-                        Text(
-                          'Tipo de estoque: ',
-                          style: _fontSizeStyle,
-                        ),
-                        Text(
-                          inventoryProvider.inventorys[index].nomeTipoEstoque,
-                          style: _fontSizeAndBoldStyle,
-                        )
-                      ],
+                    FittedBox(
+                      child: Row(
+                        children: [
+                          Text(
+                            'Tipo de estoque: ',
+                            style: _fontSizeStyle,
+                          ),
+                          Text(
+                            inventoryProvider.inventorys[index].nomeTipoEstoque,
+                            style: _fontSizeAndBoldStyle,
+                          )
+                        ],
+                      ),
                     ),
                     const SizedBox(height: 5),
-                    Row(
-                      children: [
-                        Text(
-                          'Responsável: ',
-                          style: _fontSizeStyle,
-                        ),
-                        const SizedBox(height: 25),
-                        Text(
-                          inventoryProvider.inventorys[index].nomefuncionario,
-                          style: _fontSizeAndBoldStyle,
-                        ),
-                      ],
+                    FittedBox(
+                      child: Row(
+                        children: [
+                          Text(
+                            'Responsável: ',
+                            style: _fontSizeStyle,
+                          ),
+                          const SizedBox(height: 25),
+                          Text(
+                            inventoryProvider.inventorys[index].nomefuncionario,
+                            style: _fontSizeAndBoldStyle,
+                          ),
+                        ],
+                      ),
                     ),
                     const SizedBox(height: 5),
                     FittedBox(
@@ -122,22 +122,22 @@ class InventoryItems extends StatelessWidget {
                         ),
                       ]),
                     ),
-                    const SizedBox(height: 5),
-                    Row(children: [
-                      Text(
-                        'Criado em: ',
-                        style: _fontSizeStyle,
-                      ),
-                      const SizedBox(height: 25),
-                      Text(
-                        formatDate(
-                          inventoryProvider
-                              .inventorys[index].dataCriacaoInventario,
-                          [dd, '-', mm, '-', yyyy, ' ', hh, ':', mm, ':', ss],
-                        ),
-                        style: _fontSizeAndBoldStyle,
-                      ),
-                    ]),
+                    // const SizedBox(height: 5),
+                    // Row(children: [
+                    //   Text(
+                    //     'Criado em: ',
+                    //     style: _fontSizeStyle,
+                    //   ),
+                    //   const SizedBox(height: 25),
+                    //   Text(
+                    //     formatDate(
+                    //       inventoryProvider
+                    //           .inventorys[index].dataCriacaoInventario,
+                    //       [dd, '-', mm, '-', yyyy, ' ', hh, ':', mm, ':', ss],
+                    //     ),
+                    //     style: _fontSizeAndBoldStyle,
+                    //   ),
+                    // ]),
                     const SizedBox(height: 5),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,

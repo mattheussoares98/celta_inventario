@@ -24,29 +24,51 @@ class CountingItems extends StatelessWidget {
             },
             child: Card(
               elevation: 10,
-              color: Colors.lightBlue[100],
+              color: Theme.of(context).colorScheme.primary,
               child: Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'Número da contagem: ${countingProvider.countings[index].numeroContagemInvCont}',
-                      style: const TextStyle(fontSize: 20),
+                    Row(
+                      children: [
+                        Text(
+                          'Número da contagem: ',
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: Theme.of(context).colorScheme.secondary,
+                          ),
+                        ),
+                        Text(
+                          countingProvider
+                              .countings[index].numeroContagemInvCont
+                              .toString(),
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).colorScheme.secondary,
+                          ),
+                        ),
+                      ],
                     ),
                     const SizedBox(height: 10),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
+                        Text(
                           'Observação: ',
-                          style: TextStyle(fontSize: 20),
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: Theme.of(context).colorScheme.secondary,
+                          ),
                         ),
                         Expanded(
                           child: Text(
                             countingProvider.countings[index].obsInvCont,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Theme.of(context).colorScheme.secondary,
                             ),
                           ),
                         ),

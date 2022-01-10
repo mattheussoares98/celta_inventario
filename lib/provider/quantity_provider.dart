@@ -6,12 +6,17 @@ import 'dart:convert';
 class QuantityProvider with ChangeNotifier {
   bool isLoadingEntryQuantity = false;
 
+  String entryQuantityError = '';
+
+  bool isConfirmed = false;
+
   Future<void> entryQuantity({
     int? countingCode,
     int? productPackingCode,
     int? quantity,
   }) async {
     isLoadingEntryQuantity = true;
+    entryQuantityError = '';
 
     try {
       var headers = {'Content-Type': 'application/json'};
@@ -30,14 +35,18 @@ class QuantityProvider with ChangeNotifier {
       if (response.statusCode == 200) {
         print('statusCode == 200, então deu certo');
         print(await response.stream.bytesToString());
+        isConfirmed = true;
       } else {
-        print(response.reasonPhrase);
+        print('response.reasonPhrase ${response.reasonPhrase}');
       }
     } catch (e) {
-      print(e.toString());
+      print('erro = $e');
+      entryQuantityError =
+          'Erro para confirmar. Verifique a sua internet e tente novamente';
     } finally {
       isLoadingEntryQuantity = false;
     }
+    print('entryQuantityError: $entryQuantityError');
     notifyListeners();
   }
 }

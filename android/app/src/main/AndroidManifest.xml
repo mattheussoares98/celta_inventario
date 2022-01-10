@@ -1,7 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.celta_inventario">
+    package="br.com.celtaware.inventario">
+    <uses-permission android:name="android.permission.INTERNET"/>
    <application
-        android:label="celta_inventario"
+        android:label="Celta inventário"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

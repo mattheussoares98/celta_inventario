@@ -108,9 +108,16 @@ class _HomePageState extends State<HomePage> {
             },
           ),
         ],
-        title: const Center(
-          child: Text(
-            'Selecione a rotina desejada',
+        title: Center(
+          child: FittedBox(
+            child: Text(
+              'Selecione a rotina desejada',
+              style: TextStyle(
+                color: Colors.black,
+                // fontFamily: 'BebasNeue',
+                fontSize: 30,
+              ),
+            ),
           ),
         ),
       ),
@@ -119,19 +126,19 @@ class _HomePageState extends State<HomePage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             imagem(
-              imagePath: 'lib/assets/inventory.jpg',
+              imagePath: 'lib/assets/Images/inventory.jpg',
               routine: 'Inventário',
               route: APPROUTES.ENTERPRISES,
             ),
             const Divider(color: Colors.black),
             imagem(
-              imagePath: 'lib/assets/pedidoDeVendas.jpg',
+              imagePath: 'lib/assets/Images/pedidoDeVendas.jpg',
               routine: 'Pedido de vendas',
               route: APPROUTES.SALES,
             ),
             const Divider(color: Colors.black),
             imagem(
-              imagePath: 'lib/assets/stock.jpg',
+              imagePath: 'lib/assets/Images/stock.jpg',
               routine: 'Estoque',
               route: APPROUTES.STOCK,
             ),

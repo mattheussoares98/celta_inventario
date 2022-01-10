@@ -16,7 +16,14 @@ class _CountingPageState extends State<CountingPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('CONTAGENS'),
+        title: const Text(
+          'CONTAGENS',
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 30,
+            // fontFamily: 'BebasNeue',
+          ),
+        ),
       ),
       body: CountingWidget(
         codigoInternoInventario: inventorys.codigoInternoInventario,

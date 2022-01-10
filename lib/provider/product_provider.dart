@@ -12,7 +12,6 @@ class ProductProvider with ChangeNotifier {
   }
 
   bool isChargingEan = false;
-  bool isChargingPlu = false;
 
   int? codigoInternoEmpresa;
   int? codigoInternoInventario;
@@ -43,16 +42,20 @@ class ProductProvider with ChangeNotifier {
       http.StreamedResponse response = await request.send();
       String responseInString = await response.stream.bytesToString();
 
+      print(responseInString);
+
       //tratando a mensagem de retorno aqui mesmo
       if (responseInString.contains('O produto não foi encontrado')) {
         productErrorMessage =
-            'O EAN $ean não foi encontrado na contagem do processo de inventário.';
-      } else if (responseInString.contains('O EAN informado não é válido')) {
-        responseInString = 'O EAN $ean é inválido';
+            'O produto não foi encontrado na contagem do processo de inventário.';
+        notifyListeners();
+        return;
       } else if (responseInString.contains(
           "Ocorreu um erro durante a tentativa de atender um serviço de integração 'cross'")) {
         productErrorMessage =
             'Ocorreu um erro durante a tentativa de atender um serviço de integração "cross". Fale com seu administrador de sistemas, para resolver o problema.';
+        notifyListeners();
+        return;
       }
 
       List responseInList = json.decode(responseInString);
@@ -70,10 +73,10 @@ class ProductProvider with ChangeNotifier {
         );
       });
     } catch (e) {
+      print('erro do productByEAN');
+      print(e.toString());
       productErrorMessage = 'Servidor não encontrado. Verifique a sua internet';
-    } finally {
-      isChargingEan = false;
-    }
+    } finally {}
     notifyListeners();
   }
 
@@ -84,7 +87,6 @@ class ProductProvider with ChangeNotifier {
     int inventoryCountingCode,
   ) async {
     _products.clear();
-    isChargingPlu = true;
     productErrorMessage = '';
 
     try {
@@ -103,7 +105,7 @@ class ProductProvider with ChangeNotifier {
       String responseInString = await response.stream.bytesToString();
       if (responseInString.contains('O produto não foi encontrado')) {
         productErrorMessage =
-            'O PLU $plu não foi encontrado na contagem do proceddo de inventário.';
+            'O produto não foi encontrado na contagem do processo de inventário.';
         notifyListeners();
         return;
       }
@@ -124,11 +126,10 @@ class ProductProvider with ChangeNotifier {
       });
       print('responseInMap $responseInMap');
     } catch (e) {
+      print('erro do productByPLU');
       print(e.toString());
       productErrorMessage = 'Servidor não encontrado. Verifique a sua internet';
-    } finally {
-      isChargingPlu = false;
-    }
+    } finally {}
     notifyListeners();
   }
 }

@@ -42,21 +42,15 @@ class _InventoryWidgetState extends State<InventoryWidget> {
         if (!inventoryProvider.isChargingInventorys &&
             inventoryProvider.inventoryCount > 0)
           Column(
-            children: const [
+            children: [
               Padding(
-                padding: EdgeInsets.all(15.0),
+                padding: const EdgeInsets.all(15.0),
                 child: Text(
                   'Selecione o inventário',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: Theme.of(context).textTheme.headline6,
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.all(8.0),
-                child: InventoryItems(),
-              ),
+              InventoryItems(),
             ],
           ),
         if (inventoryProvider.inventoryErrorMessage != '' &&
