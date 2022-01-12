@@ -32,6 +32,7 @@ class _EnterpriseWidgetState extends State<EnterpriseWidget> {
                   title: Text(
                     loginProvider.enterprises[index].nomeEmpresa,
                     style: TextStyle(
+                      // fontFamily: 'OpenSans',
                       fontWeight: FontWeight.bold,
                       color: Theme.of(context).colorScheme.secondary,
                     ),

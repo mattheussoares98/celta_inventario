@@ -86,8 +86,11 @@ class _AuthFormState extends State<AuthForm> {
                 initialValue: _data['user'],
                 onChanged: (value) => _data['user'] = value,
                 style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  fontFamily: 'OpenSans',
                   decorationColor: Colors.black,
                   color: Colors.black,
+                  fontSize: 20,
                 ),
                 decoration: const InputDecoration(
                   labelStyle: TextStyle(
@@ -100,6 +103,13 @@ class _AuthFormState extends State<AuthForm> {
                 ),
               ),
               TextFormField(
+                style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  fontFamily: 'OpenSans',
+                  decorationColor: Colors.black,
+                  color: Colors.black,
+                  fontSize: 20,
+                ),
                 validator: (_name) {
                   _name = _data['password'];
                   if (_data['password']!.trim().isEmpty) {
