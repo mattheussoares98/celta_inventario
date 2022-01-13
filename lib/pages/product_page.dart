@@ -71,7 +71,6 @@ class _ProductPageState extends State<ProductPage> {
           style: TextStyle(
             color: Colors.black,
             fontSize: 30,
-            // fontFamily: 'BebasNeue',
           ),
         ),
       ),
@@ -88,6 +87,7 @@ class _ProductPageState extends State<ProductPage> {
                   child: Form(
                     key: _formEanOrPlu,
                     child: TextFormField(
+                      // autofocus: true,
                       style: const TextStyle(
                         fontSize: 20,
                         color: Colors.black,
@@ -127,7 +127,12 @@ class _ProductPageState extends State<ProductPage> {
                 child: isLoadingEanAndPlu || isLoadingEan
                     ? Row(
                         children: const [
-                          Text('consultando'),
+                          Text(
+                            'consultando',
+                            style: TextStyle(
+                              fontFamily: 'OpenSans',
+                            ),
+                          ),
                           SizedBox(width: 5),
                           SizedBox(
                             height: 20,
@@ -139,6 +144,8 @@ class _ProductPageState extends State<ProductPage> {
                     : Text(
                         'Consultar produto',
                         style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'OpenSans',
                           color: Theme.of(context).colorScheme.secondary,
                         ),
                       ),
@@ -177,6 +184,7 @@ class _ProductPageState extends State<ProductPage> {
                             showErrorMessage(
                                 productProvider.productErrorMessage);
                           }
+                          MediaQuery.of(context).viewInsets.bottom;
                         }
                         setState(() {
                           isLoadingEanAndPlu = false;
@@ -187,7 +195,12 @@ class _ProductPageState extends State<ProductPage> {
                 child: isLoadingEanAndPlu || isLoadingEan
                     ? Row(
                         children: const [
-                          Text('consultando'),
+                          Text(
+                            'consultando',
+                            style: TextStyle(
+                              fontFamily: 'OpenSans',
+                            ),
+                          ),
                           SizedBox(width: 5),
                           SizedBox(
                             height: 20,
@@ -201,7 +214,9 @@ class _ProductPageState extends State<ProductPage> {
                           Text(
                             'Ler EAN',
                             style: TextStyle(
+                              fontFamily: 'OpenSans',
                               color: Theme.of(context).colorScheme.secondary,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
                           SizedBox(width: 5),

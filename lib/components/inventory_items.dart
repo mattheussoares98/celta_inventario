@@ -19,8 +19,10 @@ class InventoryItems extends StatelessWidget {
     TextStyle _fontSizeStyle = TextStyle(
       fontSize: 20,
       color: Theme.of(context).colorScheme.secondary,
+      fontFamily: 'OpenSans',
     );
     TextStyle _fontSizeAndBoldStyle = TextStyle(
+      fontFamily: 'OpenSans',
       fontSize: 20,
       fontWeight: FontWeight.bold,
       color: Theme.of(context).colorScheme.secondary,

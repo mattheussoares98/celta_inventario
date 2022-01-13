@@ -28,7 +28,8 @@ class _CountingWidgetState extends State<CountingWidget> {
   Widget build(BuildContext context) {
     CountingProvider countingProvider = Provider.of(context, listen: true);
     return Column(
-      mainAxisAlignment: countingProvider.isChargingCountings
+      mainAxisAlignment: countingProvider.isChargingCountings ||
+              countingProvider.countingsErrorMessage != ''
           ? MainAxisAlignment.center
           : MainAxisAlignment.start,
       children: [

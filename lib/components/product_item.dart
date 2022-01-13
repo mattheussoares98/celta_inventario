@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 class ProductItem extends StatefulWidget {
   final int countingCode;
   final int productPackingCode;
-  const ProductItem({
+  ProductItem({
     Key? key,
     required this.countingCode,
     required this.productPackingCode,
@@ -34,13 +34,6 @@ class _ProductItemState extends State<ProductItem> {
 
   @override
   Widget build(BuildContext context) {
-    _confirmQuantity() {
-      bool isValid = _formQuantity.currentState!.validate();
-      if (!isValid || userQuantity == 0) {
-        return;
-      }
-    }
-
     ProductProvider productProvider = Provider.of(context, listen: true);
     QuantityProvider quantityProvider = Provider.of(context, listen: true);
 
@@ -112,8 +105,13 @@ class _ProductItemState extends State<ProductItem> {
                       ),
                       Text(
                         productProvider.products[0].quantidadeInvContProEmb
-                            .toInt()
-                            .toString(),
+                                    .toString() ==
+                                'null'
+                            ? 'null'
+                            : productProvider
+                                .products[0].quantidadeInvContProEmb
+                                .toInt()
+                                .toString(),
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -129,6 +127,10 @@ class _ProductItemState extends State<ProductItem> {
                         child: Form(
                           key: _formQuantity,
                           child: TextFormField(
+                            enabled: quantityProvider.isLoadingEntryQuantity
+                                ? false
+                                : true,
+                            autofocus: true,
                             cursorColor:
                                 Theme.of(context).colorScheme.secondary,
                             validator: (value) {
@@ -143,7 +145,6 @@ class _ProductItemState extends State<ProductItem> {
                               }
                               return null;
                             },
-                            initialValue: '0',
                             onChanged: (value) {
                               if (value.isEmpty || value == '-') {
                                 value = '0';
@@ -155,7 +156,7 @@ class _ProductItemState extends State<ProductItem> {
                               print('userQuantity $userQuantity');
                             },
                             decoration: InputDecoration(
-                              labelText: 'Quantidade a ser somada',
+                              labelText: 'Somar quantidade',
                               errorStyle: TextStyle(
                                 fontSize: 17,
                               ),
@@ -194,7 +195,6 @@ class _ProductItemState extends State<ProductItem> {
                                   });
 
                                   try {
-                                    print('no try $userQuantity');
                                     await quantityProvider.entryQuantity(
                                       countingCode: widget.countingCode,
                                       productPackingCode: productProvider
@@ -209,14 +209,22 @@ class _ProductItemState extends State<ProductItem> {
                                       showErrorMessage(
                                           quantityProvider.entryQuantityError);
                                     }
-                                    //aqui verifica se deu certo confirmar o envio da quantidade e caso dê certo, ele altera a quantidade contada
+
                                     if (quantityProvider.isConfirmed) {
                                       setState(() {
+                                        //pode ser que a quantidade venha como "null" na consulta do produto. Se vier como "null", precisa tratar conforme a seguir pra não dar bug. Ele verifica se veio como "null" e se sim, apresenta na numeração, "null" também
                                         productProvider.products[0]
-                                                .quantidadeInvContProEmb =
-                                            (productProvider.products[0]
-                                                    .quantidadeInvContProEmb +
-                                                userQuantity);
+                                                    .quantidadeInvContProEmb
+                                                    .toString() ==
+                                                'null'
+                                            ? productProvider.products[0]
+                                                    .quantidadeInvContProEmb =
+                                                userQuantity.toDouble()
+                                            : productProvider.products[0]
+                                                    .quantidadeInvContProEmb =
+                                                (productProvider.products[0]
+                                                        .quantidadeInvContProEmb +
+                                                    userQuantity);
                                       });
                                     }
                                   }

@@ -51,7 +51,7 @@ class _HomePageState extends State<HomePage> {
                     textAlign: TextAlign.center,
                     style: const TextStyle(
                       color: Colors.white,
-                      // fontWeight: FontWeight.bold,
+                      fontFamily: 'OpenSans',
                       fontSize: 20,
                     ),
                   ),
@@ -77,7 +77,13 @@ class _HomePageState extends State<HomePage> {
                     return AlertDialog(
                       actionsAlignment: MainAxisAlignment.center,
                       title: const FittedBox(
-                          child: Text('Deseja realmente fazer o logout?')),
+                        child: Text(
+                          'Deseja realmente fazer o logout?',
+                          style: TextStyle(
+                            letterSpacing: 2,
+                          ),
+                        ),
+                      ),
                       actions: [
                         ElevatedButton(
                           onPressed: () async {
@@ -86,13 +92,23 @@ class _HomePageState extends State<HomePage> {
                                 .pushReplacementNamed(APPROUTES.HOME);
                             Navigator.of(context).pop();
                           },
-                          child: const Text('Sim'),
+                          child: Text(
+                            'Sim',
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.secondary,
+                            ),
+                          ),
                         ),
                         ElevatedButton(
                           onPressed: () {
                             Navigator.of(context).pop();
                           },
-                          child: const Text('Não'),
+                          child: Text(
+                            'Não',
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.secondary,
+                            ),
+                          ),
                         ),
                       ],
                     );

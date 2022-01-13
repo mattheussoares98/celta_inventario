@@ -15,6 +15,7 @@ class AuthForm extends StatefulWidget {
 final Map<String, String> _data = {
   'user': '',
   'password': '',
+  'url': '',
 };
 // final _key = GlobalKey<FormState>();
 
@@ -127,6 +128,33 @@ class _AuthFormState extends State<AuthForm> {
                 ),
                 obscureText: true,
               ),
+              // TextFormField(
+              //   style: TextStyle(
+              //     fontWeight: FontWeight.w500,
+              //     fontFamily: 'OpenSans',
+              //     decorationColor: Colors.black,
+              //     color: Colors.black,
+              //     fontSize: 20,
+              //   ),
+              //   validator: (_url) {
+              //     _url = _data['url'];
+              //     if (_data['url']!.trim().isEmpty) {
+              //       return 'Preencha a url';
+              //     } else if (!_data['url']!.contains('http') ||
+              //         !_data['url']!.contains('//') ||
+              //         !_data['url']!.contains(':')) {
+              //       return 'URL inválida';
+              //     }
+              //     return null;
+              //   },
+              //   onChanged: (value) => _data['url'] = value,
+              //   decoration: const InputDecoration(
+              //     labelText: 'URL do CCS',
+              //     labelStyle: TextStyle(
+              //       color: Colors.black,
+              //     ),
+              //   ),
+              // ),
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: _isLoading ? null : _submit,

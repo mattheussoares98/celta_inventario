@@ -37,6 +37,7 @@ class CountingItems extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 20,
                             color: Theme.of(context).colorScheme.secondary,
+                            fontFamily: 'OpenSans',
                           ),
                         ),
                         Text(
@@ -44,6 +45,7 @@ class CountingItems extends StatelessWidget {
                               .countings[index].numeroContagemInvCont
                               .toString(),
                           style: TextStyle(
+                            fontFamily: 'OpenSans',
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
                             color: Theme.of(context).colorScheme.secondary,
@@ -58,6 +60,7 @@ class CountingItems extends StatelessWidget {
                         Text(
                           'Observação: ',
                           style: TextStyle(
+                            fontFamily: 'OpenSans',
                             fontSize: 20,
                             color: Theme.of(context).colorScheme.secondary,
                           ),
@@ -66,6 +69,7 @@ class CountingItems extends StatelessWidget {
                           child: Text(
                             countingProvider.countings[index].obsInvCont,
                             style: TextStyle(
+                              fontFamily: 'OpenSans',
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
                               color: Theme.of(context).colorScheme.secondary,

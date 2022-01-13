@@ -37,7 +37,6 @@ void main() {
               fontFamily: 'BebasNeue',
             ),
           ),
-          fontFamily: 'OpenSans',
         ).copyWith(
           textTheme: ThemeData.light().textTheme.copyWith(
                 headline6: TextStyle(
@@ -47,9 +46,12 @@ void main() {
                   fontSize: 40,
                   fontFamily: 'BebasNeue',
                 ),
+                bodyText1: TextStyle(
+                  fontFamily: 'OpenSans',
+                ),
               ),
           colorScheme: ThemeData().colorScheme.copyWith(
-                primary: Colors.amber[300],
+                primary: Colors.amber,
                 secondary: Colors.black,
               ),
         ),

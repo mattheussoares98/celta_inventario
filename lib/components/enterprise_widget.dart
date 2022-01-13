@@ -32,7 +32,7 @@ class _EnterpriseWidgetState extends State<EnterpriseWidget> {
                   title: Text(
                     loginProvider.enterprises[index].nomeEmpresa,
                     style: TextStyle(
-                      // fontFamily: 'OpenSans',
+                      fontFamily: 'OpenSans',
                       fontWeight: FontWeight.bold,
                       color: Theme.of(context).colorScheme.secondary,
                     ),
@@ -41,6 +41,7 @@ class _EnterpriseWidgetState extends State<EnterpriseWidget> {
                     loginProvider.enterprises[index].codigoEmpresa.toString(),
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.secondary,
+                      fontFamily: 'OpenSans',
                     ),
                   ),
                   onTap: () {
