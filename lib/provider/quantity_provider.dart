@@ -23,7 +23,7 @@ class QuantityProvider with ChangeNotifier {
       var request = http.Request(
         'POST',
         Uri.parse(
-          '${BaseUrl.baseUrl}/Inventory/EntryQuantity?countingCode=$countingCode&productPackingCode=$productPackingCode&quantity=$quantity',
+          '${BaseUrl().baseUrl}/Inventory/EntryQuantity?countingCode=$countingCode&productPackingCode=$productPackingCode&quantity=$quantity',
         ),
       );
       request.body = json.encode(
@@ -33,20 +33,14 @@ class QuantityProvider with ChangeNotifier {
       http.StreamedResponse response = await request.send();
 
       if (response.statusCode == 200) {
-        print('statusCode == 200, então deu certo');
-        print(await response.stream.bytesToString());
         isConfirmed = true;
-      } else {
-        print('response.reasonPhrase ${response.reasonPhrase}');
-      }
+      } else {}
     } catch (e) {
-      print('erro = $e');
       entryQuantityError =
           'Erro para confirmar. Verifique a sua internet e tente novamente';
     } finally {
       isLoadingEntryQuantity = false;
     }
-    print('entryQuantityError: $entryQuantityError');
     notifyListeners();
   }
 }

@@ -150,10 +150,8 @@ class _ProductItemState extends State<ProductItem> {
                                 value = '0';
                               } else if (value.isNotEmpty &&
                                   !value.endsWith('-')) {
-                                print('value = $value');
                                 userQuantity = int.parse(value);
                               }
-                              print('userQuantity $userQuantity');
                             },
                             decoration: InputDecoration(
                               labelText: 'Somar quantidade',
@@ -228,7 +226,6 @@ class _ProductItemState extends State<ProductItem> {
                                       });
                                     }
                                   }
-                                  print('no final $userQuantity');
                                 },
                           child: quantityProvider.isLoadingEntryQuantity
                               ? Column(

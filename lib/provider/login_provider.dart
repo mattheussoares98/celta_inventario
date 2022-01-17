@@ -16,42 +16,46 @@ class LoginProvider with ChangeNotifier {
 
   String loginErrorMessage = '';
 
-  String errorMessage(String error) {
-    if (error ==
-        '{Message: O usuário não foi encontrado durante a tentativa de efetuar o login no Celta Business Solutions. Fale com nosso suporte técnico para que o problema seja resolvido.}') {
+  errorMessage(String error) {
+    if (error.contains('O usuário não foi encontrado')) {
       loginErrorMessage = 'Usuário não encontrado!';
     } else if (error ==
         '{Message: A senha está incorreta. Verifique a configuração do teclado e se a tecla [CAPS LOCK] está pressionada. Caso você tenha esquecido sua senha entre em contato com o administrador do seu sistema.}') {
       loginErrorMessage = 'A senha está incorreta!';
     } else if (error.contains('Connection timed')) {
       loginErrorMessage = 'Servidor não encontrado. Verifique a sua internet';
+    } else if (error.contains('No host specifie')) {
+      loginErrorMessage = 'URL inválida';
     } else {
       error = '';
       auth = true;
       loginErrorMessage = '';
     }
-    return '';
   }
 
-  login([String user = '', String password = '']) async {
+  login({
+    String? user,
+    String? password,
+    String? baseUrl,
+  }) async {
     String error = '';
+
     try {
       final response = await http.post(
         Uri.parse(
-          '${BaseUrl.baseUrl}/Security/UserCanLoginPlain?user=$user&password=$password',
+          '${BaseUrl().baseUrl}/Security/UserCanLoginPlain?user=$user&password=$password',
         ),
       );
       var responseOfUser = json.decode(response.body);
       String responseInString = responseOfUser.toString();
       loginErrorMessage = responseInString;
     } catch (e) {
-      print('erro $e');
       error = e.toString();
       loginErrorMessage = error;
       errorMessage(loginErrorMessage);
     } finally {
       //pega o retorno do login e coloca na variável "loginErrorMessage" pra ter acesso a mensagem na tela de autenticação e exibir a mensagem de erro
-      errorMessage(error);
+      errorMessage(loginErrorMessage);
     }
 
     notifyListeners();
