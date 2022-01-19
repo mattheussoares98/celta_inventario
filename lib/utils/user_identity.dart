@@ -1,0 +1,3 @@
+class UserIdentity {
+  String? userIdentity;
+}

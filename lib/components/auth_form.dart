@@ -140,17 +140,17 @@ class _AuthFormState extends State<AuthForm> {
                   color: Colors.black,
                   fontSize: 20,
                 ),
-                validator: (_url) {
-                  _url = _data['url'];
-                  if (_data['url']!.trim().isEmpty) {
-                    return 'Preencha a url';
-                  } else if (!_data['url']!.contains('http') ||
-                      !_data['url']!.contains('//') ||
-                      !_data['url']!.contains(':')) {
-                    return 'URL inválida';
-                  }
-                  return null;
-                },
+                // validator: (_url) {
+                //   _url = _data['url'];
+                //   if (_data['url']!.trim().isEmpty) {
+                //     return 'Preencha a url';
+                //   } else if (!_data['url']!.contains('http') ||
+                //       !_data['url']!.contains('//') ||
+                //       !_data['url']!.contains(':')) {
+                //     return 'URL inválida';
+                //   }
+                //   return null;
+                // },
                 onChanged: (value) => _data['url'] = value,
                 decoration: const InputDecoration(
                   labelText: 'URL',

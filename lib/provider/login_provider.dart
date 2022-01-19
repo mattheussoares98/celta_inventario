@@ -2,12 +2,15 @@ import 'dart:convert';
 import 'package:celta_inventario/utils/base_url.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
+import 'package:xml2json/xml2json.dart';
 
 class LoginProvider with ChangeNotifier {
-  bool auth = false;
+  String? userIdentity;
+
+  bool _auth = false;
 
   bool get isAuth {
-    if (auth == false) {
+    if (_auth == false) {
       return false;
     } else {
       return true;
@@ -28,7 +31,6 @@ class LoginProvider with ChangeNotifier {
       loginErrorMessage = 'URL inválida';
     } else {
       error = '';
-      auth = true;
       loginErrorMessage = '';
     }
   }
@@ -47,12 +49,27 @@ class LoginProvider with ChangeNotifier {
         ),
       );
       var responseOfUser = json.decode(response.body);
+
       String responseInString = responseOfUser.toString();
       loginErrorMessage = responseInString;
+
+      //transformando o XML em String pra pegar a identidade do usuário
+      final myTransformer = Xml2Json();
+      myTransformer.parse(responseOfUser[0]['CrossIdentity_Usuario']);
+      String toParker = myTransformer.toParker();
+      Map toParker2 = json.decode(toParker);
+      userIdentity = toParker2['string'];
+
+      print(userIdentity);
+      if (response.statusCode == 200) {
+        _auth = true;
+      }
+      notifyListeners();
     } catch (e) {
       error = e.toString();
       loginErrorMessage = error;
       errorMessage(loginErrorMessage);
+      print('deu erro no login: $e');
     } finally {
       //pega o retorno do login e coloca na variável "loginErrorMessage" pra ter acesso a mensagem na tela de autenticação e exibir a mensagem de erro
       errorMessage(loginErrorMessage);
@@ -68,7 +85,7 @@ class LoginProvider with ChangeNotifier {
   }
 
   Future logout() async {
-    auth = false;
+    _auth = false;
     notifyListeners();
   }
 }

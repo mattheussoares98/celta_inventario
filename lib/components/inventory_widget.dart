@@ -2,6 +2,7 @@ import 'package:celta_inventario/components/error_message.dart';
 import 'package:celta_inventario/components/inventory_items.dart';
 import 'package:celta_inventario/components/loading_process.dart';
 import 'package:celta_inventario/provider/inventory_provider.dart';
+import 'package:celta_inventario/provider/login_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -20,14 +21,17 @@ class _InventoryWidgetState extends State<InventoryWidget> {
   @override
   void initState() {
     super.initState();
+    LoginProvider loginProvider = Provider.of(context);
     Provider.of<InventoryProvider>(context, listen: false).getInventory(
-      widget.enterpriseCode,
+      enterpriseCode: widget.enterpriseCode,
+      userIdentity: loginProvider.userIdentity,
     );
   }
 
   @override
   Widget build(BuildContext context) {
     InventoryProvider inventoryProvider = Provider.of(context, listen: true);
+    LoginProvider loginProvider = Provider.of(context, listen: true);
     return Column(
       mainAxisAlignment: inventoryProvider.isChargingInventorys ||
               (inventoryProvider.inventoryErrorMessage != '' &&
@@ -62,7 +66,10 @@ class _InventoryWidgetState extends State<InventoryWidget> {
                 TextButton(
                   onPressed: () {
                     setState(() {
-                      inventoryProvider.getInventory(widget.enterpriseCode);
+                      inventoryProvider.getInventory(
+                        enterpriseCode: widget.enterpriseCode,
+                        userIdentity: loginProvider.userIdentity,
+                      );
                     });
                   },
                   child: const Text('Tentar novamente'),

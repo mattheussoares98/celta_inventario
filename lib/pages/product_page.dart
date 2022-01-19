@@ -1,5 +1,6 @@
 import 'package:celta_inventario/components/product_item.dart';
 import 'package:celta_inventario/models/countings.dart';
+import 'package:celta_inventario/provider/login_provider.dart';
 import 'package:celta_inventario/provider/product_provider.dart';
 import 'package:celta_inventario/provider/quantity_provider.dart';
 import 'package:flutter/material.dart';
@@ -63,6 +64,7 @@ class _ProductPageState extends State<ProductPage> {
   Widget build(BuildContext context) {
     final countings = ModalRoute.of(context)!.settings.arguments as Countings;
     ProductProvider productProvider = Provider.of(context, listen: true);
+    LoginProvider loginProvider = Provider.of(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -161,20 +163,28 @@ class _ProductPageState extends State<ProductPage> {
 
                         try {
                           await productProvider.getProductByEan(
-                            _scanBarcode,
-                            productProvider.codigoInternoEmpresa!,
-                            productProvider.codigoInternoInventario!,
-                            countings.codigoInternoInvCont,
+                            ean: _scanBarcode,
+                            enterpriseCode:
+                                productProvider.codigoInternoEmpresa!,
+                            inventoryProcessCode:
+                                productProvider.codigoInternoInventario!,
+                            inventoryCountingCode:
+                                countings.codigoInternoInvCont,
+                            userIdentity: loginProvider.userIdentity,
                           );
 
                           //só pesquisa o PLU se não encontrar pelo EAN
                           //sem esse if, de qualquer forma vai pesquisar o PLU
                           if (productProvider.products.isEmpty) {
                             await productProvider.getProductByPlu(
-                              _scanBarcode.trim(),
-                              productProvider.codigoInternoEmpresa!,
-                              productProvider.codigoInternoInventario!,
-                              countings.codigoInternoInvCont,
+                              plu: _scanBarcode,
+                              enterpriseCode:
+                                  productProvider.codigoInternoEmpresa!,
+                              inventoryProcessCode:
+                                  productProvider.codigoInternoInventario!,
+                              inventoryCountingCode:
+                                  countings.codigoInternoInvCont,
+                              userIdentity: loginProvider.userIdentity,
                             );
                           }
                         } catch (e) {
@@ -241,10 +251,14 @@ class _ProductPageState extends State<ProductPage> {
                               .settings
                               .arguments as Countings;
                           await productProvider.getProductByEan(
-                            _scanBarcode,
-                            productProvider.codigoInternoEmpresa!,
-                            productProvider.codigoInternoInventario!,
-                            countings.codigoInternoInvCont,
+                            ean: _scanBarcode,
+                            enterpriseCode:
+                                productProvider.codigoInternoEmpresa!,
+                            inventoryProcessCode:
+                                productProvider.codigoInternoInventario!,
+                            inventoryCountingCode:
+                                countings.codigoInternoInvCont,
+                            userIdentity: loginProvider.userIdentity,
                           );
                         }
                         setState(() {

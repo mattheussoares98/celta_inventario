@@ -2,6 +2,7 @@ import 'package:celta_inventario/components/counting_items.dart';
 import 'package:celta_inventario/components/error_message.dart';
 import 'package:celta_inventario/components/loading_process.dart';
 import 'package:celta_inventario/provider/counting_provider.dart';
+import 'package:celta_inventario/provider/login_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -20,13 +21,17 @@ class _CountingWidgetState extends State<CountingWidget> {
   @override
   void initState() {
     super.initState();
-    Provider.of<CountingProvider>(context, listen: false)
-        .getCountings(widget.codigoInternoInventario);
+    LoginProvider loginProvider = Provider.of(context);
+    Provider.of<CountingProvider>(context, listen: false).getCountings(
+      inventoryProcessCode: widget.codigoInternoInventario,
+      userIdentity: loginProvider.userIdentity,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     CountingProvider countingProvider = Provider.of(context, listen: true);
+    LoginProvider loginProvider = Provider.of(context);
     return Column(
       mainAxisAlignment: countingProvider.isChargingCountings ||
               countingProvider.countingsErrorMessage != ''
@@ -42,8 +47,10 @@ class _CountingWidgetState extends State<CountingWidget> {
               TextButton(
                 onPressed: () {
                   setState(() {
-                    countingProvider
-                        .getCountings(widget.codigoInternoInventario);
+                    countingProvider.getCountings(
+                      inventoryProcessCode: widget.codigoInternoInventario,
+                      userIdentity: loginProvider.userIdentity,
+                    );
                   });
                 },
                 child: const Text('Tentar novamente'),

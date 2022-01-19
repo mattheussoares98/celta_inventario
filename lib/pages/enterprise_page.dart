@@ -15,14 +15,19 @@ class EnterprisePage extends StatefulWidget {
 class EnterprisePageState extends State<EnterprisePage> {
   @override
   void initState() {
+    LoginProvider loginProvider = Provider.of(context);
     super.initState();
-    Provider.of<EnterpriseProvider>(context, listen: false).getEnterprises();
+    Provider.of<EnterpriseProvider>(context, listen: false).getEnterprises(
+      loginProvider.userIdentity!,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+    LoginProvider loginProvider = Provider.of(context);
     EnterpriseProvider enterpriseProvider =
         Provider.of<EnterpriseProvider>(context, listen: true);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -65,7 +70,8 @@ class EnterprisePageState extends State<EnterprisePage> {
                 TextButton(
                   onPressed: () {
                     setState(() {
-                      enterpriseProvider.getEnterprises();
+                      enterpriseProvider
+                          .getEnterprises(loginProvider.userIdentity!);
                     });
                   },
                   child: const Text('Tentar novamente'),
