@@ -35,42 +35,44 @@ class _AuthFormState extends State<AuthForm> {
     );
   }
 
-  _submit() async {
-    final _loginProvider = Provider.of<LoginProvider>(context, listen: false);
-    bool isValid = widget.formKey.currentState!.validate();
-
-    if (!isValid) {
-      return;
-    }
-
-    setState(() {
-      _isLoading = true;
-    });
-
-    try {
-      await _loginProvider.login(
-        user: _data['user']!,
-        password: _data['password']!,
-        baseUrl: _data['url'],
-      );
-      if (_loginProvider.loginErrorMessage != '') {
-        errorMessage(_loginProvider.loginErrorMessage);
-      }
-    } catch (e) {
-      e;
-    } finally {
-      setState(() {
-        _isLoading = false;
-        if (_loginProvider.isAuth) {
-          _data['user'] = '';
-          _data['password'] = '';
-        }
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
+    LoginProvider _loginProvider =
+        Provider.of<LoginProvider>(context, listen: true);
+    _submit() async {
+      bool isValid = widget.formKey.currentState!.validate();
+
+      if (!isValid) {
+        return;
+      }
+
+      setState(() {
+        _isLoading = true;
+      });
+
+      try {
+        await _loginProvider.login(
+          user: _data['user']!,
+          password: _data['password']!,
+          baseUrl: _data['url'],
+        );
+        if (_loginProvider.loginErrorMessage != '') {
+          errorMessage(_loginProvider.loginErrorMessage);
+        }
+      } catch (e) {
+        e;
+      } finally {
+        setState(() {
+          _isLoading = false;
+          if (_loginProvider.isAuth) {
+            _data['user'] = '';
+            _data['password'] = '';
+          }
+        });
+        _loginProvider.userBaseUrl = _data['url'];
+      }
+    }
+
     return Card(
       margin: const EdgeInsets.all(20),
       color: Colors.white,
@@ -140,18 +142,19 @@ class _AuthFormState extends State<AuthForm> {
                   color: Colors.black,
                   fontSize: 20,
                 ),
-                // validator: (_url) {
-                //   _url = _data['url'];
-                //   if (_data['url']!.trim().isEmpty) {
-                //     return 'Preencha a url';
-                //   } else if (!_data['url']!.contains('http') ||
-                //       !_data['url']!.contains('//') ||
-                //       !_data['url']!.contains(':')) {
-                //     return 'URL inválida';
-                //   }
-                //   return null;
-                // },
                 onChanged: (value) => _data['url'] = value,
+                initialValue: _data['url'],
+                validator: (_url) {
+                  _url = _data['url'];
+                  if (_data['url']!.trim().isEmpty) {
+                    return 'Preencha a url';
+                  } else if (!_data['url']!.contains('http') ||
+                      !_data['url']!.contains('//') ||
+                      !_data['url']!.contains(':')) {
+                    return 'URL inválida';
+                  }
+                  return null;
+                },
                 decoration: const InputDecoration(
                   labelText: 'URL',
                   labelStyle: TextStyle(

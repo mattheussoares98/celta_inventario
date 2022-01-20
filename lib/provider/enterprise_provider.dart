@@ -8,7 +8,6 @@ import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
 class EnterpriseProvider with ChangeNotifier {
-  Provider loginProvider = Provider.value(value: LoginProvider);
   List<Enterprise> _enterprises = [];
 
   List<Enterprise> get enterprises {
@@ -23,9 +22,12 @@ class EnterpriseProvider with ChangeNotifier {
 
   bool isChargingEnterprises = false;
 
-  Future getEnterprises(String userIdentity) async {
-    print('useridentity ${LoginProvider().userIdentity}');
+  clearEnterprises() {
+    _enterprises.clear();
+  }
 
+  Future getEnterprises(String? userIdentity) async {
+    print('teste');
     enterpriseErrorMessage = '';
     //se não criar essa variável pra usar dentro do erro, não da certo tratar o erro e atribuir à variável enterpriseErrorMessage
     isChargingEnterprises = true;
@@ -65,6 +67,7 @@ class EnterpriseProvider with ChangeNotifier {
       } else {
         enterpriseErrorMessage = 'Verifique a sua internet!';
       }
+      print('erro na empresa: $e');
     } finally {
       isChargingEnterprises = false;
     }

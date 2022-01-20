@@ -13,18 +13,29 @@ class EnterprisePage extends StatefulWidget {
 }
 
 class EnterprisePageState extends State<EnterprisePage> {
+  bool isLoaded = false;
+
   @override
-  void initState() {
-    LoginProvider loginProvider = Provider.of(context);
-    super.initState();
-    Provider.of<EnterpriseProvider>(context, listen: false).getEnterprises(
-      loginProvider.userIdentity!,
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    EnterpriseProvider enterpriseProvider = Provider.of(
+      context,
+      listen: true,
     );
+
+    if (!isLoaded) {
+      LoginProvider loginProvider = Provider.of(context, listen: false);
+
+      enterpriseProvider.getEnterprises(loginProvider.userIdentity!);
+    }
+
+    isLoaded = true;
   }
 
   @override
   Widget build(BuildContext context) {
-    LoginProvider loginProvider = Provider.of(context);
+    LoginProvider loginProvider = Provider.of(context, listen: false);
     EnterpriseProvider enterpriseProvider =
         Provider.of<EnterpriseProvider>(context, listen: true);
 

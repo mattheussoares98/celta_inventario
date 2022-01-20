@@ -25,15 +25,26 @@ class LoginProvider with ChangeNotifier {
     } else if (error ==
         '{Message: A senha está incorreta. Verifique a configuração do teclado e se a tecla [CAPS LOCK] está pressionada. Caso você tenha esquecido sua senha entre em contato com o administrador do seu sistema.}') {
       loginErrorMessage = 'A senha está incorreta!';
-    } else if (error.contains('Connection timed')) {
-      loginErrorMessage = 'Servidor não encontrado. Verifique a sua internet';
+    } else if (error.contains('Connection')) {
+      loginErrorMessage =
+          'O servidor não foi encontrado. Verifique a sua internet';
+    } else if (error.contains('Software caused connection abort')) {
+      loginErrorMessage = 'Conexão abortada. Tente novamente';
     } else if (error.contains('No host specifie')) {
-      loginErrorMessage = 'URL inválida';
+      loginErrorMessage = 'URL inválida!';
+    } else if (error.contains('Failed host lookup')) {
+      loginErrorMessage = 'URL inválida!';
+    } else if (error.contains('FormatException')) {
+      loginErrorMessage = 'URL inválida!';
+    } else if (error.contains('Invalid port')) {
+      loginErrorMessage = 'Url inválida!';
     } else {
       error = '';
       loginErrorMessage = '';
     }
   }
+
+  String? userBaseUrl;
 
   login({
     String? user,
@@ -42,12 +53,23 @@ class LoginProvider with ChangeNotifier {
   }) async {
     String error = '';
 
+    userBaseUrl = baseUrl;
+
     try {
       final response = await http.post(
         Uri.parse(
-          '${BaseUrl().baseUrl}/Security/UserCanLoginPlain?user=$user&password=$password',
+          '$baseUrl/Security/UserCanLoginPlain?user=$user&password=$password',
         ),
       );
+
+      print('response.reasonPhrase ${response.reasonPhrase}');
+
+      // caso não coloque essa condição, ocorre erro ao tentar fazer o decode e não aparece a mensagem de erro no app
+      if (response.reasonPhrase == 'Not Found') {
+        loginErrorMessage = 'Failed host lookup';
+        return;
+      }
+
       var responseOfUser = json.decode(response.body);
 
       String responseInString = responseOfUser.toString();
@@ -55,21 +77,21 @@ class LoginProvider with ChangeNotifier {
 
       //transformando o XML em String pra pegar a identidade do usuário
       final myTransformer = Xml2Json();
-      myTransformer.parse(responseOfUser[0]['CrossIdentity_Usuario']);
-      String toParker = myTransformer.toParker();
-      Map toParker2 = json.decode(toParker);
-      userIdentity = toParker2['string'];
 
-      print(userIdentity);
+      //se não colocar essa condição, a validação do login fica errada porque tenta converter algo nulo
+      if (responseOfUser[0] != null) {
+        myTransformer.parse(responseOfUser[0]['CrossIdentity_Usuario']);
+        String toParker = myTransformer.toParker();
+        Map toParker2 = json.decode(toParker);
+        userIdentity = toParker2['string'];
+      }
       if (response.statusCode == 200) {
         _auth = true;
       }
-      notifyListeners();
     } catch (e) {
+      print('deu erro no login: $e');
       error = e.toString();
       loginErrorMessage = error;
-      errorMessage(loginErrorMessage);
-      print('deu erro no login: $e');
     } finally {
       //pega o retorno do login e coloca na variável "loginErrorMessage" pra ter acesso a mensagem na tela de autenticação e exibir a mensagem de erro
       errorMessage(loginErrorMessage);

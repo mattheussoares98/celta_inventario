@@ -15,11 +15,19 @@ bool carregando = false;
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    GestureDetector imagem(
-        {String? imagePath, String? routine, String? route}) {
+    LoginProvider loginProvider = Provider.of(context, listen: true);
+
+    GestureDetector imagem({
+      String? imagePath,
+      String? routine,
+      String? route,
+    }) {
       return GestureDetector(
         onTap: () {
-          Navigator.of(context).pushNamed(route!);
+          Navigator.of(context).pushNamed(
+            route!,
+            arguments: loginProvider.userIdentity!,
+          );
         },
         child: Stack(
           fit: StackFit.passthrough,
