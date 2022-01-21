@@ -130,7 +130,7 @@ class _ProductItemState extends State<ProductItem> {
                             enabled: quantityProvider.isLoadingEntryQuantity
                                 ? false
                                 : true,
-                            autofocus: true,
+                            // autofocus: true,
                             cursorColor:
                                 Theme.of(context).colorScheme.secondary,
                             validator: (value) {

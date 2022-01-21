@@ -18,14 +18,22 @@ class CountingWidget extends StatefulWidget {
 }
 
 class _CountingWidgetState extends State<CountingWidget> {
+  bool isLoaded = false;
+
   @override
-  void initState() {
-    super.initState();
-    LoginProvider loginProvider = Provider.of(context);
-    Provider.of<CountingProvider>(context, listen: false).getCountings(
-      inventoryProcessCode: widget.codigoInternoInventario,
-      userIdentity: loginProvider.userIdentity,
-    );
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+
+    LoginProvider loginProvider = Provider.of(context, listen: true);
+
+    if (!isLoaded) {
+      Provider.of<CountingProvider>(context, listen: false).getCountings(
+        inventoryProcessCode: widget.codigoInternoInventario,
+        userIdentity: loginProvider.userIdentity,
+      );
+      isLoaded = true;
+    }
   }
 
   @override

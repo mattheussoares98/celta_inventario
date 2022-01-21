@@ -18,14 +18,20 @@ class InventoryWidget extends StatefulWidget {
 }
 
 class _InventoryWidgetState extends State<InventoryWidget> {
+  bool isLoaded = false;
   @override
-  void initState() {
-    super.initState();
-    LoginProvider loginProvider = Provider.of(context);
-    Provider.of<InventoryProvider>(context, listen: false).getInventory(
-      enterpriseCode: widget.enterpriseCode,
-      userIdentity: loginProvider.userIdentity,
-    );
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+
+    LoginProvider loginProvider = Provider.of(context, listen: true);
+    if (!isLoaded) {
+      Provider.of<InventoryProvider>(context, listen: false).getInventory(
+        enterpriseCode: widget.enterpriseCode,
+        userIdentity: loginProvider.userIdentity,
+      );
+      isLoaded = true;
+    }
   }
 
   @override

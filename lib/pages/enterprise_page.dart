@@ -41,6 +41,7 @@ class EnterprisePageState extends State<EnterprisePage> {
 
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: const Text(
           'EMPRESAS',
           style: TextStyle(
