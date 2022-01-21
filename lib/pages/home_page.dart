@@ -122,14 +122,6 @@ class _HomePageState extends State<HomePage> {
                       ],
                     );
                   });
-              // try {
-              //   await loginProvider.logout();
-              // } catch (e) {
-              //   e;
-              // } finally {
-              //   await loginProvider.getEnterprises();
-              //
-              // }
             },
           ),
         ],

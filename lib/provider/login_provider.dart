@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:celta_inventario/utils/base_url.dart';
+import 'package:celta_inventario/utils/db_util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:xml2json/xml2json.dart';
@@ -46,14 +46,22 @@ class LoginProvider with ChangeNotifier {
 
   String? userBaseUrl;
 
+  Future<void> loadUrl() async {
+    final url = await DbUtil.getData('url');
+
+    print(url);
+
+    userBaseUrl = url[0]['url'].toString();
+
+    notifyListeners();
+  }
+
   login({
     String? user,
     String? password,
     String? baseUrl,
   }) async {
     String error = '';
-
-    userBaseUrl = baseUrl;
 
     try {
       final response = await http.post(
@@ -95,6 +103,15 @@ class LoginProvider with ChangeNotifier {
     } finally {
       //pega o retorno do login e coloca na variável "loginErrorMessage" pra ter acesso a mensagem na tela de autenticação e exibir a mensagem de erro
       errorMessage(loginErrorMessage);
+
+      await DbUtil.insert('url', {
+        'id': '1',
+        'url': baseUrl!,
+      });
+
+      await loadUrl();
+
+      print('userBaseUrl depois de tudo = $userBaseUrl');
     }
 
     notifyListeners();

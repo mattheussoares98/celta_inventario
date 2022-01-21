@@ -1,5 +1,3 @@
-import 'package:celta_inventario/utils/base_url.dart';
-import 'package:celta_inventario/utils/user_identity.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:celta_inventario/models/countings.dart';
@@ -22,6 +20,7 @@ class CountingProvider with ChangeNotifier {
   getCountings({
     int? inventoryProcessCode,
     String? userIdentity,
+    String? baseUrl,
   }) async {
     _countings.clear();
     countingsErrorMessage = '';
@@ -32,7 +31,7 @@ class CountingProvider with ChangeNotifier {
       var request = http.Request(
           'POST',
           Uri.parse(
-              '${BaseUrl().baseUrl}/Inventory/GetCountings?inventoryProcessCode=3'));
+              '$baseUrl/Inventory/GetCountings?inventoryProcessCode=$inventoryProcessCode'));
       request.body = json.encode(
         userIdentity,
       );

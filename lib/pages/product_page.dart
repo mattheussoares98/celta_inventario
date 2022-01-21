@@ -2,7 +2,6 @@ import 'package:celta_inventario/components/product_item.dart';
 import 'package:celta_inventario/models/countings.dart';
 import 'package:celta_inventario/provider/login_provider.dart';
 import 'package:celta_inventario/provider/product_provider.dart';
-import 'package:celta_inventario/provider/quantity_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
@@ -68,6 +67,13 @@ class _ProductPageState extends State<ProductPage> {
 
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+            productProvider.clearProducts();
+          },
+          icon: Icon(Icons.arrow_back),
+        ),
         centerTitle: true,
         title: const Text(
           'Produtos',
@@ -90,7 +96,7 @@ class _ProductPageState extends State<ProductPage> {
                   child: Form(
                     key: _formEanOrPlu,
                     child: TextFormField(
-                      // autofocus: true,
+                      autofocus: true,
                       style: const TextStyle(
                         fontSize: 20,
                         color: Colors.black,
@@ -172,6 +178,7 @@ class _ProductPageState extends State<ProductPage> {
                             inventoryCountingCode:
                                 countings.codigoInternoInvCont,
                             userIdentity: loginProvider.userIdentity,
+                            baseUrl: loginProvider.userBaseUrl,
                           );
 
                           //só pesquisa o PLU se não encontrar pelo EAN
@@ -186,6 +193,7 @@ class _ProductPageState extends State<ProductPage> {
                               inventoryCountingCode:
                                   countings.codigoInternoInvCont,
                               userIdentity: loginProvider.userIdentity,
+                              baseUrl: loginProvider.userBaseUrl,
                             );
                           }
                         } catch (e) {
@@ -260,6 +268,7 @@ class _ProductPageState extends State<ProductPage> {
                             inventoryCountingCode:
                                 countings.codigoInternoInvCont,
                             userIdentity: loginProvider.userIdentity,
+                            baseUrl: loginProvider.userBaseUrl,
                           );
                         }
                         setState(() {

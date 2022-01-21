@@ -1,3 +1,4 @@
+import 'package:celta_inventario/provider/login_provider.dart';
 import 'package:celta_inventario/provider/product_provider.dart';
 import 'package:celta_inventario/provider/quantity_provider.dart';
 import 'package:flutter/material.dart';
@@ -36,6 +37,7 @@ class _ProductItemState extends State<ProductItem> {
   Widget build(BuildContext context) {
     ProductProvider productProvider = Provider.of(context, listen: true);
     QuantityProvider quantityProvider = Provider.of(context, listen: true);
+    LoginProvider loginProvider = Provider.of(context, listen: true);
 
     return Padding(
       padding: const EdgeInsets.all(2.0),
@@ -130,7 +132,7 @@ class _ProductItemState extends State<ProductItem> {
                             enabled: quantityProvider.isLoadingEntryQuantity
                                 ? false
                                 : true,
-                            // autofocus: true,
+                            autofocus: true,
                             cursorColor:
                                 Theme.of(context).colorScheme.secondary,
                             validator: (value) {
@@ -198,6 +200,8 @@ class _ProductItemState extends State<ProductItem> {
                                       productPackingCode: productProvider
                                           .products[0].codigoInternoProEmb,
                                       quantity: userQuantity,
+                                      baseUrl: loginProvider.userBaseUrl,
+                                      userIdentity: loginProvider.userIdentity,
                                     );
                                   } catch (e) {
                                     e;

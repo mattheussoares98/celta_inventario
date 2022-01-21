@@ -1,5 +1,3 @@
-import 'package:celta_inventario/provider/login_provider.dart';
-import 'package:celta_inventario/utils/base_url.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:celta_inventario/models/enterprise.dart';
@@ -26,7 +24,10 @@ class EnterpriseProvider with ChangeNotifier {
     _enterprises.clear();
   }
 
-  Future getEnterprises(String? userIdentity) async {
+  Future getEnterprises({
+    String? userIdentity,
+    String? baseUrl,
+  }) async {
     print('teste');
     enterpriseErrorMessage = '';
     //se não criar essa variável pra usar dentro do erro, não da certo tratar o erro e atribuir à variável enterpriseErrorMessage
@@ -38,8 +39,8 @@ class EnterpriseProvider with ChangeNotifier {
 
     try {
       var headers = {'Content-Type': 'application/json'};
-      var request = http.Request(
-          'POST', Uri.parse('${BaseUrl().baseUrl}/Enterprise/GetEnterprises'));
+      var request =
+          http.Request('POST', Uri.parse('$baseUrl/Enterprise/GetEnterprises'));
       request.body = json.encode(userIdentity);
       request.headers.addAll(headers);
 

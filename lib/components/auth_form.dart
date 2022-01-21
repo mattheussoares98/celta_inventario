@@ -12,14 +12,13 @@ class AuthForm extends StatefulWidget {
   State<AuthForm> createState() => _AuthFormState();
 }
 
-final Map<String, String> _data = {
-  'user': '',
-  'password': '',
-  'url': '',
-};
-// final _key = GlobalKey<FormState>();
-
 class _AuthFormState extends State<AuthForm> {
+  final Map<String, String> _data = {
+    'user': '',
+    'password': '',
+    'url': '',
+  };
+
   bool _isLoading = false;
 
   errorMessage(String error) {
@@ -35,8 +34,26 @@ class _AuthFormState extends State<AuthForm> {
     );
   }
 
+  bool isLoaded = false;
+
+  @override
+  void didChangeDependencies() async {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    LoginProvider loginProvider = Provider.of(context, listen: true);
+    if (!isLoaded) {
+      await loginProvider.loadUrl();
+      _data['url'] = loginProvider.userBaseUrl!;
+    }
+    setState(() {
+      isLoaded = true;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    LoginProvider loginProvider = Provider.of(context, listen: true);
+
     LoginProvider _loginProvider =
         Provider.of<LoginProvider>(context, listen: true);
     _submit() async {
@@ -65,117 +82,117 @@ class _AuthFormState extends State<AuthForm> {
         setState(() {
           _isLoading = false;
           if (_loginProvider.isAuth) {
-            _data['user'] = '';
             _data['password'] = '';
           }
         });
-        _loginProvider.userBaseUrl = _data['url'];
       }
     }
 
-    return Card(
-      margin: const EdgeInsets.all(20),
-      color: Colors.white,
-      child: Container(
-        padding: const EdgeInsets.all(15),
-        child: Form(
-          key: widget.formKey,
-          child: Column(
-            children: [
-              TextFormField(
-                validator: (_name) {
-                  _name = _data['user'];
-                  if (_data['user']!.trim().isEmpty) {
-                    return 'Preencha o nome';
-                  }
-                  return null;
-                },
-                initialValue: _data['user'],
-                onChanged: (value) => _data['user'] = value,
-                style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  fontFamily: 'OpenSans',
-                  decorationColor: Colors.black,
-                  color: Colors.black,
-                  fontSize: 20,
-                ),
-                decoration: const InputDecoration(
-                  labelStyle: TextStyle(
-                    color: Colors.black,
-                  ),
-                  labelText: 'Usuário',
-                  counterStyle: TextStyle(
-                    color: Colors.black,
-                  ),
+    return !isLoaded
+        ? Card()
+        : Card(
+            margin: const EdgeInsets.all(20),
+            color: Colors.white,
+            child: Container(
+              padding: const EdgeInsets.all(15),
+              child: Form(
+                key: widget.formKey,
+                child: Column(
+                  children: [
+                    TextFormField(
+                      validator: (_name) {
+                        _name = _data['user'];
+                        if (_data['user']!.trim().isEmpty) {
+                          return 'Preencha o nome';
+                        }
+                        return null;
+                      },
+                      initialValue: _data['user'],
+                      onChanged: (value) => _data['user'] = value,
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontFamily: 'OpenSans',
+                        decorationColor: Colors.black,
+                        color: Colors.black,
+                        fontSize: 20,
+                      ),
+                      decoration: const InputDecoration(
+                        labelStyle: TextStyle(
+                          color: Colors.black,
+                        ),
+                        labelText: 'Usuário',
+                        counterStyle: TextStyle(
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                    TextFormField(
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontFamily: 'OpenSans',
+                        decorationColor: Colors.black,
+                        color: Colors.black,
+                        fontSize: 20,
+                      ),
+                      validator: (_name) {
+                        _name = _data['password'];
+                        if (_data['password']!.trim().isEmpty) {
+                          return 'Preencha a senha';
+                        }
+                        return null;
+                      },
+                      initialValue: _data['password'],
+                      onChanged: (value) => _data['password'] = value,
+                      decoration: const InputDecoration(
+                        labelText: 'Senha',
+                        labelStyle: TextStyle(
+                          color: Colors.black,
+                        ),
+                      ),
+                      obscureText: true,
+                    ),
+                    TextFormField(
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontFamily: 'OpenSans',
+                        decorationColor: Colors.black,
+                        color: Colors.black,
+                        fontSize: 20,
+                      ),
+                      onChanged: (value) => _data['url'] = value,
+                      initialValue: !isLoaded ? '' : _loginProvider.userBaseUrl,
+                      validator: (_url) {
+                        _url = _data['url'];
+                        if (_data['url']!.trim().isEmpty) {
+                          return 'Preencha a url';
+                        } else if (!_data['url']!.contains('http') ||
+                            !_data['url']!.contains('//') ||
+                            !_data['url']!.contains(':')) {
+                          return 'URL inválida';
+                        }
+                        return null;
+                      },
+                      decoration: const InputDecoration(
+                        labelText: 'URL',
+                        labelStyle: TextStyle(
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    ElevatedButton(
+                      onPressed: _isLoading ? null : _submit,
+                      child: _isLoading
+                          ? const CircularProgressIndicator()
+                          : const Text('Login'),
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.orange,
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              TextFormField(
-                style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  fontFamily: 'OpenSans',
-                  decorationColor: Colors.black,
-                  color: Colors.black,
-                  fontSize: 20,
-                ),
-                validator: (_name) {
-                  _name = _data['password'];
-                  if (_data['password']!.trim().isEmpty) {
-                    return 'Preencha a senha';
-                  }
-                  return null;
-                },
-                initialValue: _data['password'],
-                onChanged: (value) => _data['password'] = value,
-                decoration: const InputDecoration(
-                  labelText: 'Senha',
-                  labelStyle: TextStyle(
-                    color: Colors.black,
-                  ),
-                ),
-                obscureText: true,
-              ),
-              TextFormField(
-                style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  fontFamily: 'OpenSans',
-                  decorationColor: Colors.black,
-                  color: Colors.black,
-                  fontSize: 20,
-                ),
-                onChanged: (value) => _data['url'] = value,
-                initialValue: _data['url'],
-                validator: (_url) {
-                  _url = _data['url'];
-                  if (_data['url']!.trim().isEmpty) {
-                    return 'Preencha a url';
-                  } else if (!_data['url']!.contains('http') ||
-                      !_data['url']!.contains('//') ||
-                      !_data['url']!.contains(':')) {
-                    return 'URL inválida';
-                  }
-                  return null;
-                },
-                decoration: const InputDecoration(
-                  labelText: 'URL',
-                  labelStyle: TextStyle(
-                    color: Colors.black,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: _isLoading ? null : _submit,
-                child: _isLoading
-                    ? const CircularProgressIndicator()
-                    : const Text('Login'),
-                style: ElevatedButton.styleFrom(
-                  primary: Colors.orange,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
+            ),
+          );
   }
 }

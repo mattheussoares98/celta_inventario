@@ -29,6 +29,7 @@ class _InventoryWidgetState extends State<InventoryWidget> {
       Provider.of<InventoryProvider>(context, listen: false).getInventory(
         enterpriseCode: widget.enterpriseCode,
         userIdentity: loginProvider.userIdentity,
+        baseUrl: loginProvider.userBaseUrl,
       );
       isLoaded = true;
     }
@@ -75,6 +76,7 @@ class _InventoryWidgetState extends State<InventoryWidget> {
                       inventoryProvider.getInventory(
                         enterpriseCode: widget.enterpriseCode,
                         userIdentity: loginProvider.userIdentity,
+                        baseUrl: loginProvider.userBaseUrl,
                       );
                     });
                   },

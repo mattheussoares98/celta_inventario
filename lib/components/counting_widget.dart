@@ -31,6 +31,7 @@ class _CountingWidgetState extends State<CountingWidget> {
       Provider.of<CountingProvider>(context, listen: false).getCountings(
         inventoryProcessCode: widget.codigoInternoInventario,
         userIdentity: loginProvider.userIdentity,
+        baseUrl: loginProvider.userBaseUrl,
       );
       isLoaded = true;
     }

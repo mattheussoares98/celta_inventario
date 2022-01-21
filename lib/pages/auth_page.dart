@@ -33,7 +33,7 @@ class _AuthPageState extends State<AuthPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Padding(
-                padding: const EdgeInsets.all(10.0),
+                padding: const EdgeInsets.all(12.0),
                 child: Container(
                   transform: Matrix4.rotationZ(-8 * pi / 180)..translate(-10.0),
                   padding: const EdgeInsets.symmetric(
@@ -46,9 +46,9 @@ class _AuthPageState extends State<AuthPage> {
                   ),
                   child: const FittedBox(
                     child: Text(
-                      'Celta inventário',
+                      'Celta mobile',
                       style: TextStyle(
-                        fontSize: 55,
+                        fontSize: 100,
                         color: Colors.white,
                         fontFamily: 'BebasNeue',
                       ),

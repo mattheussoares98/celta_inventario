@@ -1,5 +1,4 @@
 import 'package:celta_inventario/models/product.dart';
-import 'package:celta_inventario/utils/base_url.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -24,6 +23,7 @@ class ProductProvider with ChangeNotifier {
     int? inventoryProcessCode,
     int? inventoryCountingCode,
     String? userIdentity,
+    String? baseUrl,
   }) async {
     _products.clear();
     productErrorMessage = '';
@@ -34,7 +34,7 @@ class ProductProvider with ChangeNotifier {
       var request = http.Request(
         'POST',
         Uri.parse(
-            '${BaseUrl().baseUrl}/Inventory/GetProductByEan?ean=$ean&enterpriseCode=$enterpriseCode&inventoryProcessCode=$inventoryProcessCode&inventoryCountingCode=$inventoryCountingCode'),
+            '$baseUrl/Inventory/GetProductByEan?ean=$ean&enterpriseCode=$enterpriseCode&inventoryProcessCode=$inventoryProcessCode&inventoryCountingCode=$inventoryCountingCode'),
       );
       request.body = json.encode(userIdentity);
       request.headers.addAll(headers);
@@ -80,12 +80,14 @@ class ProductProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  getProductByPlu(
-      {String? plu,
-      int? enterpriseCode,
-      int? inventoryProcessCode,
-      int? inventoryCountingCode,
-      String? userIdentity}) async {
+  getProductByPlu({
+    String? plu,
+    int? enterpriseCode,
+    int? inventoryProcessCode,
+    int? inventoryCountingCode,
+    String? userIdentity,
+    String? baseUrl,
+  }) async {
     _products.clear();
     productErrorMessage = '';
 
@@ -94,7 +96,7 @@ class ProductProvider with ChangeNotifier {
       var request = http.Request(
         'POST',
         Uri.parse(
-          '${BaseUrl().baseUrl}/Inventory/GetProductByPlu?plu=$plu&enterpriseCode=$enterpriseCode&inventoryProcessCode=$inventoryProcessCode&inventoryCountingCode=$inventoryCountingCode',
+          '$baseUrl/Inventory/GetProductByPlu?plu=$plu&enterpriseCode=$enterpriseCode&inventoryProcessCode=$inventoryProcessCode&inventoryCountingCode=$inventoryCountingCode',
         ),
       );
       request.body = json.encode(userIdentity);
@@ -124,6 +126,7 @@ class ProductProvider with ChangeNotifier {
         );
       });
     } catch (e) {
+      print('erro pra obter o produto pelo plu: $e');
       productErrorMessage = 'Servidor não encontrado. Verifique a sua internet';
     } finally {}
     notifyListeners();

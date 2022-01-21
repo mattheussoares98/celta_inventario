@@ -1,4 +1,3 @@
-import 'package:celta_inventario/utils/base_url.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -15,6 +14,7 @@ class QuantityProvider with ChangeNotifier {
     int? productPackingCode,
     int? quantity,
     String? userIdentity,
+    String? baseUrl,
   }) async {
     isLoadingEntryQuantity = true;
     entryQuantityError = '';
@@ -24,7 +24,7 @@ class QuantityProvider with ChangeNotifier {
       var request = http.Request(
         'POST',
         Uri.parse(
-          '${BaseUrl().baseUrl}/Inventory/EntryQuantity?countingCode=$countingCode&productPackingCode=$productPackingCode&quantity=$quantity',
+          '$baseUrl/Inventory/EntryQuantity?countingCode=$countingCode&productPackingCode=$productPackingCode&quantity=$quantity',
         ),
       );
       request.body = json.encode(userIdentity);

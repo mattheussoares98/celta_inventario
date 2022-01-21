@@ -2,7 +2,7 @@
     package="br.com.celtaware.inventario">
     <uses-permission android:name="android.permission.INTERNET"/>
    <application
-        android:label="Celta inventário"
+        android:label="Celta mobile"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

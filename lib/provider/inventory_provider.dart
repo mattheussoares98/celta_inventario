@@ -1,5 +1,4 @@
 import 'package:celta_inventario/models/inventory.dart';
-import 'package:celta_inventario/utils/base_url.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -22,6 +21,7 @@ class InventoryProvider with ChangeNotifier {
   Future<void> getInventory({
     String? enterpriseCode,
     String? userIdentity,
+    String? baseUrl,
   }) async {
     haveError = false;
     isChargingInventorys = true;
@@ -33,7 +33,7 @@ class InventoryProvider with ChangeNotifier {
       var request = http.Request(
         'POST',
         Uri.parse(
-            '${BaseUrl().baseUrl}/Inventory/GetFroozenProcesses?enterpriseCode=$enterpriseCode'),
+            '$baseUrl/Inventory/GetFroozenProcesses?enterpriseCode=$enterpriseCode'),
       );
       request.body = json.encode(userIdentity);
       request.headers.addAll(headers);

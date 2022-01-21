@@ -27,7 +27,10 @@ class EnterprisePageState extends State<EnterprisePage> {
     if (!isLoaded) {
       LoginProvider loginProvider = Provider.of(context, listen: false);
 
-      enterpriseProvider.getEnterprises(loginProvider.userIdentity!);
+      enterpriseProvider.getEnterprises(
+        userIdentity: loginProvider.userIdentity!,
+        baseUrl: loginProvider.userBaseUrl,
+      );
     }
 
     isLoaded = true;
@@ -82,8 +85,10 @@ class EnterprisePageState extends State<EnterprisePage> {
                 TextButton(
                   onPressed: () {
                     setState(() {
-                      enterpriseProvider
-                          .getEnterprises(loginProvider.userIdentity!);
+                      enterpriseProvider.getEnterprises(
+                        userIdentity: loginProvider.userIdentity!,
+                        baseUrl: loginProvider.userBaseUrl,
+                      );
                     });
                   },
                   child: const Text('Tentar novamente'),
