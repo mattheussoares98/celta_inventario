@@ -25,6 +25,7 @@ class CountingProvider with ChangeNotifier {
     _countings.clear();
     countingsErrorMessage = '';
     isChargingCountings = true;
+    notifyListeners();
 
     try {
       var headers = {'Content-Type': 'application/json'};
@@ -54,7 +55,8 @@ class CountingProvider with ChangeNotifier {
         );
       });
     } catch (e) {
-      countingsErrorMessage = 'Servidor não encontrado';
+      countingsErrorMessage =
+          'O servidor não foi encontrado. Verifique a sua internet!';
     } finally {
       isChargingCountings = false;
     }

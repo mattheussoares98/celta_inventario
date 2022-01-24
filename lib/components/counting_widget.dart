@@ -48,7 +48,7 @@ class _CountingWidgetState extends State<CountingWidget> {
           : MainAxisAlignment.start,
       children: [
         if (countingProvider.isChargingCountings)
-          LoadingProcess(text: 'Carregando contagens'),
+          LoadingProcess(text: 'Consultando contagens'),
         if (countingProvider.countingsErrorMessage != '')
           Column(
             children: [
@@ -59,6 +59,7 @@ class _CountingWidgetState extends State<CountingWidget> {
                     countingProvider.getCountings(
                       inventoryProcessCode: widget.codigoInternoInventario,
                       userIdentity: loginProvider.userIdentity,
+                      baseUrl: loginProvider.userBaseUrl,
                     );
                   });
                 },

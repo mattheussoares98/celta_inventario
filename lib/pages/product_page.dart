@@ -74,118 +74,189 @@ class _ProductPageState extends State<ProductPage> {
           },
           icon: Icon(Icons.arrow_back),
         ),
-        // centerTitle: true,
         title: const Text(
           'Produtos',
-          // style: TextStyle(
-          //   color: Colors.black,
-          //   fontSize: 30,
-          // ),
         ),
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 20,
-              vertical: 5,
-            ),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Form(
-                    key: _formEanOrPlu,
-                    child: TextFormField(
-                      autofocus: true,
-                      style: const TextStyle(
-                        fontSize: 20,
-                        color: Colors.black,
-                      ),
-                      maxLength: 13,
-                      controller: _controllerProduct,
-                      onChanged: (value) => setState(() {
-                        _scanBarcode = value;
-                      }),
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Digite o EAN ou o PLU';
-                        } else if (value.contains(',') ||
-                            value.contains('.') ||
-                            value.contains('-')) {
-                          return 'Escreva somente números ou somente letras';
-                        }
-                        return null;
-                      },
-                      decoration: const InputDecoration(
-                        labelText: 'Digite o EAN ou o PLU',
-                        labelStyle: TextStyle(
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 20,
+                vertical: 5,
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Form(
+                      key: _formEanOrPlu,
+                      child: TextFormField(
+                        autofocus: true,
+                        style: const TextStyle(
+                          fontSize: 20,
                           color: Colors.black,
                         ),
+                        maxLength: 13,
+                        controller: _controllerProduct,
+                        onChanged: (value) => setState(() {
+                          _scanBarcode = value;
+                        }),
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Digite o EAN ou o PLU';
+                          } else if (value.contains(',') ||
+                              value.contains('.') ||
+                              value.contains('-')) {
+                            return 'Escreva somente números ou somente letras';
+                          }
+                          return null;
+                        },
+                        decoration: const InputDecoration(
+                          labelText: 'Digite o EAN ou o PLU',
+                          labelStyle: TextStyle(
+                            color: Colors.black,
+                          ),
+                        ),
+                        keyboardType: TextInputType.number,
                       ),
-                      keyboardType: TextInputType.number,
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              ElevatedButton(
-                child: isLoadingEanAndPlu || isLoadingEan
-                    ? Row(
-                        children: const [
-                          Text(
-                            'consultando',
-                            style: TextStyle(
-                              fontFamily: 'OpenSans',
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                ElevatedButton(
+                  child: isLoadingEanAndPlu || isLoadingEan
+                      ? Row(
+                          children: const [
+                            Text(
+                              'consultando',
+                              style: TextStyle(
+                                fontFamily: 'OpenSans',
+                              ),
                             ),
+                            SizedBox(width: 5),
+                            SizedBox(
+                              height: 20,
+                              width: 20,
+                              child: CircularProgressIndicator(),
+                            ),
+                          ],
+                        )
+                      : Text(
+                          'Consultar produto',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'OpenSans',
+                            color: Theme.of(context).colorScheme.secondary,
                           ),
-                          SizedBox(width: 5),
-                          SizedBox(
-                            height: 20,
-                            width: 20,
-                            child: CircularProgressIndicator(),
-                          ),
-                        ],
-                      )
-                    : Text(
-                        'Consultar produto',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontFamily: 'OpenSans',
-                          color: Theme.of(context).colorScheme.secondary,
                         ),
-                      ),
-                onPressed: isLoadingEanAndPlu || isLoadingEan
-                    ? null
-                    : () async {
-                        bool isValid = _formEanOrPlu.currentState!.validate();
-                        if (!isValid) return;
+                  onPressed: isLoadingEanAndPlu || isLoadingEan
+                      ? null
+                      : () async {
+                          bool isValid = _formEanOrPlu.currentState!.validate();
+                          if (!isValid) return;
 
-                        setState(() {
-                          isLoadingEanAndPlu = true;
-                        });
+                          setState(() {
+                            isLoadingEanAndPlu = true;
+                          });
 
-                        try {
-                          await productProvider.getProductByEan(
-                            ean: _scanBarcode,
-                            enterpriseCode:
-                                productProvider.codigoInternoEmpresa!,
-                            inventoryProcessCode:
-                                productProvider.codigoInternoInventario!,
-                            inventoryCountingCode:
-                                countings.codigoInternoInvCont,
-                            userIdentity: loginProvider.userIdentity,
-                            baseUrl: loginProvider.userBaseUrl,
-                          );
+                          try {
+                            await productProvider.getProductByEan(
+                              ean: _scanBarcode,
+                              enterpriseCode:
+                                  productProvider.codigoInternoEmpresa!,
+                              inventoryProcessCode:
+                                  productProvider.codigoInternoInventario!,
+                              inventoryCountingCode:
+                                  countings.codigoInternoInvCont,
+                              userIdentity: loginProvider.userIdentity,
+                              baseUrl: loginProvider.userBaseUrl,
+                            );
 
-                          //só pesquisa o PLU se não encontrar pelo EAN
-                          //sem esse if, de qualquer forma vai pesquisar o PLU
-                          if (productProvider.products.isEmpty) {
-                            await productProvider.getProductByPlu(
-                              plu: _scanBarcode,
+                            //só pesquisa o PLU se não encontrar pelo EAN
+                            //sem esse if, de qualquer forma vai pesquisar o PLU
+                            if (productProvider.products.isEmpty) {
+                              await productProvider.getProductByPlu(
+                                plu: _scanBarcode,
+                                enterpriseCode:
+                                    productProvider.codigoInternoEmpresa!,
+                                inventoryProcessCode:
+                                    productProvider.codigoInternoInventario!,
+                                inventoryCountingCode:
+                                    countings.codigoInternoInvCont,
+                                userIdentity: loginProvider.userIdentity,
+                                baseUrl: loginProvider.userBaseUrl,
+                              );
+                            }
+                          } catch (e) {
+                            e;
+                          } finally {
+                            if (productProvider.productErrorMessage != '') {
+                              showErrorMessage(
+                                  productProvider.productErrorMessage);
+                            }
+                            MediaQuery.of(context).viewInsets.bottom;
+                          }
+                          setState(() {
+                            isLoadingEanAndPlu = false;
+                          });
+                        },
+                ),
+                ElevatedButton(
+                  child: isLoadingEanAndPlu || isLoadingEan
+                      ? Row(
+                          children: const [
+                            Text(
+                              'consultando',
+                              style: TextStyle(
+                                fontFamily: 'OpenSans',
+                              ),
+                            ),
+                            SizedBox(width: 5),
+                            SizedBox(
+                              height: 20,
+                              width: 20,
+                              child: CircularProgressIndicator(),
+                            ),
+                          ],
+                        )
+                      : Row(
+                          children: [
+                            Text(
+                              'Ler EAN',
+                              style: TextStyle(
+                                fontFamily: 'OpenSans',
+                                color: Theme.of(context).colorScheme.secondary,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            SizedBox(width: 5),
+                            Icon(
+                              Icons.camera_alt,
+                              color: Theme.of(context).colorScheme.secondary,
+                            ),
+                          ],
+                        ),
+                  onPressed: isLoadingEan || isLoadingEanAndPlu
+                      ? null
+                      : () async {
+                          try {
+                            await scanBarcodeNormal();
+                            setState(() {
+                              isLoadingEan = true;
+                            });
+                          } catch (e) {
+                            e;
+                          } finally {
+                            final countings = ModalRoute.of(context)!
+                                .settings
+                                .arguments as Countings;
+                            await productProvider.getProductByEan(
+                              ean: _scanBarcode,
                               enterpriseCode:
                                   productProvider.codigoInternoEmpresa!,
                               inventoryProcessCode:
@@ -196,97 +267,24 @@ class _ProductPageState extends State<ProductPage> {
                               baseUrl: loginProvider.userBaseUrl,
                             );
                           }
-                        } catch (e) {
-                          e;
-                        } finally {
+                          setState(() {
+                            isLoadingEan = false;
+                          });
                           if (productProvider.productErrorMessage != '') {
                             showErrorMessage(
                                 productProvider.productErrorMessage);
                           }
-                          MediaQuery.of(context).viewInsets.bottom;
-                        }
-                        setState(() {
-                          isLoadingEanAndPlu = false;
-                        });
-                      },
-              ),
-              ElevatedButton(
-                child: isLoadingEanAndPlu || isLoadingEan
-                    ? Row(
-                        children: const [
-                          Text(
-                            'consultando',
-                            style: TextStyle(
-                              fontFamily: 'OpenSans',
-                            ),
-                          ),
-                          SizedBox(width: 5),
-                          SizedBox(
-                            height: 20,
-                            width: 20,
-                            child: CircularProgressIndicator(),
-                          ),
-                        ],
-                      )
-                    : Row(
-                        children: [
-                          Text(
-                            'Ler EAN',
-                            style: TextStyle(
-                              fontFamily: 'OpenSans',
-                              color: Theme.of(context).colorScheme.secondary,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          SizedBox(width: 5),
-                          Icon(
-                            Icons.camera_alt,
-                            color: Theme.of(context).colorScheme.secondary,
-                          ),
-                        ],
-                      ),
-                onPressed: isLoadingEan || isLoadingEanAndPlu
-                    ? null
-                    : () async {
-                        try {
-                          await scanBarcodeNormal();
-                          setState(() {
-                            isLoadingEan = true;
-                          });
-                        } catch (e) {
-                          e;
-                        } finally {
-                          final countings = ModalRoute.of(context)!
-                              .settings
-                              .arguments as Countings;
-                          await productProvider.getProductByEan(
-                            ean: _scanBarcode,
-                            enterpriseCode:
-                                productProvider.codigoInternoEmpresa!,
-                            inventoryProcessCode:
-                                productProvider.codigoInternoInventario!,
-                            inventoryCountingCode:
-                                countings.codigoInternoInvCont,
-                            userIdentity: loginProvider.userIdentity,
-                            baseUrl: loginProvider.userBaseUrl,
-                          );
-                        }
-                        setState(() {
-                          isLoadingEan = false;
-                        });
-                        if (productProvider.productErrorMessage != '') {
-                          showErrorMessage(productProvider.productErrorMessage);
-                        }
-                      },
-              ),
-            ],
-          ),
-          if (productProvider.products.isNotEmpty)
-            ProductItem(
-              countingCode: countings.codigoInternoInvCont,
-              productPackingCode: 1,
+                        },
+                ),
+              ],
             ),
-        ],
+            if (productProvider.products.isNotEmpty)
+              ProductItem(
+                countingCode: countings.codigoInternoInvCont,
+                productPackingCode: countings.numeroContagemInvCont,
+              ),
+          ],
+        ),
       ),
     );
   }

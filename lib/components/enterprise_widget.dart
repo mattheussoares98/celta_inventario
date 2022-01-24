@@ -55,9 +55,6 @@ class _EnterpriseWidgetState extends State<EnterpriseWidget> {
                   },
                 ),
               ),
-              // const Divider(
-              //   color: Colors.black,
-              // ),
             ],
           );
         },

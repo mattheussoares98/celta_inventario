@@ -27,6 +27,7 @@ class InventoryProvider with ChangeNotifier {
     isChargingInventorys = true;
     _inventorys.clear();
     inventoryErrorMessage = '';
+    notifyListeners();
 
     try {
       var headers = {'Content-Type': 'application/json'};

@@ -3,11 +3,11 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class QuantityProvider with ChangeNotifier {
-  bool isLoadingEntryQuantity = false;
+  bool isLoadingQuantity = false;
 
-  String entryQuantityError = '';
+  String quantityError = '';
 
-  bool isConfirmed = false;
+  bool isConfirmedQuantity = false;
 
   Future<void> entryQuantity({
     int? countingCode,
@@ -16,8 +16,10 @@ class QuantityProvider with ChangeNotifier {
     String? userIdentity,
     String? baseUrl,
   }) async {
-    isLoadingEntryQuantity = true;
-    entryQuantityError = '';
+    isConfirmedQuantity = false;
+    isLoadingQuantity = true;
+    quantityError = '';
+    notifyListeners();
 
     try {
       var headers = {'Content-Type': 'application/json'};
@@ -33,14 +35,56 @@ class QuantityProvider with ChangeNotifier {
       http.StreamedResponse response = await request.send();
 
       if (response.statusCode == 200) {
-        isConfirmed = true;
+        isConfirmedQuantity = true;
       } else {}
     } catch (e) {
-      entryQuantityError =
+      quantityError =
           'Erro para confirmar. Verifique a sua internet e tente novamente';
     } finally {
-      isLoadingEntryQuantity = false;
+      isLoadingQuantity = false;
     }
+    notifyListeners();
+  }
+
+  bool isConfirmedAnullQuantity = false;
+  Future<void> anullQuantity({
+    String? url,
+    int? countingCode,
+    int? productPackingCode,
+    String? userIdentity,
+  }) async {
+    isConfirmedAnullQuantity = false;
+    quantityError = '';
+    isLoadingQuantity = true;
+    notifyListeners();
+
+    try {
+      var headers = {'Content-Type': 'application/json'};
+      var request = http.Request(
+        'POST',
+        Uri.parse(
+          '$url/Inventory/AnnulQuantity?countingCode=$countingCode&productPackingCode=$productPackingCode',
+        ),
+      );
+      request.body = json.encode(userIdentity);
+
+      request.headers.addAll(headers);
+
+      http.StreamedResponse response = await request.send();
+
+      if (response.statusCode == 200) {
+        isConfirmedAnullQuantity = true;
+        print(await response.stream.bytesToString());
+      } else {
+        print(response.reasonPhrase);
+      }
+    } catch (e) {
+      quantityError =
+          'Erro para confirmar. Verifique a sua internet e tente novamente';
+      print('Erro no anullQuantity: $e');
+    } finally {}
+
+    isLoadingQuantity = false;
     notifyListeners();
   }
 }

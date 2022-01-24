@@ -28,6 +28,7 @@ class ProductProvider with ChangeNotifier {
     _products.clear();
     productErrorMessage = '';
     isChargingEan = true;
+    notifyListeners();
 
     try {
       var headers = {'Content-Type': 'application/json'};
@@ -90,6 +91,7 @@ class ProductProvider with ChangeNotifier {
   }) async {
     _products.clear();
     productErrorMessage = '';
+    notifyListeners();
 
     try {
       var headers = {'Content-Type': 'application/json'};

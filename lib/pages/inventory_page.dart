@@ -17,14 +17,8 @@ class _InventoryPageState extends State<InventoryPage> {
 
     return Scaffold(
       appBar: AppBar(
-        // centerTitle: true,
         title: const Text(
           'INVENTÁRIOS',
-          // style: TextStyle(
-          //   color: Colors.black,
-          //   // fontFamily: 'BebasNeue',
-          //   fontSize: 30,
-          // ),
         ),
       ),
       body: InventoryWidget(

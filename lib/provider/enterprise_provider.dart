@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:celta_inventario/models/enterprise.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
-import 'package:provider/provider.dart';
 
 class EnterpriseProvider with ChangeNotifier {
   List<Enterprise> _enterprises = [];
@@ -36,6 +35,7 @@ class EnterpriseProvider with ChangeNotifier {
     if (_enterprises.isNotEmpty) {
       _enterprises.clear();
     }
+    notifyListeners();
 
     try {
       var headers = {'Content-Type': 'application/json'};
@@ -62,11 +62,12 @@ class EnterpriseProvider with ChangeNotifier {
     } catch (e) {
       if (e.toString().contains('No route')) {
         enterpriseErrorMessage =
-            'O servidor não foi encontrado. Verifique a sua internet.';
+            'O servidor não foi encontrado. Verifique a sua internet!';
       } else if (e.toString().contains('Connection timed')) {
         enterpriseErrorMessage = 'Time out. Tente novamente';
       } else {
-        enterpriseErrorMessage = 'Verifique a sua internet!';
+        enterpriseErrorMessage =
+            'O servidor não foi encontrado. Verifique a sua internet!';
       }
       print('erro na empresa: $e');
     } finally {

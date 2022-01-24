@@ -48,7 +48,7 @@ class _InventoryWidgetState extends State<InventoryWidget> {
       children: [
         if (inventoryProvider.isChargingInventorys)
           const LoadingProcess(
-            text: 'Carregando inventários',
+            text: 'Consultando inventários',
           ),
         if (!inventoryProvider.isChargingInventorys &&
             inventoryProvider.inventoryCount > 0)

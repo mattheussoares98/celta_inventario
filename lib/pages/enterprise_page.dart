@@ -61,7 +61,7 @@ class EnterprisePageState extends State<EnterprisePage> {
                 child: Column(
                   children: const [
                     Text(
-                      'Carregando empresas',
+                      'Consultando empresas',
                       style: TextStyle(
                         fontSize: 20,
                       ),
@@ -98,7 +98,6 @@ class EnterprisePageState extends State<EnterprisePage> {
                 style: Theme.of(context).textTheme.headline6,
               ),
             ),
-          // const Divider(color: Colors.black),
           const EnterpriseWidget(),
         ],
       ),

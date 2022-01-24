@@ -1,4 +1,5 @@
 import 'package:celta_inventario/provider/login_provider.dart';
+import 'package:celta_inventario/utils/db_util.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -43,6 +44,7 @@ class _AuthFormState extends State<AuthForm> {
     LoginProvider loginProvider = Provider.of(context, listen: true);
     if (!isLoaded) {
       await loginProvider.loadUrl();
+
       _data['url'] = loginProvider.userBaseUrl!;
     }
     setState(() {
@@ -52,12 +54,11 @@ class _AuthFormState extends State<AuthForm> {
 
   @override
   Widget build(BuildContext context) {
-    LoginProvider loginProvider = Provider.of(context, listen: true);
-
     LoginProvider _loginProvider =
         Provider.of<LoginProvider>(context, listen: true);
     _submit() async {
       bool isValid = widget.formKey.currentState!.validate();
+      await _loginProvider.loadUrl();
 
       if (!isValid) {
         return;
