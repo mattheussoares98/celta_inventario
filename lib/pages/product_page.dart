@@ -74,13 +74,13 @@ class _ProductPageState extends State<ProductPage> {
           },
           icon: Icon(Icons.arrow_back),
         ),
-        centerTitle: true,
+        // centerTitle: true,
         title: const Text(
           'Produtos',
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: 30,
-          ),
+          // style: TextStyle(
+          //   color: Colors.black,
+          //   fontSize: 30,
+          // ),
         ),
       ),
       body: Column(

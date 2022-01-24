@@ -72,8 +72,9 @@ class _HomePageState extends State<HomePage> {
     }
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        centerTitle: true,
+        // centerTitle: true,
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),
@@ -129,11 +130,11 @@ class _HomePageState extends State<HomePage> {
           child: FittedBox(
             child: Text(
               'Selecione a rotina desejada',
-              style: TextStyle(
-                color: Colors.black,
-                // fontFamily: 'BebasNeue',
-                fontSize: 30,
-              ),
+              // style: TextStyle(
+              //   color: Colors.black,
+              //   // fontFamily: 'BebasNeue',
+              //   fontSize: 30,
+              // ),
             ),
           ),
         ),

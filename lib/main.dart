@@ -30,13 +30,18 @@ void main() {
       ],
       child: MaterialApp(
         theme: ThemeData(
-          appBarTheme: AppBarTheme(
-            // color: Colors.white,
-            titleTextStyle: TextStyle(
-              letterSpacing: 0.7,
-              fontFamily: 'BebasNeue',
-            ),
-          ),
+          primaryColor: Colors.amber,
+          secondaryHeaderColor: Colors.black,
+          appBarTheme: ThemeData().appBarTheme.copyWith(
+                backgroundColor: Colors.amber,
+                centerTitle: true,
+                titleTextStyle: TextStyle(
+                  letterSpacing: 0.7,
+                  color: Colors.black,
+                  fontFamily: 'BebasNeue',
+                  fontSize: 30,
+                ),
+              ),
         ).copyWith(
           textTheme: ThemeData.light().textTheme.copyWith(
                 headline6: TextStyle(

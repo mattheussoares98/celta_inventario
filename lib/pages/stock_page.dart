@@ -7,13 +7,18 @@ class StockPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
+        // centerTitle: true,
         title: const Text(
           'Estoque',
         ),
       ),
       body: const Center(
-        child: Text('Estoque'),
+        child: Text(
+          'Em breve...',
+          style: TextStyle(
+            fontSize: 25,
+          ),
+        ),
       ),
     );
   }

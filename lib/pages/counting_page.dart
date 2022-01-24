@@ -16,14 +16,14 @@ class _CountingPageState extends State<CountingPage> {
 
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
+        // centerTitle: true,
         title: const Text(
           'CONTAGENS',
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: 30,
-            // fontFamily: 'BebasNeue',
-          ),
+          // style: TextStyle(
+          //   color: Colors.black,
+          //   fontSize: 30,
+          // fontFamily: 'BebasNeue',
+          // ):
         ),
       ),
       body: CountingWidget(
