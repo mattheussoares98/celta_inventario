@@ -186,9 +186,6 @@ class _AuthFormState extends State<AuthForm> {
                       child: _isLoading
                           ? const CircularProgressIndicator()
                           : const Text('Login'),
-                      style: ElevatedButton.styleFrom(
-                        primary: Colors.orange,
-                      ),
                     ),
                   ],
                 ),

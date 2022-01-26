@@ -14,25 +14,32 @@ class InventoryItems extends StatelessWidget {
     ProductProvider productProvider = Provider.of(context);
 
     double height =
-        inventoryProvider.inventorys[0].obsInventario.length > 30 ? 300 : 220;
+        inventoryProvider.inventorys[0].obsInventario.length > 30 ? 300 : 200;
 
     TextStyle _fontSizeStyle = TextStyle(
       fontSize: 20,
-      color: Theme.of(context).colorScheme.secondary,
+      color: Colors.black,
       fontFamily: 'OpenSans',
     );
     TextStyle _fontSizeAndBoldStyle = TextStyle(
       fontFamily: 'OpenSans',
       fontSize: 20,
       fontWeight: FontWeight.bold,
-      color: Theme.of(context).colorScheme.secondary,
+      color: Colors.black,
     );
 
     return SizedBox(
       height: height,
       child: Card(
-        elevation: 10,
-        color: Theme.of(context).colorScheme.primary,
+        shape: RoundedRectangleBorder(
+          side: BorderSide(
+            width: 2,
+            color: Colors.green,
+          ),
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+        ),
+        elevation: 15,
+        // color: Theme.of(context).colorScheme.primary,
         child: ListView.builder(
           itemCount: inventoryProvider.inventoryCount,
           itemBuilder: (context, index) {
@@ -47,15 +54,8 @@ class InventoryItems extends StatelessWidget {
                 );
               },
               //sem esse container, não funciona o gesture detector no campo inteiro
-              child: Container(
-                padding: const EdgeInsets.all(10),
-                height: height,
-                decoration: BoxDecoration(
-                  // color: Colors.grey[350],
-                  border: Border.all(
-                    color: Colors.lightBlue[100]!,
-                  ),
-                ),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

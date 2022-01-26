@@ -23,8 +23,14 @@ class CountingItems extends StatelessWidget {
               );
             },
             child: Card(
+              shape: RoundedRectangleBorder(
+                side: BorderSide(
+                  width: 2,
+                  color: Theme.of(context).primaryColor,
+                ),
+                borderRadius: BorderRadius.all(Radius.circular(10)),
+              ),
               elevation: 10,
-              color: Theme.of(context).colorScheme.primary,
               child: Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: Column(
@@ -36,7 +42,7 @@ class CountingItems extends StatelessWidget {
                           'Número da contagem: ',
                           style: TextStyle(
                             fontSize: 20,
-                            color: Theme.of(context).colorScheme.secondary,
+                            color: Colors.black,
                             fontFamily: 'OpenSans',
                           ),
                         ),
@@ -48,7 +54,7 @@ class CountingItems extends StatelessWidget {
                             fontFamily: 'OpenSans',
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
-                            color: Theme.of(context).colorScheme.secondary,
+                            color: Colors.black,
                           ),
                         ),
                       ],
@@ -62,7 +68,7 @@ class CountingItems extends StatelessWidget {
                           style: TextStyle(
                             fontFamily: 'OpenSans',
                             fontSize: 20,
-                            color: Theme.of(context).colorScheme.secondary,
+                            color: Colors.black,
                           ),
                         ),
                         Expanded(
@@ -72,7 +78,7 @@ class CountingItems extends StatelessWidget {
                               fontFamily: 'OpenSans',
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
-                              color: Theme.of(context).colorScheme.secondary,
+                              color: Colors.black,
                             ),
                           ),
                         ),

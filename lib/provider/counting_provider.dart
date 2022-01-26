@@ -25,7 +25,6 @@ class CountingProvider with ChangeNotifier {
     _countings.clear();
     countingsErrorMessage = '';
     isChargingCountings = true;
-    notifyListeners();
 
     try {
       var headers = {'Content-Type': 'application/json'};

@@ -50,9 +50,6 @@ class _AnullQuantityBottomState extends State<AnullQuantityBottom> {
                 }
               });
             },
-      style: ElevatedButton.styleFrom(
-        primary: Colors.red,
-      ),
       child: quantityProvider.isLoadingQuantity
           ? Row(
               mainAxisAlignment: MainAxisAlignment.end,

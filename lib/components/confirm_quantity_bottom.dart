@@ -31,9 +31,10 @@ class _ConfirmQuantityBottomState extends State<ConfirmQuantityBottom> {
     LoginProvider loginProvider = Provider.of(context);
 
     return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        primary: Colors.red,
-      ),
+      // style: ElevatedButton.styleFrom(
+      //     // primary: Colors.white,
+
+      //     ),
       onPressed: quantityProvider.isLoadingQuantity
           ? null
           : () async {

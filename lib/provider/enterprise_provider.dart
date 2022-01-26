@@ -27,7 +27,6 @@ class EnterpriseProvider with ChangeNotifier {
     String? userIdentity,
     String? baseUrl,
   }) async {
-    print('teste');
     enterpriseErrorMessage = '';
     //se não criar essa variável pra usar dentro do erro, não da certo tratar o erro e atribuir à variável enterpriseErrorMessage
     isChargingEnterprises = true;
@@ -35,7 +34,6 @@ class EnterpriseProvider with ChangeNotifier {
     if (_enterprises.isNotEmpty) {
       _enterprises.clear();
     }
-    notifyListeners();
 
     try {
       var headers = {'Content-Type': 'application/json'};

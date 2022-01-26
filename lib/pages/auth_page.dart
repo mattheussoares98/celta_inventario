@@ -20,8 +20,8 @@ class _AuthPageState extends State<AuthPage> {
             decoration: const BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  Colors.red,
-                  Colors.orange,
+                  Colors.lightGreen,
+                  Colors.greenAccent,
                 ],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
@@ -42,7 +42,7 @@ class _AuthPageState extends State<AuthPage> {
                   ),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
-                    color: Colors.deepOrange.shade900,
+                    color: Colors.green[700],
                   ),
                   child: const FittedBox(
                     child: Text(

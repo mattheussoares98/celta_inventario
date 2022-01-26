@@ -46,8 +46,14 @@ class _ProductItemState extends State<ProductItem> {
         children: [
           const SizedBox(height: 5),
           Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+              side: BorderSide(
+                width: 2,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+            ),
             elevation: 10,
-            color: Theme.of(context).colorScheme.primary,
             child: Padding(
               padding: const EdgeInsets.all(10.0),
               child: Column(
@@ -62,7 +68,6 @@ class _ProductItemState extends State<ProductItem> {
                           textAlign: TextAlign.start,
                           style: TextStyle(
                             fontSize: 20,
-                            color: Theme.of(context).colorScheme.secondary,
                           ),
                         ),
                         Text(
@@ -70,7 +75,6 @@ class _ProductItemState extends State<ProductItem> {
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
-                            color: Theme.of(context).colorScheme.secondary,
                           ),
                         ),
                       ],
@@ -83,7 +87,6 @@ class _ProductItemState extends State<ProductItem> {
                         'PLU: ',
                         style: TextStyle(
                           fontSize: 20,
-                          color: Theme.of(context).colorScheme.secondary,
                         ),
                       ),
                       Text(
@@ -91,7 +94,6 @@ class _ProductItemState extends State<ProductItem> {
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
-                          color: Theme.of(context).colorScheme.secondary,
                         ),
                       ),
                     ],
@@ -103,7 +105,6 @@ class _ProductItemState extends State<ProductItem> {
                         'Quantidade contada: ',
                         style: TextStyle(
                           fontSize: 20,
-                          color: Theme.of(context).colorScheme.secondary,
                         ),
                       ),
                       Text(
@@ -118,7 +119,6 @@ class _ProductItemState extends State<ProductItem> {
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
-                          color: Theme.of(context).colorScheme.secondary,
                         ),
                       )
                     ],
@@ -129,7 +129,6 @@ class _ProductItemState extends State<ProductItem> {
                       enabled:
                           quantityProvider.isLoadingQuantity ? false : true,
                       autofocus: true,
-                      cursorColor: Theme.of(context).colorScheme.secondary,
                       validator: (value) {
                         if (value!.contains(',') ||
                             value.contains('.') ||
@@ -153,18 +152,17 @@ class _ProductItemState extends State<ProductItem> {
                         }
                       },
                       decoration: InputDecoration(
-                        labelText: 'Somar quantidade',
+                        labelText: 'Digite a quantidade aqui',
                         errorStyle: TextStyle(
                           fontSize: 17,
                         ),
                         labelStyle: TextStyle(
                           fontStyle: FontStyle.italic,
-                          color: Theme.of(context).colorScheme.secondary,
+                          color: Colors.red,
                         ),
                       ),
                       style: TextStyle(
                         fontSize: 25,
-                        color: Theme.of(context).colorScheme.secondary,
                       ),
                       keyboardType: TextInputType.number,
                     ),
@@ -191,17 +189,17 @@ class _ProductItemState extends State<ProductItem> {
                   const SizedBox(height: 10),
                   FittedBox(
                     child: Text(
-                      'Para subtrair, digite uma quantidade negativa',
+                      '*Para subtrair, digite uma quantidade negativa',
                       style: TextStyle(
                         fontSize: 200,
-                        color: Colors.red[800],
+                        color: Colors.red,
                         fontStyle: FontStyle.italic,
-                        shadows: [
-                          Shadow(
-                            color: Colors.black,
-                            blurRadius: 0.2,
-                          )
-                        ],
+                        // shadows: [
+                        //   Shadow(
+                        //     color: Colors.black,
+                        //     blurRadius: 0.2,
+                        //   )
+                        // ],
                       ),
                     ),
                   ),

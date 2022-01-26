@@ -30,18 +30,27 @@ void main() {
       ],
       child: MaterialApp(
         theme: ThemeData(
-          primaryColor: Colors.amber,
+          primaryColor: Colors.green,
           secondaryHeaderColor: Colors.black,
+          backgroundColor: Colors.lightGreen[100],
           appBarTheme: ThemeData().appBarTheme.copyWith(
-                backgroundColor: Colors.amber,
+                backgroundColor: Colors.green,
                 centerTitle: true,
                 titleTextStyle: TextStyle(
                   letterSpacing: 0.7,
-                  color: Colors.black,
+                  color: Colors.white,
                   fontFamily: 'BebasNeue',
                   fontSize: 30,
                 ),
               ),
+          elevatedButtonTheme: ElevatedButtonThemeData(
+            style: ElevatedButton.styleFrom(
+              textStyle: TextStyle(
+                decorationColor: Colors.green,
+                color: Colors.green,
+              ),
+            ),
+          ),
         ).copyWith(
           textTheme: ThemeData.light().textTheme.copyWith(
                 headline6: TextStyle(
@@ -53,11 +62,14 @@ void main() {
                 ),
                 bodyText1: TextStyle(
                   fontFamily: 'OpenSans',
+                  color: Colors.green,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
                 ),
               ),
           colorScheme: ThemeData().colorScheme.copyWith(
-                primary: Colors.amber,
-                secondary: Colors.black,
+                primary: Colors.green,
+                secondary: Colors.white,
               ),
         ),
         debugShowCheckedModeBanner: false,
