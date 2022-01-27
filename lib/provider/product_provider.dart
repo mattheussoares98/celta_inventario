@@ -94,18 +94,30 @@ class ProductProvider with ChangeNotifier {
     notifyListeners();
 
     try {
-      var headers = {'Content-Type': 'application/json'};
-      var request = http.Request(
-        'POST',
+      /// Antes estava usando essa forma comentada pra retornar os dados
+      /// coloquei pra usar de outra forma pra ter as duas documentadas
+      // var headers = {'Content-Type': 'application/json'};
+      // var request = http.Request(
+      //   'POST',
+      //   Uri.parse(
+      //     '$baseUrl/Inventory/GetProductByPlu?plu=$plu&enterpriseCode=$enterpriseCode&inventoryProcessCode=$inventoryProcessCode&inventoryCountingCode=$inventoryCountingCode',
+      //   ),
+      // );
+      // request.body = json.encode(userIdentity);
+      // request.headers.addAll(headers);
+      // http.StreamedResponse response = await request.send();
+      // String responseInString = await response.stream.bytesToString();
+
+      http.Response response = await http.post(
         Uri.parse(
           '$baseUrl/Inventory/GetProductByPlu?plu=$plu&enterpriseCode=$enterpriseCode&inventoryProcessCode=$inventoryProcessCode&inventoryCountingCode=$inventoryCountingCode',
         ),
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode(userIdentity),
       );
-      request.body = json.encode(userIdentity);
-      request.headers.addAll(headers);
 
-      http.StreamedResponse response = await request.send();
-      String responseInString = await response.stream.bytesToString();
+      var responseInString = response.body;
+
       if (responseInString.contains('O produto não foi encontrado')) {
         productErrorMessage =
             'O produto não foi encontrado na contagem do processo de inventário.';
