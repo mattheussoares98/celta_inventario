@@ -39,8 +39,7 @@ class LoginProvider with ChangeNotifier {
     } else if (error.contains('Invalid port')) {
       loginErrorMessage = 'Url inválida!';
     } else {
-      error = '';
-      loginErrorMessage = '';
+      loginErrorMessage = 'Ocorreu um erro para acessar o servidor';
     }
   }
 
@@ -67,6 +66,7 @@ class LoginProvider with ChangeNotifier {
     String? password,
     String? baseUrl,
   }) async {
+    loginErrorMessage = '';
     String error = '';
     notifyListeners();
 
