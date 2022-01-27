@@ -104,7 +104,7 @@ class _ConfirmQuantityBottomState extends State<ConfirmQuantityBottom> {
           : Padding(
               padding: const EdgeInsets.symmetric(vertical: 7),
               child: Text(
-                'Atualizar quantidade',
+                'Somar quantidade',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontFamily: 'OpenSans',
