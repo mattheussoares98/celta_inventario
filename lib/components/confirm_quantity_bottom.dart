@@ -106,7 +106,9 @@ class _ConfirmQuantityBottomState extends State<ConfirmQuantityBottom> {
               child: Text(
                 'Atualizar quantidade',
                 style: TextStyle(
-                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'OpenSans',
+                  color: Theme.of(context).colorScheme.secondary,
                 ),
               ),
             ),

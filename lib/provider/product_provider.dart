@@ -82,12 +82,12 @@ class ProductProvider with ChangeNotifier {
   }
 
   getProductByPlu({
-    String? plu,
-    int? enterpriseCode,
-    int? inventoryProcessCode,
-    int? inventoryCountingCode,
-    String? userIdentity,
-    String? baseUrl,
+    required String? plu,
+    required int? enterpriseCode,
+    required int? inventoryProcessCode,
+    required int? inventoryCountingCode,
+    required String? userIdentity,
+    required String? baseUrl,
   }) async {
     _products.clear();
     productErrorMessage = '';

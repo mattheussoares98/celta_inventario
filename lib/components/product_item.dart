@@ -126,6 +126,7 @@ class _ProductItemState extends State<ProductItem> {
                   Form(
                     key: _formQuantity,
                     child: TextFormField(
+                      maxLength: 4,
                       enabled:
                           quantityProvider.isLoadingQuantity ? false : true,
                       autofocus: true,

@@ -17,11 +17,12 @@ class _AuthPageState extends State<AuthPage> {
       body: Stack(
         children: [
           Container(
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  Colors.lightGreen,
-                  Colors.greenAccent,
+                  // Colors.lightGreen,
+                  Color.fromRGBO(80, 241, 62, 1),
+                  Color.fromRGBO(17, 115, 6, 1),
                 ],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,

@@ -75,7 +75,9 @@ class _AnullQuantityBottomState extends State<AnullQuantityBottom> {
               child: Text(
                 'Anular quantidade',
                 style: TextStyle(
-                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'OpenSans',
+                  color: Theme.of(context).colorScheme.secondary,
                 ),
               ),
             ),

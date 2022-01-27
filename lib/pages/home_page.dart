@@ -29,44 +29,56 @@ class _HomePageState extends State<HomePage> {
             arguments: loginProvider.userIdentity!,
           );
         },
-        child: Stack(
-          fit: StackFit.passthrough,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Image.asset(
-                imagePath!,
-                height: 200,
-                width: double.infinity,
-                fit: BoxFit.fitWidth,
-              ),
+        child: Card(
+          elevation: 10,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(10),
             ),
-            Positioned(
-              bottom: 10,
-              right: 10,
-              child: Container(
-                // height: 30,
-                decoration: BoxDecoration(
-                  color: Colors.black45,
-                  border: Border.all(
-                    style: BorderStyle.none,
-                  ),
+            side: BorderSide(
+              width: 3,
+              color: Theme.of(context).colorScheme.primary,
+            ),
+          ),
+          child: Stack(
+            fit: StackFit.passthrough,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Image.asset(
+                  imagePath!,
+                  height: 200,
+                  width: double.infinity,
+                  fit: BoxFit.fitWidth,
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    routine!,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontFamily: 'OpenSans',
-                      fontSize: 20,
+              ),
+              Positioned(
+                bottom: 10,
+                right: 10,
+                child: Container(
+                  // height: 30,
+                  decoration: BoxDecoration(
+                    color: Colors.black45,
+                    border: Border.all(
+                      style: BorderStyle.none,
+                    ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      routine!,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontFamily: 'OpenSans',
+                        fontSize: 20,
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       );
     }
@@ -105,6 +117,8 @@ class _HomePageState extends State<HomePage> {
                           child: Text(
                             'Sim',
                             style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'OpenSans',
                               color: Theme.of(context).colorScheme.secondary,
                             ),
                           ),
@@ -116,6 +130,8 @@ class _HomePageState extends State<HomePage> {
                           child: Text(
                             'Não',
                             style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'OpenSans',
                               color: Theme.of(context).colorScheme.secondary,
                             ),
                           ),
@@ -130,11 +146,6 @@ class _HomePageState extends State<HomePage> {
           child: FittedBox(
             child: Text(
               'Selecione a rotina desejada',
-              // style: TextStyle(
-              //   color: Colors.black,
-              //   // fontFamily: 'BebasNeue',
-              //   fontSize: 30,
-              // ),
             ),
           ),
         ),
@@ -143,24 +154,22 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            const SizedBox(height: 5),
             imagem(
               imagePath: 'lib/assets/Images/inventory.jpg',
               routine: 'Inventário',
               route: APPROUTES.ENTERPRISES,
             ),
-            const Divider(color: Colors.black),
             imagem(
               imagePath: 'lib/assets/Images/pedidoDeVendas.jpg',
               routine: 'Pedido de vendas',
               route: APPROUTES.SALES,
             ),
-            const Divider(color: Colors.black),
             imagem(
               imagePath: 'lib/assets/Images/stock.jpg',
               routine: 'Estoque',
               route: APPROUTES.STOCK,
             ),
-            const Divider(color: Colors.black),
           ],
         ),
       ),

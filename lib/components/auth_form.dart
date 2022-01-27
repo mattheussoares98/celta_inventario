@@ -185,7 +185,14 @@ class _AuthFormState extends State<AuthForm> {
                       onPressed: _isLoading ? null : _submit,
                       child: _isLoading
                           ? const CircularProgressIndicator()
-                          : const Text('Login'),
+                          : Text(
+                              'Login',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'OpenSans',
+                                color: Theme.of(context).colorScheme.secondary,
+                              ),
+                            ),
                     ),
                   ],
                 ),
