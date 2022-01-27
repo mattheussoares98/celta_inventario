@@ -39,7 +39,7 @@ class LoginProvider with ChangeNotifier {
     } else if (error.contains('Invalid port')) {
       loginErrorMessage = 'Url inválida!';
     } else {
-      loginErrorMessage = 'Ocorreu um erro para acessar o servidor';
+      loginErrorMessage = 'Servidor indisponível';
     }
   }
 
