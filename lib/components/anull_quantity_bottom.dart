@@ -8,8 +8,10 @@ class AnullQuantityBottom extends StatefulWidget {
   final Function(String) showErrorMessage;
   final int countingCode;
   final int productPackingCode;
+  final TextEditingController controllerProduct;
   const AnullQuantityBottom({
     Key? key,
+    required this.controllerProduct,
     required this.showErrorMessage,
     required this.countingCode,
     required this.productPackingCode,
@@ -42,11 +44,18 @@ class _AnullQuantityBottomState extends State<AnullQuantityBottom> {
                 e;
               } finally {}
               setState(() {
-                if (quantityProvider.quantityError != '') {
-                  widget.showErrorMessage(quantityProvider.quantityError);
-                }
                 if (quantityProvider.isConfirmedAnullQuantity) {
                   productProvider.products[0].quantidadeInvContProEmb = 'null';
+                }
+                //caso o quantityError esteja diferente de '' é porque deu erro
+                //pra confirmar a quantidade e por isso vai apresentar a mensagem de erro
+                if (quantityProvider.quantityError != '') {
+                  widget.showErrorMessage(quantityProvider.quantityError);
+                } else {
+                  //como não houve erro, então pode apagar o texto que é digitado
+                  //no campo de consulta do produto. Fiz passando o textEditingController
+                  //como parâmetro
+                  widget.controllerProduct.clear();
                 }
               });
             },

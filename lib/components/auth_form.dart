@@ -37,6 +37,18 @@ class _AuthFormState extends State<AuthForm> {
 
   bool isLoaded = false;
 
+  final _userFocusNode = FocusNode();
+  final _passwordFocusNode = FocusNode();
+  final _urlFocusNode = FocusNode();
+
+  @override //essa função serve para liberar qualquer tipo de memória que esteja sendo utilizado por esses FocusNode e Listner (precisou ser criado pra conseguir carregar a imagem quando trocasse o foco)
+  void dispose() {
+    super.dispose();
+    _userFocusNode.dispose();
+    _passwordFocusNode.dispose();
+    _urlFocusNode.dispose();
+  }
+
   @override
   void didChangeDependencies() async {
     // TODO: implement didChangeDependencies
@@ -56,6 +68,7 @@ class _AuthFormState extends State<AuthForm> {
   Widget build(BuildContext context) {
     LoginProvider _loginProvider =
         Provider.of<LoginProvider>(context, listen: true);
+
     _submit() async {
       bool isValid = widget.formKey.currentState!.validate();
       await _loginProvider.loadUrl();
@@ -74,12 +87,12 @@ class _AuthFormState extends State<AuthForm> {
           password: _data['password']!,
           baseUrl: _data['url'],
         );
-        if (_loginProvider.loginErrorMessage != '') {
-          errorMessage(_loginProvider.loginErrorMessage);
-        }
       } catch (e) {
         e;
       } finally {
+        if (_loginProvider.loginErrorMessage != '') {
+          errorMessage(_loginProvider.loginErrorMessage);
+        }
         setState(() {
           _isLoading = false;
           if (_loginProvider.isAuth) {
@@ -101,6 +114,9 @@ class _AuthFormState extends State<AuthForm> {
                 child: Column(
                   children: [
                     TextFormField(
+                      focusNode: _userFocusNode,
+                      onFieldSubmitted: (_) => FocusScope.of(context)
+                          .requestFocus(_passwordFocusNode),
                       validator: (_name) {
                         _name = _data['user'];
                         if (_data['user']!.trim().isEmpty) {
@@ -128,6 +144,9 @@ class _AuthFormState extends State<AuthForm> {
                       ),
                     ),
                     TextFormField(
+                      focusNode: _passwordFocusNode,
+                      onFieldSubmitted: (_) =>
+                          FocusScope.of(context).requestFocus(_urlFocusNode),
                       style: TextStyle(
                         fontWeight: FontWeight.w500,
                         fontFamily: 'OpenSans',
@@ -153,6 +172,8 @@ class _AuthFormState extends State<AuthForm> {
                       obscureText: true,
                     ),
                     TextFormField(
+                      onFieldSubmitted: (_) => _submit(),
+                      focusNode: _urlFocusNode,
                       style: TextStyle(
                         fontWeight: FontWeight.w500,
                         fontFamily: 'OpenSans',
@@ -184,7 +205,11 @@ class _AuthFormState extends State<AuthForm> {
                     ElevatedButton(
                       onPressed: _isLoading ? null : _submit,
                       child: _isLoading
-                          ? const CircularProgressIndicator()
+                          ? Container(
+                              height: 28,
+                              width: 28,
+                              child: const CircularProgressIndicator(),
+                            )
                           : Text(
                               'Login',
                               style: TextStyle(

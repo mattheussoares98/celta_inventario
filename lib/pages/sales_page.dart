@@ -9,7 +9,7 @@ class SalesPage extends StatelessWidget {
       appBar: AppBar(
         // centerTitle: true,
         title: const Text(
-          'Pedido de vendas',
+          'Pedido de compras',
         ),
       ),
       body: const Center(

@@ -10,7 +10,9 @@ class ConfirmQuantityBottom extends StatefulWidget {
   final int productPackingCode;
   final Function(String) showErrorMessage;
   final int userQuantity;
-  const ConfirmQuantityBottom({
+  final TextEditingController controllerProduct;
+  ConfirmQuantityBottom({
+    required this.controllerProduct,
     required this.userQuantity,
     required this.showErrorMessage,
     required this.countingCode,
@@ -31,10 +33,6 @@ class _ConfirmQuantityBottomState extends State<ConfirmQuantityBottom> {
     LoginProvider loginProvider = Provider.of(context);
 
     return ElevatedButton(
-      // style: ElevatedButton.styleFrom(
-      //     // primary: Colors.white,
-
-      //     ),
       onPressed: quantityProvider.isLoadingQuantity
           ? null
           : () async {
@@ -61,8 +59,15 @@ class _ConfirmQuantityBottomState extends State<ConfirmQuantityBottom> {
               } catch (e) {
                 e;
               } finally {
+                //caso o quantityError esteja diferente de '' é porque deu erro
+                //pra confirmar a quantidade e por isso vai apresentar a mensagem de erro
                 if (quantityProvider.quantityError != '') {
                   widget.showErrorMessage(quantityProvider.quantityError);
+                } else {
+                  //como não houve erro, então pode apagar o texto que é digitado
+                  //no campo de consulta do produto. Fiz passando o textEditingController
+                  //como parâmetro
+                  widget.controllerProduct.clear();
                 }
 
                 if (quantityProvider.isConfirmedQuantity) {

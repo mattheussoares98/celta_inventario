@@ -1,6 +1,5 @@
 import 'package:celta_inventario/components/anull_quantity_bottom.dart';
 import 'package:celta_inventario/components/confirm_quantity_bottom.dart';
-import 'package:celta_inventario/provider/login_provider.dart';
 import 'package:celta_inventario/provider/product_provider.dart';
 import 'package:celta_inventario/provider/quantity_provider.dart';
 import 'package:flutter/material.dart';
@@ -9,8 +8,10 @@ import 'package:provider/provider.dart';
 class ProductItem extends StatefulWidget {
   final int countingCode;
   final int productPackingCode;
+  final TextEditingController controllerProduct;
   ProductItem({
     Key? key,
+    required this.controllerProduct,
     required this.countingCode,
     required this.productPackingCode,
   }) : super(key: key);
@@ -35,101 +36,122 @@ class _ProductItemState extends State<ProductItem> {
 
   int userQuantity = 0;
 
+  final _quantityFocusNode = FocusNode();
+
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+
+    ProductProvider productProvider = Provider.of(context, listen: true);
+    if (productProvider.products.isNotEmpty) {
+      FocusScope.of(context).requestFocus(_quantityFocusNode);
+    }
+  }
+
+  @override //essa função serve para liberar qualquer tipo de memória que esteja sendo utilizado por esses FocusNode e Listner (precisou ser criado pra conseguir carregar a imagem quando trocasse o foco)
+  void dispose() {
+    super.dispose();
+    _quantityFocusNode.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     ProductProvider productProvider = Provider.of(context, listen: true);
     QuantityProvider quantityProvider = Provider.of(context, listen: true);
 
-    return Padding(
-      padding: const EdgeInsets.all(2.0),
-      child: Column(
-        children: [
-          const SizedBox(height: 5),
-          Card(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-              side: BorderSide(
-                width: 2,
-                color: Theme.of(context).colorScheme.primary,
-              ),
+    return Column(
+      children: [
+        Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+            side: BorderSide(
+              width: 2,
+              color: Theme.of(context).colorScheme.primary,
             ),
-            elevation: 10,
-            child: Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 15),
-                  FittedBox(
-                    child: Row(
-                      children: [
-                        Text(
-                          'Nome: ',
-                          textAlign: TextAlign.start,
-                          style: TextStyle(
-                            fontSize: 20,
-                          ),
+          ),
+          elevation: 10,
+          child: Padding(
+            padding: const EdgeInsets.only(
+              left: 10,
+              right: 10,
+              bottom: 10,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 15),
+                FittedBox(
+                  child: Row(
+                    children: [
+                      Text(
+                        'Nome: ',
+                        textAlign: TextAlign.start,
+                        style: TextStyle(
+                          fontSize: 20,
                         ),
-                        Text(
-                          productProvider.products[0].productName,
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
+                      ),
+                      Text(
+                        productProvider.products[0].productName,
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
                         ),
-                      ],
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 20),
+                Row(
+                  children: [
+                    Text(
+                      'PLU: ',
+                      style: TextStyle(
+                        fontSize: 20,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 20),
-                  Row(
-                    children: [
-                      Text(
-                        'PLU: ',
-                        style: TextStyle(
-                          fontSize: 20,
-                        ),
+                    Text(
+                      productProvider.products[0].plu,
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
                       ),
-                      Text(
-                        productProvider.products[0].plu,
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                Row(
+                  children: [
+                    Text(
+                      'Quantidade contada: ',
+                      style: TextStyle(
+                        fontSize: 20,
                       ),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-                  Row(
-                    children: [
-                      Text(
-                        'Quantidade contada: ',
-                        style: TextStyle(
-                          fontSize: 20,
-                        ),
+                    ),
+                    Text(
+                      productProvider.products[0].quantidadeInvContProEmb
+                                  .toString() ==
+                              'null'
+                          ? 'null'
+                          : productProvider.products[0].quantidadeInvContProEmb
+                              .toInt()
+                              .toString(),
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
                       ),
-                      Text(
-                        productProvider.products[0].quantidadeInvContProEmb
-                                    .toString() ==
-                                'null'
-                            ? 'null'
-                            : productProvider
-                                .products[0].quantidadeInvContProEmb
-                                .toInt()
-                                .toString(),
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      )
-                    ],
-                  ),
-                  Form(
-                    key: _formQuantity,
+                    )
+                  ],
+                ),
+                Form(
+                  key: _formQuantity,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 10),
                     child: TextFormField(
+                      focusNode: _quantityFocusNode,
                       maxLength: 4,
                       enabled:
                           quantityProvider.isLoadingQuantity ? false : true,
-                      autofocus: true,
                       validator: (value) {
                         if (value!.contains(',') ||
                             value.contains('.') ||
@@ -157,59 +179,71 @@ class _ProductItemState extends State<ProductItem> {
                         errorStyle: TextStyle(
                           fontSize: 17,
                         ),
+                        disabledBorder: OutlineInputBorder(
+                          // borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(
+                            style: BorderStyle.solid,
+                            width: 2,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                        ),
+                        border: OutlineInputBorder(
+                          // borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(
+                            style: BorderStyle.solid,
+                            width: 2,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                        ),
                         labelStyle: TextStyle(
                           fontStyle: FontStyle.italic,
-                          color: Colors.red,
+                          color: Theme.of(context).colorScheme.primary,
                         ),
                       ),
                       style: TextStyle(
-                        fontSize: 25,
+                        fontSize: 20,
                       ),
                       keyboardType: TextInputType.number,
                     ),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      ConfirmQuantityBottom(
-                        userQuantity: userQuantity,
-                        showErrorMessage: showErrorMessage,
-                        countingCode: widget.countingCode,
-                        productPackingCode:
-                            productProvider.products[0].codigoInternoProEmb,
-                        formQuantity: _formQuantity,
-                      ),
-                      AnullQuantityBottom(
-                        showErrorMessage: showErrorMessage,
-                        countingCode: widget.countingCode,
-                        productPackingCode:
-                            productProvider.products[0].codigoInternoProEmb,
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-                  FittedBox(
-                    child: Text(
-                      '*Para subtrair, digite uma quantidade negativa',
-                      style: TextStyle(
-                        fontSize: 200,
-                        color: Colors.red,
-                        fontStyle: FontStyle.italic,
-                        // shadows: [
-                        //   Shadow(
-                        //     color: Colors.black,
-                        //     blurRadius: 0.2,
-                        //   )
-                        // ],
-                      ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    ConfirmQuantityBottom(
+                      controllerProduct: widget.controllerProduct,
+                      userQuantity: userQuantity,
+                      showErrorMessage: showErrorMessage,
+                      countingCode: widget.countingCode,
+                      productPackingCode:
+                          productProvider.products[0].codigoInternoProEmb,
+                      formQuantity: _formQuantity,
+                    ),
+                    AnullQuantityBottom(
+                      controllerProduct: widget.controllerProduct,
+                      showErrorMessage: showErrorMessage,
+                      countingCode: widget.countingCode,
+                      productPackingCode:
+                          productProvider.products[0].codigoInternoProEmb,
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 5),
+                FittedBox(
+                  child: Text(
+                    '*Para subtrair, digite uma quantidade negativa',
+                    style: TextStyle(
+                      fontSize: 200,
+                      color: Colors.red,
+                      fontStyle: FontStyle.italic,
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

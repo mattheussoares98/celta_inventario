@@ -1,7 +1,10 @@
+import 'dart:ui';
+
 import 'package:celta_inventario/components/product_item.dart';
 import 'package:celta_inventario/models/countings.dart';
 import 'package:celta_inventario/provider/login_provider.dart';
 import 'package:celta_inventario/provider/product_provider.dart';
+import 'package:celta_inventario/provider/quantity_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
@@ -59,11 +62,16 @@ class _ProductPageState extends State<ProductPage> {
   bool isLoadingEanAndPlu = false;
   bool isLoadingEan = false;
 
+  _clearTextController() {
+    _controllerProduct.clear();
+  }
+
   @override
   Widget build(BuildContext context) {
     final countings = ModalRoute.of(context)!.settings.arguments as Countings;
     ProductProvider productProvider = Provider.of(context, listen: true);
     LoginProvider loginProvider = Provider.of(context);
+    QuantityProvider quantityProvider = Provider.of(context, listen: true);
 
     return Scaffold(
       appBar: AppBar(
@@ -84,7 +92,7 @@ class _ProductPageState extends State<ProductPage> {
             Padding(
               padding: const EdgeInsets.symmetric(
                 horizontal: 20,
-                vertical: 5,
+                vertical: 15,
               ),
               child: Row(
                 children: [
@@ -112,10 +120,18 @@ class _ProductPageState extends State<ProductPage> {
                           }
                           return null;
                         },
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           labelText: 'Digite o EAN ou o PLU',
                           labelStyle: TextStyle(
-                            color: Colors.black,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                          border: OutlineInputBorder(
+                            // borderRadius: BorderRadius.circular(25.0),
+                            borderSide: BorderSide(
+                              width: 2,
+                              style: BorderStyle.solid,
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
                           ),
                         ),
                         keyboardType: TextInputType.number,
@@ -133,7 +149,7 @@ class _ProductPageState extends State<ProductPage> {
                       ? Row(
                           children: const [
                             Text(
-                              'consultando',
+                              'CONSULTANDO',
                               style: TextStyle(
                                 fontFamily: 'OpenSans',
                               ),
@@ -142,7 +158,9 @@ class _ProductPageState extends State<ProductPage> {
                             SizedBox(
                               height: 20,
                               width: 20,
-                              child: CircularProgressIndicator(),
+                              child: CircularProgressIndicator(
+                                color: Colors.black,
+                              ),
                             ),
                           ],
                         )
@@ -157,6 +175,7 @@ class _ProductPageState extends State<ProductPage> {
                   onPressed: isLoadingEanAndPlu || isLoadingEan
                       ? null
                       : () async {
+                          quantityProvider.isConfirmedQuantity = false;
                           bool isValid = _formEanOrPlu.currentState!.validate();
                           if (!isValid) return;
 
@@ -199,7 +218,6 @@ class _ProductPageState extends State<ProductPage> {
                               showErrorMessage(
                                   productProvider.productErrorMessage);
                             }
-                            MediaQuery.of(context).viewInsets.bottom;
                           }
                           setState(() {
                             isLoadingEanAndPlu = false;
@@ -211,7 +229,7 @@ class _ProductPageState extends State<ProductPage> {
                       ? Row(
                           children: const [
                             Text(
-                              'consultando',
+                              'CONSULTANDO',
                               style: TextStyle(
                                 fontFamily: 'OpenSans',
                               ),
@@ -220,7 +238,9 @@ class _ProductPageState extends State<ProductPage> {
                             SizedBox(
                               height: 20,
                               width: 20,
-                              child: CircularProgressIndicator(),
+                              child: CircularProgressIndicator(
+                                color: Colors.black,
+                              ),
                             ),
                           ],
                         )
@@ -267,6 +287,7 @@ class _ProductPageState extends State<ProductPage> {
                               baseUrl: loginProvider.userBaseUrl,
                             );
                           }
+
                           setState(() {
                             isLoadingEan = false;
                           });
@@ -280,6 +301,7 @@ class _ProductPageState extends State<ProductPage> {
             ),
             if (productProvider.products.isNotEmpty)
               ProductItem(
+                controllerProduct: _controllerProduct,
                 countingCode: countings.codigoInternoInvCont,
                 productPackingCode: countings.numeroContagemInvCont,
               ),

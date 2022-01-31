@@ -17,12 +17,12 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     LoginProvider loginProvider = Provider.of(context, listen: true);
 
-    GestureDetector imagem({
+    InkWell imagem({
       String? imagePath,
       String? routine,
       String? route,
     }) {
-      return GestureDetector(
+      return InkWell(
         onTap: () {
           Navigator.of(context).pushNamed(
             route!,
@@ -162,7 +162,7 @@ class _HomePageState extends State<HomePage> {
             ),
             imagem(
               imagePath: 'lib/assets/Images/pedidoDeVendas.jpg',
-              routine: 'Pedido de vendas',
+              routine: 'Pedido de compras',
               route: APPROUTES.SALES,
             ),
             imagem(

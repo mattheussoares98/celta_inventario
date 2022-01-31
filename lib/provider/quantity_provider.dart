@@ -16,7 +16,6 @@ class QuantityProvider with ChangeNotifier {
     String? userIdentity,
     String? baseUrl,
   }) async {
-    isConfirmedQuantity = false;
     isLoadingQuantity = true;
     quantityError = '';
     notifyListeners();

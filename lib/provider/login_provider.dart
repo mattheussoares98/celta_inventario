@@ -22,8 +22,7 @@ class LoginProvider with ChangeNotifier {
   errorMessage(String error) {
     if (error.contains('O usuário não foi encontrado')) {
       loginErrorMessage = 'Usuário não encontrado!';
-    } else if (error ==
-        '{Message: A senha está incorreta. Verifique a configuração do teclado e se a tecla [CAPS LOCK] está pressionada. Caso você tenha esquecido sua senha entre em contato com o administrador do seu sistema.}') {
+    } else if (error.contains('senha está incorreta')) {
       loginErrorMessage = 'A senha está incorreta!';
     } else if (error.contains('Connection')) {
       loginErrorMessage =
@@ -38,6 +37,8 @@ class LoginProvider with ChangeNotifier {
       loginErrorMessage = 'URL inválida!';
     } else if (error.contains('Invalid port')) {
       loginErrorMessage = 'Url inválida!';
+    } else if (error.contains('No route')) {
+      loginErrorMessage = 'Servidor não encontrado!';
     } else {
       loginErrorMessage = 'Servidor indisponível';
     }
@@ -80,15 +81,16 @@ class LoginProvider with ChangeNotifier {
       print('response.reasonPhrase ${response.reasonPhrase}');
 
       // caso não coloque essa condição, ocorre erro ao tentar fazer o decode e não aparece a mensagem de erro no app
-      if (response.reasonPhrase == 'Not Found') {
-        loginErrorMessage = 'Failed host lookup';
-        return;
-      }
+      // if (response.reasonPhrase == 'Not Found') {
+      //   print('caiu aqui?');
+      //   loginErrorMessage = 'Servidor não encontrado';
+      //   // return;
+      // }
 
       var responseOfUser = json.decode(response.body);
 
-      String responseInString = responseOfUser.toString();
-      loginErrorMessage = responseInString;
+      // String responseInString = responseOfUser.toString();
+      // loginErrorMessage = responseInString;
 
       //transformando o XML em String pra pegar a identidade do usuário
       final myTransformer = Xml2Json();
@@ -100,25 +102,27 @@ class LoginProvider with ChangeNotifier {
         Map toParker2 = json.decode(toParker);
         userIdentity = toParker2['string'];
       }
+
       if (response.statusCode == 200) {
+        print('certo?');
         _auth = true;
+      } else {
+        error = response.body;
+        errorMessage(error);
       }
+
+      print(response.statusCode);
     } catch (e) {
       print('deu erro no login: $e');
       error = e.toString();
-      loginErrorMessage = error;
+      errorMessage(error);
     } finally {
-      //pega o retorno do login e coloca na variável "loginErrorMessage" pra ter acesso a mensagem na tela de autenticação e exibir a mensagem de erro
-      errorMessage(loginErrorMessage);
-
       await DbUtil.insert('url', {
         'id': '1',
         'url': baseUrl!,
       });
 
       await loadUrl();
-
-      print('userBaseUrl depois de tudo = $userBaseUrl');
     }
 
     notifyListeners();
