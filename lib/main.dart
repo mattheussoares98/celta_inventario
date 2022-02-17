@@ -34,6 +34,7 @@ void main() {
           secondaryHeaderColor: Colors.black,
           backgroundColor: Colors.lightGreen[100],
           appBarTheme: ThemeData().appBarTheme.copyWith(
+                toolbarHeight: 65,
                 backgroundColor: Colors.green,
                 centerTitle: true,
                 titleTextStyle: TextStyle(

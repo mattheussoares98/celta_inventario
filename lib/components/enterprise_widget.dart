@@ -14,6 +14,14 @@ class EnterpriseWidget extends StatefulWidget {
 class _EnterpriseWidgetState extends State<EnterpriseWidget> {
   @override
   Widget build(BuildContext context) {
+    final availableSize = MediaQuery.of(context)
+            .size
+            .height - //altura total do dispositivo
+        65 - //altura do appBar
+        40 - //altura do título
+        10 - //padding
+        MediaQuery.of(context).padding.top; //altura da barra de notificações
+
     EnterpriseProvider loginProvider = Provider.of(context, listen: true);
     ProductProvider productProvider = Provider.of(context);
 
@@ -25,9 +33,8 @@ class _EnterpriseWidgetState extends State<EnterpriseWidget> {
             'Selecione a empresa',
             style: Theme.of(context).textTheme.headline6,
           ),
-          const SizedBox(height: 10),
           Container(
-            height: MediaQuery.of(context).size.height * 0.7,
+            height: availableSize * 0.94,
             width: MediaQuery.of(context).size.width,
             child: ListView.builder(
               itemCount: loginProvider.enterpriseCount,

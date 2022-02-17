@@ -92,8 +92,6 @@ class EnterprisePageState extends State<EnterprisePage> {
     EnterpriseProvider enterpriseProvider =
         Provider.of<EnterpriseProvider>(context, listen: true);
 
-    print(enterpriseProvider.enterpriseErrorMessage);
-
     return Scaffold(
       appBar: AppBar(
         title: const Text(

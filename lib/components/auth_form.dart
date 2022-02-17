@@ -52,7 +52,7 @@ class _AuthFormState extends State<AuthForm> {
     _urlFocusNode.dispose();
   }
 
-  _restore() async {
+  _restoreUserAndUrl() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       _urlController.text = prefs.getString('url')!;
@@ -67,10 +67,7 @@ class _AuthFormState extends State<AuthForm> {
     LoginProvider loginProvider = Provider.of(context, listen: true);
 
     if (!isLoaded) {
-      await _restore();
-      // await loginProvider.loadUrl();
-
-      // _data['url'] = _urlController.text;
+      await _restoreUserAndUrl();
     }
     setState(() {
       isLoaded = true;
@@ -143,8 +140,6 @@ class _AuthFormState extends State<AuthForm> {
                   }
                   return null;
                 },
-                // initialValue: _data['user'],
-                // onChanged: (value) => _userController.text = value,
                 style: TextStyle(
                   fontWeight: FontWeight.w500,
                   fontFamily: 'OpenSans',
@@ -203,8 +198,6 @@ class _AuthFormState extends State<AuthForm> {
                   color: Colors.black,
                   fontSize: 20,
                 ),
-                // onChanged: (value) => _urlController.text = value,
-                // initialValue: !isLoaded ? '' : _loginProvider.userBaseUrl,
                 validator: (_url) {
                   _url = _urlController.text;
                   if (_urlController.text.trim().isEmpty) {
