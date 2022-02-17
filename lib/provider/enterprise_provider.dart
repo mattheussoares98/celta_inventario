@@ -29,7 +29,6 @@ class EnterpriseProvider with ChangeNotifier {
   }) async {
     enterpriseErrorMessage = '';
     isChargingEnterprises = true;
-    notifyListeners();
 
     if (_enterprises.isNotEmpty) {
       _enterprises.clear();
