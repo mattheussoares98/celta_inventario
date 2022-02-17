@@ -17,56 +17,69 @@ class _EnterpriseWidgetState extends State<EnterpriseWidget> {
     EnterpriseProvider loginProvider = Provider.of(context, listen: true);
     ProductProvider productProvider = Provider.of(context);
 
-    return SizedBox(
-      height: loginProvider.enterprises.length * 71,
-      width: 400,
-      child: ListView.builder(
-        itemCount: loginProvider.enterpriseCount,
-        itemBuilder: (ctx, index) {
-          return Column(
-            children: [
-              Card(
-                shape: RoundedRectangleBorder(
-                  side: BorderSide(
-                    width: 2,
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(10),
-                  ),
-                ),
-                elevation: 6,
-                // color: Theme.of(context).colorScheme.primary,
-                child: ListTile(
-                  title: Text(
-                    loginProvider.enterprises[index].nomeEmpresa,
-                    style: TextStyle(
-                      fontFamily: 'OpenSans',
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
-                  ),
-                  leading: Text(
-                    loginProvider.enterprises[index].codigoEmpresa.toString(),
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontFamily: 'OpenSans',
-                    ),
-                  ),
-                  onTap: () {
-                    productProvider.codigoInternoEmpresa =
-                        loginProvider.enterprises[index].codigoInternoEmpresa;
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        children: [
+          Text(
+            'Selecione a empresa',
+            style: Theme.of(context).textTheme.headline6,
+          ),
+          const SizedBox(height: 10),
+          Container(
+            height: MediaQuery.of(context).size.height * 0.7,
+            width: MediaQuery.of(context).size.width,
+            child: ListView.builder(
+              itemCount: loginProvider.enterpriseCount,
+              itemBuilder: (ctx, index) {
+                return Column(
+                  children: [
+                    Card(
+                      shape: RoundedRectangleBorder(
+                        side: BorderSide(
+                          width: 2,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10),
+                        ),
+                      ),
+                      elevation: 6,
+                      // color: Theme.of(context).colorScheme.primary,
+                      child: ListTile(
+                        title: Text(
+                          loginProvider.enterprises[index].nomeEmpresa,
+                          style: TextStyle(
+                            fontFamily: 'OpenSans',
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                        leading: Text(
+                          loginProvider.enterprises[index].codigoEmpresa
+                              .toString(),
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontFamily: 'OpenSans',
+                          ),
+                        ),
+                        onTap: () {
+                          productProvider.codigoInternoEmpresa = loginProvider
+                              .enterprises[index].codigoInternoEmpresa;
 
-                    Navigator.of(context).pushNamed(
-                      APPROUTES.INVENTORY,
-                      arguments: loginProvider.enterprises[index],
-                    );
-                  },
-                ),
-              ),
-            ],
-          );
-        },
+                          Navigator.of(context).pushNamed(
+                            APPROUTES.INVENTORY,
+                            arguments: loginProvider.enterprises[index],
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                );
+              },
+            ),
+          ),
+        ],
       ),
     );
   }

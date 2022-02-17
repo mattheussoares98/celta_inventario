@@ -11,7 +11,7 @@ class CountingItems extends StatelessWidget {
     CountingProvider countingProvider = Provider.of(context, listen: true);
 
     return SizedBox(
-      height: countingProvider.countings[0].obsInvCont.length > 30 ? 200 : 100,
+      height: countingProvider.countings[0].obsInvCont.length > 30 ? 400 : 100,
       child: ListView.builder(
         itemCount: countingProvider.countingsQuantity,
         itemBuilder: (ctx, index) {
@@ -22,6 +22,7 @@ class CountingItems extends StatelessWidget {
                 arguments: countingProvider.countings[index],
               );
             },
+            //sem esse Card, não funciona o gesture detector no campo inteiro
             child: Card(
               shape: RoundedRectangleBorder(
                 side: BorderSide(

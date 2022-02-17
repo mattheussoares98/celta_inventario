@@ -24,6 +24,8 @@ class LoginProvider with ChangeNotifier {
       loginErrorMessage = 'Usuário não encontrado!';
     } else if (error.contains('senha está incorreta')) {
       loginErrorMessage = 'A senha está incorreta!';
+    } else if (error.contains('Connection timed out')) {
+      loginErrorMessage = 'Time out! Tente novamente!';
     } else if (error.contains('Connection')) {
       loginErrorMessage =
           'O servidor não foi encontrado. Verifique a sua internet';
@@ -78,19 +80,10 @@ class LoginProvider with ChangeNotifier {
         ),
       );
 
-      print('response.reasonPhrase ${response.reasonPhrase}');
-
-      // caso não coloque essa condição, ocorre erro ao tentar fazer o decode e não aparece a mensagem de erro no app
-      // if (response.reasonPhrase == 'Not Found') {
-      //   print('caiu aqui?');
-      //   loginErrorMessage = 'Servidor não encontrado';
-      //   // return;
-      // }
+      print('response.reasonPhrase ${response.statusCode}');
+      print('responseOfUser ${response.body}');
 
       var responseOfUser = json.decode(response.body);
-
-      // String responseInString = responseOfUser.toString();
-      // loginErrorMessage = responseInString;
 
       //transformando o XML em String pra pegar a identidade do usuário
       final myTransformer = Xml2Json();
@@ -104,14 +97,13 @@ class LoginProvider with ChangeNotifier {
       }
 
       if (response.statusCode == 200) {
-        print('certo?');
         _auth = true;
       } else {
+        print('Erro no login');
+        print(response.body);
         error = response.body;
         errorMessage(error);
       }
-
-      print(response.statusCode);
     } catch (e) {
       print('deu erro no login: $e');
       error = e.toString();

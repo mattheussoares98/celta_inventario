@@ -1,5 +1,4 @@
 import 'package:celta_inventario/provider/login_provider.dart';
-import 'package:celta_inventario/utils/db_util.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -22,7 +21,7 @@ class _AuthFormState extends State<AuthForm> {
 
   bool _isLoading = false;
 
-  errorMessage(String error) {
+  showErrorMessage(String error) {
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -91,7 +90,7 @@ class _AuthFormState extends State<AuthForm> {
         e;
       } finally {
         if (_loginProvider.loginErrorMessage != '') {
-          errorMessage(_loginProvider.loginErrorMessage);
+          showErrorMessage(_loginProvider.loginErrorMessage);
         }
         setState(() {
           _isLoading = false;

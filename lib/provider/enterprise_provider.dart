@@ -41,7 +41,6 @@ class EnterpriseProvider with ChangeNotifier {
           http.Request('POST', Uri.parse('$baseUrl/Enterprise/GetEnterprises'));
       request.body = json.encode(userIdentity);
       request.headers.addAll(headers);
-
       http.StreamedResponse response = await request.send();
       String resultAsString = await response.stream.bytesToString();
       List resultAsList = json.decode(resultAsString);
@@ -58,6 +57,7 @@ class EnterpriseProvider with ChangeNotifier {
         );
       });
     } catch (e) {
+      print('erro na empresa: $e');
       if (e.toString().contains('No route')) {
         enterpriseErrorMessage =
             'O servidor não foi encontrado. Verifique a sua internet!';
@@ -67,7 +67,6 @@ class EnterpriseProvider with ChangeNotifier {
         enterpriseErrorMessage =
             'O servidor não foi encontrado. Verifique a sua internet!';
       }
-      print('erro na empresa: $e');
     } finally {
       isChargingEnterprises = false;
     }

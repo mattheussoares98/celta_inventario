@@ -59,6 +59,7 @@ class _ProductItemState extends State<ProductItem> {
   Widget build(BuildContext context) {
     ProductProvider productProvider = Provider.of(context, listen: true);
     QuantityProvider quantityProvider = Provider.of(context, listen: true);
+    print(productProvider.products[0].productName.length);
 
     return Column(
       children: [

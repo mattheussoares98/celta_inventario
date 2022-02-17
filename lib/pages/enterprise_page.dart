@@ -33,14 +33,66 @@ class EnterprisePageState extends State<EnterprisePage> {
       );
     }
 
+    enterpriseProvider.enterpriseErrorMessage != '' ? tryAgain() : null;
+
     isLoaded = true;
+  }
+
+  tryAgain() {
+    LoginProvider loginProvider = Provider.of(
+      context,
+      listen: true,
+    );
+    EnterpriseProvider enterpriseProvider = Provider.of(
+      context,
+      listen: true,
+    );
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        ErrorMessage(text: enterpriseProvider.enterpriseErrorMessage),
+        TextButton(
+          onPressed: () {
+            setState(() {
+              enterpriseProvider.getEnterprises(
+                userIdentity: loginProvider.userIdentity!,
+                baseUrl: loginProvider.userBaseUrl,
+              );
+            });
+          },
+          child: const Text('Tentar novamente'),
+        ),
+      ],
+    );
+  }
+
+  Padding consultingEnterprises() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: const [
+            Text(
+              'Consultando empresas',
+              style: TextStyle(
+                fontSize: 20,
+              ),
+            ),
+            SizedBox(height: 20),
+            CircularProgressIndicator(),
+          ],
+        ),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    LoginProvider loginProvider = Provider.of(context, listen: false);
     EnterpriseProvider enterpriseProvider =
         Provider.of<EnterpriseProvider>(context, listen: true);
+
+    print(enterpriseProvider.enterpriseErrorMessage);
 
     return Scaffold(
       appBar: AppBar(
@@ -48,59 +100,11 @@ class EnterprisePageState extends State<EnterprisePage> {
           'EMPRESAS',
         ),
       ),
-      body: Column(
-        mainAxisAlignment: (!enterpriseProvider.isChargingEnterprises &&
-                enterpriseProvider.enterpriseCount > 0)
-            ? MainAxisAlignment.start
-            : MainAxisAlignment.center,
-        children: [
-          if (enterpriseProvider.isChargingEnterprises)
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Center(
-                child: Column(
-                  children: const [
-                    Text(
-                      'Consultando empresas',
-                      style: TextStyle(
-                        fontSize: 20,
-                      ),
-                    ),
-                    SizedBox(height: 20),
-                    CircularProgressIndicator(),
-                  ],
-                ),
-              ),
-            ),
-          if (enterpriseProvider.enterpriseErrorMessage != '')
-            Column(
-              children: [
-                ErrorMessage(text: enterpriseProvider.enterpriseErrorMessage),
-                TextButton(
-                  onPressed: () {
-                    setState(() {
-                      enterpriseProvider.getEnterprises(
-                        userIdentity: loginProvider.userIdentity!,
-                        baseUrl: loginProvider.userBaseUrl,
-                      );
-                    });
-                  },
-                  child: const Text('Tentar novamente'),
-                ),
-              ],
-            ),
-          if (!enterpriseProvider.isChargingEnterprises &&
-              enterpriseProvider.enterpriseCount > 0)
-            Padding(
-              padding: EdgeInsets.all(15.0),
-              child: Text(
-                'Selecione a empresa',
-                style: Theme.of(context).textTheme.headline6,
-              ),
-            ),
-          const EnterpriseWidget(),
-        ],
-      ),
+      body: enterpriseProvider.isChargingEnterprises
+          ? consultingEnterprises()
+          : enterpriseProvider.enterpriseErrorMessage != ''
+              ? tryAgain()
+              : EnterpriseWidget(),
     );
   }
 }
