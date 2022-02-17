@@ -1,6 +1,7 @@
 import 'package:celta_inventario/provider/login_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthForm extends StatefulWidget {
   final GlobalKey<FormState> formKey;
@@ -11,6 +12,9 @@ class AuthForm extends StatefulWidget {
   @override
   State<AuthForm> createState() => _AuthFormState();
 }
+
+TextEditingController _urlController = TextEditingController();
+TextEditingController _userController = TextEditingController();
 
 class _AuthFormState extends State<AuthForm> {
   final Map<String, String> _data = {
@@ -48,19 +52,35 @@ class _AuthFormState extends State<AuthForm> {
     _urlFocusNode.dispose();
   }
 
+  _restore() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _urlController.text = prefs.getString('url')!;
+      _userController.text = prefs.getString('user')!;
+    });
+  }
+
   @override
   void didChangeDependencies() async {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
     LoginProvider loginProvider = Provider.of(context, listen: true);
-    if (!isLoaded) {
-      await loginProvider.loadUrl();
 
-      _data['url'] = loginProvider.userBaseUrl!;
+    if (!isLoaded) {
+      await _restore();
+      // await loginProvider.loadUrl();
+
+      // _data['url'] = _urlController.text;
     }
     setState(() {
       isLoaded = true;
     });
+  }
+
+  _saveUserAndUrl() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('url', _urlController.text);
+    await prefs.setString('user', _userController.text);
   }
 
   @override
@@ -70,7 +90,6 @@ class _AuthFormState extends State<AuthForm> {
 
     _submit() async {
       bool isValid = widget.formKey.currentState!.validate();
-      await _loginProvider.loadUrl();
 
       if (!isValid) {
         return;
@@ -80,148 +99,152 @@ class _AuthFormState extends State<AuthForm> {
         _isLoading = true;
       });
 
-      try {
-        await _loginProvider.login(
-          user: _data['user']!,
-          password: _data['password']!,
-          baseUrl: _data['url'],
-        );
-      } catch (e) {
-        e;
-      } finally {
-        if (_loginProvider.loginErrorMessage != '') {
-          showErrorMessage(_loginProvider.loginErrorMessage);
-        }
-        setState(() {
-          _isLoading = false;
-          if (_loginProvider.isAuth) {
-            _data['password'] = '';
-          }
-        });
+      await _saveUserAndUrl();
+
+      await _loginProvider.login(
+        user: _userController.text,
+        password: _data['password']!,
+        baseUrl: _urlController.text,
+      );
+
+      if (_loginProvider.loginErrorMessage != '') {
+        showErrorMessage(_loginProvider.loginErrorMessage);
       }
+      setState(() {
+        _isLoading = false;
+        if (_loginProvider.isAuth) {
+          _data['password'] = '';
+        }
+      });
+
+      _loginProvider.userBaseUrl = _urlController.text;
     }
 
-    return !isLoaded
-        ? Card()
-        : Card(
-            margin: const EdgeInsets.all(20),
-            color: Colors.white,
-            child: Container(
-              padding: const EdgeInsets.all(15),
-              child: Form(
-                key: widget.formKey,
-                child: Column(
-                  children: [
-                    TextFormField(
-                      focusNode: _userFocusNode,
-                      onFieldSubmitted: (_) => FocusScope.of(context)
-                          .requestFocus(_passwordFocusNode),
-                      validator: (_name) {
-                        _name = _data['user'];
-                        if (_data['user']!.trim().isEmpty) {
-                          return 'Preencha o nome';
-                        }
-                        return null;
-                      },
-                      initialValue: _data['user'],
-                      onChanged: (value) => _data['user'] = value,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontFamily: 'OpenSans',
-                        decorationColor: Colors.black,
-                        color: Colors.black,
-                        fontSize: 20,
-                      ),
-                      decoration: const InputDecoration(
-                        labelStyle: TextStyle(
-                          color: Colors.black,
-                        ),
-                        labelText: 'Usuário',
-                        counterStyle: TextStyle(
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
-                    TextFormField(
-                      focusNode: _passwordFocusNode,
-                      onFieldSubmitted: (_) =>
-                          FocusScope.of(context).requestFocus(_urlFocusNode),
-                      style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontFamily: 'OpenSans',
-                        decorationColor: Colors.black,
-                        color: Colors.black,
-                        fontSize: 20,
-                      ),
-                      validator: (_name) {
-                        _name = _data['password'];
-                        if (_data['password']!.trim().isEmpty) {
-                          return 'Preencha a senha';
-                        }
-                        return null;
-                      },
-                      initialValue: _data['password'],
-                      onChanged: (value) => _data['password'] = value,
-                      decoration: const InputDecoration(
-                        labelText: 'Senha',
-                        labelStyle: TextStyle(
-                          color: Colors.black,
-                        ),
-                      ),
-                      obscureText: true,
-                    ),
-                    TextFormField(
-                      onFieldSubmitted: (_) => _submit(),
-                      focusNode: _urlFocusNode,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontFamily: 'OpenSans',
-                        decorationColor: Colors.black,
-                        color: Colors.black,
-                        fontSize: 20,
-                      ),
-                      onChanged: (value) => _data['url'] = value,
-                      initialValue: !isLoaded ? '' : _loginProvider.userBaseUrl,
-                      validator: (_url) {
-                        _url = _data['url'];
-                        if (_data['url']!.trim().isEmpty) {
-                          return 'Preencha a url';
-                        } else if (!_data['url']!.contains('http') ||
-                            !_data['url']!.contains('//') ||
-                            !_data['url']!.contains(':')) {
-                          return 'URL inválida';
-                        }
-                        return null;
-                      },
-                      decoration: const InputDecoration(
-                        labelText: 'URL',
-                        labelStyle: TextStyle(
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    ElevatedButton(
-                      onPressed: _isLoading ? null : _submit,
-                      child: _isLoading
-                          ? Container(
-                              height: 28,
-                              width: 28,
-                              child: const CircularProgressIndicator(),
-                            )
-                          : Text(
-                              'Login',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontFamily: 'OpenSans',
-                                color: Theme.of(context).colorScheme.secondary,
-                              ),
-                            ),
-                    ),
-                  ],
+    return Card(
+      margin: const EdgeInsets.all(20),
+      color: Colors.white,
+      child: Container(
+        padding: const EdgeInsets.all(15),
+        child: Form(
+          key: widget.formKey,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextFormField(
+                enabled: _isLoading ? false : true,
+                controller: _userController,
+                focusNode: _userFocusNode,
+                onFieldSubmitted: (_) =>
+                    FocusScope.of(context).requestFocus(_passwordFocusNode),
+                validator: (_name) {
+                  _name = _userController.text;
+                  if (_userController.text.trim().isEmpty) {
+                    return 'Preencha o nome';
+                  }
+                  return null;
+                },
+                // initialValue: _data['user'],
+                // onChanged: (value) => _userController.text = value,
+                style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  fontFamily: 'OpenSans',
+                  decorationColor: Colors.black,
+                  color: Colors.black,
+                  fontSize: 20,
+                ),
+                decoration: const InputDecoration(
+                  labelStyle: TextStyle(
+                    color: Colors.black,
+                  ),
+                  labelText: 'Usuário',
+                  counterStyle: TextStyle(
+                    color: Colors.black,
+                  ),
                 ),
               ),
-            ),
-          );
+              TextFormField(
+                enabled: _isLoading ? false : true,
+                focusNode: _passwordFocusNode,
+                onFieldSubmitted: (_) =>
+                    FocusScope.of(context).requestFocus(_urlFocusNode),
+                style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  fontFamily: 'OpenSans',
+                  decorationColor: Colors.black,
+                  color: Colors.black,
+                  fontSize: 20,
+                ),
+                validator: (_name) {
+                  _name = _data['password'];
+                  if (_data['password']!.trim().isEmpty) {
+                    return 'Preencha a senha';
+                  }
+                  return null;
+                },
+                // initialValue: _data['password'],
+                onChanged: (value) => _data['password'] = value,
+                decoration: const InputDecoration(
+                  labelText: 'Senha',
+                  labelStyle: TextStyle(
+                    color: Colors.black,
+                  ),
+                ),
+                obscureText: true,
+              ),
+              TextFormField(
+                enabled: _isLoading ? false : true,
+                controller: _urlController,
+                onFieldSubmitted: (_) => _submit(),
+                focusNode: _urlFocusNode,
+                style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  fontFamily: 'OpenSans',
+                  decorationColor: Colors.black,
+                  color: Colors.black,
+                  fontSize: 20,
+                ),
+                // onChanged: (value) => _urlController.text = value,
+                // initialValue: !isLoaded ? '' : _loginProvider.userBaseUrl,
+                validator: (_url) {
+                  _url = _urlController.text;
+                  if (_urlController.text.trim().isEmpty) {
+                    return 'Preencha a url';
+                  } else if (!_urlController.text.contains('http') ||
+                      !_urlController.text.contains('//') ||
+                      !_urlController.text.contains(':')) {
+                    return 'URL inválida';
+                  }
+                  return null;
+                },
+                decoration: const InputDecoration(
+                  labelText: 'URL',
+                  labelStyle: TextStyle(
+                    color: Colors.black,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: _isLoading ? null : _submit,
+                child: _isLoading
+                    ? Container(
+                        height: 28,
+                        width: 28,
+                        child: const CircularProgressIndicator(),
+                      )
+                    : Text(
+                        'Login',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'OpenSans',
+                          color: Theme.of(context).colorScheme.secondary,
+                        ),
+                      ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

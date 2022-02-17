@@ -48,21 +48,21 @@ class LoginProvider with ChangeNotifier {
 
   String? userBaseUrl;
 
-  Future<void> loadUrl() async {
-    final url = await DbUtil.getData('url');
+  // Future<void> loadUrl() async {
+  //   // final url = await DbUtil.getData('url');
 
-    //ele só tenta atribuir um valor ao userBaseUrl caso o banco de dados local já tenha sido criado
-    //caso não faça essa condição, ocorrerá erro no app logo que instalar porque o banco de dados ainda não foi criado e o app tenta atribuir um valor do banco de dados no userBaseUrl
-    if (url.isNotEmpty) {
-      userBaseUrl = url[0]['url'].toString();
-    } else {
-      //caso o url esteja vazio, significa que o banco de dados ainda não foi criado. Ou seja, ainda não fez o login pela primeira vez, pois é nesse momento que cria o banco de dados
-      //no login, precisa ter um valor definido pro userBaseUrl, pra não tentar atribuir um valor nulo ao TextFormField
-      userBaseUrl = '';
-    }
+  //   //ele só tenta atribuir um valor ao userBaseUrl caso o banco de dados local já tenha sido criado
+  //   //caso não faça essa condição, ocorrerá erro no app logo que instalar porque o banco de dados ainda não foi criado e o app tenta atribuir um valor do banco de dados no userBaseUrl
+  //   // if (url.isNotEmpty) {
+  //   //   userBaseUrl = url[0]['url'].toString();
+  //   // } else {
+  //   //   //caso o url esteja vazio, significa que o banco de dados ainda não foi criado. Ou seja, ainda não fez o login pela primeira vez, pois é nesse momento que cria o banco de dados
+  //   //   //no login, precisa ter um valor definido pro userBaseUrl, pra não tentar atribuir um valor nulo ao TextFormField
+  //   //   userBaseUrl = '';
+  //   // }
 
-    notifyListeners();
-  }
+  //   notifyListeners();
+  // }
 
   login({
     String? user,
@@ -109,12 +109,12 @@ class LoginProvider with ChangeNotifier {
       error = e.toString();
       errorMessage(error);
     } finally {
-      await DbUtil.insert('url', {
-        'id': '1',
-        'url': baseUrl!,
-      });
+      // await DbUtil.insert('url', {
+      //   'id': '1',
+      //   'url': baseUrl!,
+      // });
 
-      await loadUrl();
+      // await loadUrl();
     }
 
     notifyListeners();
