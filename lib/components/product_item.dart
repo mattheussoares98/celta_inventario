@@ -40,7 +40,6 @@ class _ProductItemState extends State<ProductItem> {
 
   @override
   void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
     super.didChangeDependencies();
 
     ProductProvider productProvider = Provider.of(context, listen: true);

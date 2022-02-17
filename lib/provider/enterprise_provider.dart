@@ -28,8 +28,8 @@ class EnterpriseProvider with ChangeNotifier {
     String? baseUrl,
   }) async {
     enterpriseErrorMessage = '';
-    //se não criar essa variável pra usar dentro do erro, não da certo tratar o erro e atribuir à variável enterpriseErrorMessage
     isChargingEnterprises = true;
+    notifyListeners();
 
     if (_enterprises.isNotEmpty) {
       _enterprises.clear();

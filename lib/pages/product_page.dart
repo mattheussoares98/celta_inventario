@@ -62,10 +62,6 @@ class _ProductPageState extends State<ProductPage> {
   bool isLoadingEanAndPlu = false;
   bool isLoadingEan = false;
 
-  _clearTextController() {
-    _controllerProduct.clear();
-  }
-
   @override
   Widget build(BuildContext context) {
     final countings = ModalRoute.of(context)!.settings.arguments as Countings;
@@ -126,7 +122,6 @@ class _ProductPageState extends State<ProductPage> {
                             color: Theme.of(context).colorScheme.primary,
                           ),
                           border: OutlineInputBorder(
-                            // borderRadius: BorderRadius.circular(25.0),
                             borderSide: BorderSide(
                               width: 2,
                               style: BorderStyle.solid,

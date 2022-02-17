@@ -44,7 +44,7 @@ class _AuthFormState extends State<AuthForm> {
   final _passwordFocusNode = FocusNode();
   final _urlFocusNode = FocusNode();
 
-  @override //essa função serve para liberar qualquer tipo de memória que esteja sendo utilizado por esses FocusNode e Listner (precisou ser criado pra conseguir carregar a imagem quando trocasse o foco)
+  @override //essa função serve para liberar qualquer tipo de memória que esteja sendo utilizado por esses FocusNode e Listner
   void dispose() {
     super.dispose();
     _userFocusNode.dispose();
@@ -62,9 +62,7 @@ class _AuthFormState extends State<AuthForm> {
 
   @override
   void didChangeDependencies() async {
-    // TODO: implement didChangeDependencies
     super.didChangeDependencies();
-    LoginProvider loginProvider = Provider.of(context, listen: true);
 
     if (!isLoaded) {
       await _restoreUserAndUrl();
@@ -176,7 +174,6 @@ class _AuthFormState extends State<AuthForm> {
                   }
                   return null;
                 },
-                // initialValue: _data['password'],
                 onChanged: (value) => _data['password'] = value,
                 decoration: const InputDecoration(
                   labelText: 'Senha',

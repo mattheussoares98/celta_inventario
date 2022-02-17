@@ -17,16 +17,14 @@ class EnterprisePageState extends State<EnterprisePage> {
 
   @override
   void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
     super.didChangeDependencies();
     EnterpriseProvider enterpriseProvider = Provider.of(
       context,
       listen: true,
     );
+    LoginProvider loginProvider = Provider.of(context, listen: false);
 
     if (!isLoaded) {
-      LoginProvider loginProvider = Provider.of(context, listen: false);
-
       enterpriseProvider.getEnterprises(
         userIdentity: loginProvider.userIdentity!,
         baseUrl: loginProvider.userBaseUrl,

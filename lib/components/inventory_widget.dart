@@ -21,7 +21,6 @@ class _InventoryWidgetState extends State<InventoryWidget> {
   bool isLoaded = false;
   @override
   void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
     super.didChangeDependencies();
 
     LoginProvider loginProvider = Provider.of(context, listen: true);
