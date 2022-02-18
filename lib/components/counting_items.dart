@@ -10,88 +10,98 @@ class CountingItems extends StatelessWidget {
   Widget build(BuildContext context) {
     CountingProvider countingProvider = Provider.of(context, listen: true);
 
+    print(countingProvider.countings[0].obsInvCont);
+
     return SizedBox(
-      height: countingProvider.countings[0].obsInvCont.length > 30 ? 400 : 100,
-      child: ListView.builder(
-        itemCount: countingProvider.countingsQuantity,
-        itemBuilder: (ctx, index) {
-          return GestureDetector(
-            onTap: () {
-              Navigator.of(context).pushNamed(
-                APPROUTES.PRODUCTS,
-                arguments: countingProvider.countings[index],
-              );
-            },
-            //sem esse Card, não funciona o gesture detector no campo inteiro
-            child: Card(
-              shape: RoundedRectangleBorder(
-                side: BorderSide(
-                  width: 2,
-                  color: Theme.of(context).primaryColor,
-                ),
-                borderRadius: BorderRadius.all(Radius.circular(10)),
-              ),
-              elevation: 10,
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Text(
-                          'Número da contagem: ',
-                          style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.black,
-                            fontFamily: 'OpenSans',
-                          ),
-                        ),
-                        Text(
-                          countingProvider
-                              .countings[index].numeroContagemInvCont
-                              .toString(),
-                          style: TextStyle(
-                            fontFamily: 'OpenSans',
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ],
+      height: countingProvider.countings.isNotEmpty ? 400 : 100,
+      // : 100,
+      child: countingProvider.countings.isEmpty
+          ? Container()
+          : ListView.builder(
+              itemCount: countingProvider.countingsQuantity,
+              itemBuilder: (ctx, index) {
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).pushNamed(
+                      APPROUTES.PRODUCTS,
+                      arguments: countingProvider.countings[index],
+                    );
+                  },
+                  //sem esse Card, não funciona o gesture detector no campo inteiro
+                  child: Card(
+                    shape: RoundedRectangleBorder(
+                      side: BorderSide(
+                        width: 2,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
                     ),
-                    const SizedBox(height: 10),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Observação: ',
-                          style: TextStyle(
-                            fontFamily: 'OpenSans',
-                            fontSize: 20,
-                            color: Colors.black,
+                    elevation: 10,
+                    child: Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Text(
+                                'Número da contagem: ',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.black,
+                                  fontFamily: 'OpenSans',
+                                ),
+                              ),
+                              Text(
+                                countingProvider
+                                    .countings[index].numeroContagemInvCont
+                                    .toString(),
+                                style: TextStyle(
+                                  fontFamily: 'OpenSans',
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                        Expanded(
-                          child: Text(
-                            countingProvider.countings[index].obsInvCont,
-                            style: TextStyle(
-                              fontFamily: 'OpenSans',
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
-                            ),
+                          const SizedBox(height: 10),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Observação: ',
+                                style: TextStyle(
+                                  fontFamily: 'OpenSans',
+                                  fontSize: 20,
+                                  color: Colors.black,
+                                ),
+                              ),
+                              Expanded(
+                                child: Text(
+                                  countingProvider
+                                              .countings[index].obsInvCont ==
+                                          null
+                                      ? 'Não há observações'
+                                      : countingProvider
+                                          .countings[index].obsInvCont,
+                                  style: TextStyle(
+                                    fontFamily: 'OpenSans',
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ],
-                ),
-              ),
+                  ),
+                );
+              },
             ),
-          );
-        },
-      ),
     );
   }
 }
