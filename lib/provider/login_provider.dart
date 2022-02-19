@@ -1,11 +1,10 @@
 import 'dart:convert';
+import 'package:celta_inventario/utils/user_identity.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:xml2json/xml2json.dart';
 
 class LoginProvider with ChangeNotifier {
-  String? userIdentity;
-
   bool _auth = false;
 
   bool get isAuth {
@@ -45,8 +44,6 @@ class LoginProvider with ChangeNotifier {
     }
   }
 
-  String? userBaseUrl;
-
   login({
     String? user,
     String? password,
@@ -63,9 +60,6 @@ class LoginProvider with ChangeNotifier {
         ),
       );
 
-      print('response.reasonPhrase ${response.statusCode}');
-      print('responseOfUser ${response.body}');
-
       var responseOfUser = json.decode(response.body);
 
       //transformando o XML em String pra pegar a identidade do usuário
@@ -76,7 +70,7 @@ class LoginProvider with ChangeNotifier {
         myTransformer.parse(responseOfUser[0]['CrossIdentity_Usuario']);
         String toParker = myTransformer.toParker();
         Map toParker2 = json.decode(toParker);
-        userIdentity = toParker2['string'];
+        UserIdentity.identity = toParker2['string'];
       }
 
       if (response.statusCode == 200) {

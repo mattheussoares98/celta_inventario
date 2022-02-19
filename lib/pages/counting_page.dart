@@ -1,4 +1,4 @@
-import 'package:celta_inventario/components/counting_widget.dart';
+import 'package:celta_inventario/components/count/counting_widget.dart';
 import 'package:celta_inventario/models/inventory.dart';
 import 'package:flutter/material.dart';
 

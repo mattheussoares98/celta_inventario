@@ -42,6 +42,8 @@ class CountingProvider with ChangeNotifier {
       final List responseInList = json.decode(responseInString);
       final Map responseInMap = responseInList.asMap();
 
+      print(responseInMap);
+
       responseInMap.forEach((id, data) {
         _countings.add(
           Countings(
@@ -49,7 +51,10 @@ class CountingProvider with ChangeNotifier {
             flagTipoContagemInvCont: data['FlagTipoContagem_InvCont'],
             codigoInternoInventario: data['CodigoInterno_Inventario'],
             numeroContagemInvCont: data['NumeroContagem_InvCont'],
-            obsInvCont: data['Obs_InvCont'],
+            obsInvCont: data['Obs_InvCont'] == null
+                ? 'Não há observações'
+                : data['Obs_InvCont'],
+            //as vezes a observação vem nula e se não faz isso, gera erro no app
           ),
         );
       });

@@ -14,6 +14,7 @@ import 'package:celta_inventario/provider/login_provider.dart';
 import 'package:celta_inventario/provider/product_provider.dart';
 import 'package:celta_inventario/provider/quantity_provider.dart';
 import 'package:celta_inventario/utils/app_routes.dart';
+import 'package:celta_inventario/utils/responsive_items.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -34,7 +35,7 @@ void main() {
           secondaryHeaderColor: Colors.black,
           backgroundColor: Colors.lightGreen[100],
           appBarTheme: ThemeData().appBarTheme.copyWith(
-                toolbarHeight: 65,
+                toolbarHeight: ResponsiveItems.appBarToolbarHeight,
                 backgroundColor: Colors.green,
                 centerTitle: true,
                 titleTextStyle: TextStyle(
@@ -58,7 +59,7 @@ void main() {
                   letterSpacing: 1,
                   fontWeight: FontWeight.bold,
                   color: Colors.black,
-                  fontSize: 40,
+                  fontSize: ResponsiveItems.headline6,
                   fontFamily: 'BebasNeue',
                 ),
                 bodyText1: TextStyle(

@@ -1,5 +1,5 @@
 import 'dart:math';
-import 'package:celta_inventario/components/auth_form.dart';
+import 'package:celta_inventario/components/login/auth_form.dart';
 import 'package:flutter/material.dart';
 
 class AuthPage extends StatefulWidget {

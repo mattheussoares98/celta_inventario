@@ -1,4 +1,5 @@
 import 'package:celta_inventario/provider/login_provider.dart';
+import 'package:celta_inventario/utils/base_url.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -112,7 +113,7 @@ class _AuthFormState extends State<AuthForm> {
         }
       });
 
-      _loginProvider.userBaseUrl = _urlController.text;
+      BaseUrl.url = _urlController.text;
     }
 
     return Card(

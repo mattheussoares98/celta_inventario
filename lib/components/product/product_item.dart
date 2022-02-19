@@ -1,8 +1,9 @@
-import 'package:celta_inventario/components/anull_quantity_bottom.dart';
-import 'package:celta_inventario/components/confirm_quantity_bottom.dart';
+import 'package:celta_inventario/components/product/anull_quantity_bottom.dart';
+import 'package:celta_inventario/components/product/confirm_quantity_bottom.dart';
 import 'package:celta_inventario/provider/product_provider.dart';
 import 'package:celta_inventario/provider/quantity_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 class ProductItem extends StatefulWidget {
@@ -22,6 +23,7 @@ class ProductItem extends StatefulWidget {
 
 class _ProductItemState extends State<ProductItem> {
   final GlobalKey<FormState> _formQuantity = GlobalKey<FormState>();
+  final TextEditingController _controller = TextEditingController();
 
   showErrorMessage(String error) {
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
@@ -78,31 +80,24 @@ class _ProductItemState extends State<ProductItem> {
               bottom: 10,
             ),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 15),
+                const SizedBox(height: 8),
                 FittedBox(
                   child: Row(
                     children: [
                       Text(
-                        'Nome: ',
-                        textAlign: TextAlign.start,
+                        productProvider.products[0].productName.substring(9),
                         style: TextStyle(
-                          fontSize: 20,
-                        ),
-                      ),
-                      Text(
-                        productProvider.products[0].productName,
-                        style: TextStyle(
-                          fontSize: 20,
+                          fontSize: 50,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                     ],
                   ),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 10),
                 Row(
+                  // mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
                       'PLU: ',
@@ -119,13 +114,13 @@ class _ProductItemState extends State<ProductItem> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 10),
                 Row(
                   children: [
                     Text(
                       'Quantidade contada: ',
                       style: TextStyle(
-                        fontSize: 20,
+                        fontSize: 25,
                       ),
                     ),
                     Text(
@@ -143,27 +138,17 @@ class _ProductItemState extends State<ProductItem> {
                     )
                   ],
                 ),
+                const SizedBox(height: 8),
                 Form(
                   key: _formQuantity,
                   child: Padding(
                     padding: const EdgeInsets.only(top: 10),
                     child: TextFormField(
+                      controller: _controller,
                       focusNode: _quantityFocusNode,
-                      maxLength: 4,
+                      inputFormatters: [LengthLimitingTextInputFormatter(5)],
                       enabled:
                           quantityProvider.isLoadingQuantity ? false : true,
-                      validator: (value) {
-                        if (value!.contains(',') ||
-                            value.contains('.') ||
-                            value.contains(' ')) {
-                          return 'Caracter inválido';
-                        } else if (value == '-') {
-                          return 'Digite a quantidade';
-                        } else if (value.isEmpty) {
-                          return 'Digite a quantidade';
-                        }
-                        return null;
-                      },
                       onChanged: (value) {
                         if (value.isEmpty || value == '-') {
                           value = '0';
@@ -207,28 +192,6 @@ class _ProductItemState extends State<ProductItem> {
                     ),
                   ),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    ConfirmQuantityBottom(
-                      controllerProduct: widget.controllerProduct,
-                      userQuantity: userQuantity,
-                      showErrorMessage: showErrorMessage,
-                      countingCode: widget.countingCode,
-                      productPackingCode:
-                          productProvider.products[0].codigoInternoProEmb,
-                      formQuantity: _formQuantity,
-                    ),
-                    AnullQuantityBottom(
-                      controllerProduct: widget.controllerProduct,
-                      showErrorMessage: showErrorMessage,
-                      countingCode: widget.countingCode,
-                      productPackingCode:
-                          productProvider.products[0].codigoInternoProEmb,
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 5),
                 FittedBox(
                   child: Text(
                     '*Para subtrair, digite uma quantidade negativa',
@@ -241,6 +204,45 @@ class _ProductItemState extends State<ProductItem> {
                 ),
               ],
             ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(5.0),
+          child: Row(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Flexible(
+                flex: 1,
+                child: Container(
+                  height: 100,
+                  width: double.infinity,
+                  child: AnullQuantityBottom(
+                    controllerProduct: widget.controllerProduct,
+                    showErrorMessage: showErrorMessage,
+                    countingCode: widget.countingCode,
+                    productPackingCode:
+                        productProvider.products[0].codigoInternoProEmb,
+                  ),
+                ),
+              ),
+              SizedBox(width: 8),
+              Flexible(
+                flex: 2,
+                child: Container(
+                  height: 100,
+                  width: double.infinity,
+                  child: ConfirmQuantityBottom(
+                    controllerProduct: widget.controllerProduct,
+                    userQuantity: userQuantity,
+                    showErrorMessage: showErrorMessage,
+                    countingCode: widget.countingCode,
+                    productPackingCode:
+                        productProvider.products[0].codigoInternoProEmb,
+                    formQuantity: _formQuantity,
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ],

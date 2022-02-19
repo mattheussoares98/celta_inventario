@@ -32,6 +32,7 @@ class QuantityProvider with ChangeNotifier {
       request.headers.addAll(headers);
 
       http.StreamedResponse response = await request.send();
+      print(response);
 
       if (response.statusCode == 200) {
         isConfirmedQuantity = true;

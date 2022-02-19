@@ -1,7 +1,8 @@
-import 'package:celta_inventario/components/enterprise_widget.dart';
+import 'package:celta_inventario/components/enterprise/enterprise_widget.dart';
 import 'package:celta_inventario/components/error_message.dart';
 import 'package:celta_inventario/provider/enterprise_provider.dart';
-import 'package:celta_inventario/provider/login_provider.dart';
+import 'package:celta_inventario/utils/base_url.dart';
+import 'package:celta_inventario/utils/user_identity.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -22,12 +23,11 @@ class EnterprisePageState extends State<EnterprisePage> {
       context,
       listen: true,
     );
-    LoginProvider loginProvider = Provider.of(context, listen: false);
 
     if (!isLoaded) {
       enterpriseProvider.getEnterprises(
-        userIdentity: loginProvider.userIdentity!,
-        baseUrl: loginProvider.userBaseUrl,
+        userIdentity: UserIdentity.identity,
+        baseUrl: BaseUrl.url,
       );
     }
 
@@ -37,10 +37,6 @@ class EnterprisePageState extends State<EnterprisePage> {
   }
 
   tryAgain() {
-    LoginProvider loginProvider = Provider.of(
-      context,
-      listen: true,
-    );
     EnterpriseProvider enterpriseProvider = Provider.of(
       context,
       listen: true,
@@ -53,8 +49,8 @@ class EnterprisePageState extends State<EnterprisePage> {
           onPressed: () {
             setState(() {
               enterpriseProvider.getEnterprises(
-                userIdentity: loginProvider.userIdentity!,
-                baseUrl: loginProvider.userBaseUrl,
+                userIdentity: UserIdentity.identity,
+                baseUrl: BaseUrl.url,
               );
             });
           },

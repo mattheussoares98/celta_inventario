@@ -13,7 +13,7 @@ class CountingItems extends StatelessWidget {
     print(countingProvider.countings[0].obsInvCont);
 
     return SizedBox(
-      height: countingProvider.countings.isNotEmpty ? 400 : 100,
+      height: 9000,
       // : 100,
       child: countingProvider.countings.isEmpty
           ? Container()
@@ -65,7 +65,7 @@ class CountingItems extends StatelessWidget {
                               ),
                             ],
                           ),
-                          const SizedBox(height: 10),
+                          const SizedBox(height: 8),
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -79,13 +79,8 @@ class CountingItems extends StatelessWidget {
                               ),
                               Expanded(
                                 child: Text(
-                                  countingProvider
-                                              .countings[index].obsInvCont ==
-                                          null
-                                      ? 'Não há observações'
-                                      : countingProvider
-                                          .countings[index].obsInvCont,
-                                  style: TextStyle(
+                                  countingProvider.countings[index].obsInvCont,
+                                  style: const TextStyle(
                                     fontFamily: 'OpenSans',
                                     fontSize: 20,
                                     fontWeight: FontWeight.bold,

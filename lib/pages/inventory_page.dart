@@ -1,4 +1,4 @@
-import 'package:celta_inventario/components/inventory_widget.dart';
+import 'package:celta_inventario/components/inventory/inventory_widget.dart';
 import 'package:celta_inventario/models/enterprise.dart';
 import 'package:flutter/material.dart';
 

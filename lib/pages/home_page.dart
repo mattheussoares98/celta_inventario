@@ -1,5 +1,6 @@
 import 'package:celta_inventario/provider/login_provider.dart';
 import 'package:celta_inventario/utils/app_routes.dart';
+import 'package:celta_inventario/utils/user_identity.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -15,8 +16,6 @@ bool carregando = false;
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    LoginProvider loginProvider = Provider.of(context, listen: true);
-
     InkWell imagem({
       String? imagePath,
       String? routine,
@@ -26,7 +25,7 @@ class _HomePageState extends State<HomePage> {
         onTap: () {
           Navigator.of(context).pushNamed(
             route!,
-            arguments: loginProvider.userIdentity!,
+            arguments: UserIdentity.identity,
           );
         },
         child: Card(

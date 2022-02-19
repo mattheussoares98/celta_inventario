@@ -1,3 +1,3 @@
 class BaseUrl {
-  String baseUrl = 'http://192.168.100.174:34603/api';
+  static String url = 'http://192.168.100.174:34603/api';
 }

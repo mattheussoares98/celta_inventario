@@ -1,6 +1,7 @@
-import 'package:celta_inventario/provider/login_provider.dart';
 import 'package:celta_inventario/provider/product_provider.dart';
 import 'package:celta_inventario/provider/quantity_provider.dart';
+import 'package:celta_inventario/utils/base_url.dart';
+import 'package:celta_inventario/utils/user_identity.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -30,9 +31,13 @@ class _ConfirmQuantityBottomState extends State<ConfirmQuantityBottom> {
   Widget build(BuildContext context) {
     QuantityProvider quantityProvider = Provider.of(context, listen: true);
     ProductProvider productProvider = Provider.of(context);
-    LoginProvider loginProvider = Provider.of(context);
 
     return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+      ),
       onPressed: quantityProvider.isLoadingQuantity
           ? null
           : () async {
@@ -53,8 +58,8 @@ class _ConfirmQuantityBottomState extends State<ConfirmQuantityBottom> {
                   productPackingCode:
                       productProvider.products[0].codigoInternoProEmb,
                   quantity: widget.userQuantity,
-                  baseUrl: loginProvider.userBaseUrl,
-                  userIdentity: loginProvider.userIdentity,
+                  baseUrl: BaseUrl.url,
+                  userIdentity: UserIdentity.identity,
                 );
               } catch (e) {
                 e;
@@ -87,33 +92,43 @@ class _ConfirmQuantityBottomState extends State<ConfirmQuantityBottom> {
               }
             },
       child: quantityProvider.isLoadingQuantity
-          ? Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                const Text(
-                  'CONFIRMANDO...',
-                  style: TextStyle(
-                    color: Colors.black,
+          ? FittedBox(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: const Text(
+                      '\nCONFIRMANDO...\n',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 40,
+                      ),
+                    ),
                   ),
-                ),
-                const SizedBox(width: 7),
-                Container(
-                  height: 25,
-                  width: 25,
-                  child: CircularProgressIndicator(
-                    color: Colors.black,
+                  const SizedBox(width: 7),
+                  Container(
+                    height: 25,
+                    width: 25,
+                    child: CircularProgressIndicator(
+                      color: Colors.black,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             )
           : Padding(
-              padding: const EdgeInsets.symmetric(vertical: 7),
-              child: Text(
-                'Somar quantidade',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'OpenSans',
-                  color: Theme.of(context).colorScheme.secondary,
+              padding: const EdgeInsets.all(8.0),
+              child: FittedBox(
+                child: Text(
+                  'CONFIRMAR\nQUANTIDADE',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'OpenSans',
+                    color: Theme.of(context).colorScheme.secondary,
+                    fontSize: 1000,
+                  ),
                 ),
               ),
             ),
