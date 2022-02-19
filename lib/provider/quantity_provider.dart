@@ -12,7 +12,7 @@ class QuantityProvider with ChangeNotifier {
   Future<void> entryQuantity({
     int? countingCode,
     int? productPackingCode,
-    int? quantity,
+    double? quantity,
     String? userIdentity,
     String? baseUrl,
   }) async {
@@ -32,7 +32,12 @@ class QuantityProvider with ChangeNotifier {
       request.headers.addAll(headers);
 
       http.StreamedResponse response = await request.send();
-      print(response);
+      String resultAsString = await response.stream.bytesToString();
+      print(resultAsString);
+
+      if (resultAsString.contains('não permite fracionamento')) {
+        quantityError = 'Esse produto não permite fracionamento!';
+      }
 
       if (response.statusCode == 200) {
         isConfirmedQuantity = true;

@@ -6,11 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ConfirmQuantityBottom extends StatefulWidget {
-  final GlobalKey<FormState> formQuantity;
   final int countingCode;
   final int productPackingCode;
   final Function(String) showErrorMessage;
-  final int userQuantity;
+  final double userQuantity;
   final TextEditingController controllerProduct;
   ConfirmQuantityBottom({
     required this.controllerProduct,
@@ -18,7 +17,6 @@ class ConfirmQuantityBottom extends StatefulWidget {
     required this.showErrorMessage,
     required this.countingCode,
     required this.productPackingCode,
-    required this.formQuantity,
     Key? key,
   }) : super(key: key);
 
@@ -41,13 +39,6 @@ class _ConfirmQuantityBottomState extends State<ConfirmQuantityBottom> {
       onPressed: quantityProvider.isLoadingQuantity
           ? null
           : () async {
-              bool isValid = widget.formQuantity.currentState!.validate();
-
-              if (!isValid || widget.userQuantity == 0) {
-                print('a quantidade está zerada');
-                return;
-              }
-
               setState(() {
                 quantityProvider.isLoadingQuantity = true;
               });
@@ -78,15 +69,21 @@ class _ConfirmQuantityBottomState extends State<ConfirmQuantityBottom> {
                 if (quantityProvider.isConfirmedQuantity) {
                   setState(() {
                     //pode ser que a quantidade venha como "null" na consulta do produto. Se vier como "null", precisa tratar conforme a seguir pra não dar bug. Ele verifica se veio como "null" e se sim, apresenta na numeração, "null" também
-                    productProvider.products[0].quantidadeInvContProEmb
-                                .toString() ==
-                            'null'
-                        ? productProvider.products[0].quantidadeInvContProEmb =
-                            widget.userQuantity.toDouble()
-                        : productProvider.products[0].quantidadeInvContProEmb =
-                            (productProvider
-                                    .products[0].quantidadeInvContProEmb +
-                                widget.userQuantity);
+                    if (productProvider.products[0].quantidadeInvContProEmb
+                            .toString() ==
+                        'null') {
+                      productProvider.products[0].quantidadeInvContProEmb =
+                          widget.userQuantity.toDouble();
+                    }
+
+                    if (quantityProvider.quantityError
+                        .contains('não permite fracionamento')) {
+                      return;
+                    } else {
+                      productProvider.products[0].quantidadeInvContProEmb =
+                          (productProvider.products[0].quantidadeInvContProEmb +
+                              widget.userQuantity);
+                    }
                   });
                 }
               }
@@ -121,7 +118,7 @@ class _ConfirmQuantityBottomState extends State<ConfirmQuantityBottom> {
               padding: const EdgeInsets.all(8.0),
               child: FittedBox(
                 child: Text(
-                  'CONFIRMAR\nQUANTIDADE',
+                  'SOMAR\nQUANTIDADE',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,

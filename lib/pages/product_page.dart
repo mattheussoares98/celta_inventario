@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import 'package:celta_inventario/components/product/product_item.dart';
+import 'package:celta_inventario/components/product/consulted_product.dart';
 import 'package:celta_inventario/models/countings.dart';
 import 'package:celta_inventario/provider/product_provider.dart';
 import 'package:celta_inventario/utils/base_url.dart';
@@ -260,7 +260,7 @@ class _ProductPageState extends State<ProductPage> {
               ),
               const SizedBox(height: 8),
               if (productProvider.products.isNotEmpty)
-                ProductItem(
+                ConsultedProduct(
                   controllerProduct: _controllerProduct,
                   countingCode: countings.codigoInternoInvCont,
                   productPackingCode: countings.numeroContagemInvCont,

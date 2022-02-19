@@ -6,11 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
-class ProductItem extends StatefulWidget {
+class ConsultedProduct extends StatefulWidget {
   final int countingCode;
   final int productPackingCode;
   final TextEditingController controllerProduct;
-  ProductItem({
+  ConsultedProduct({
     Key? key,
     required this.controllerProduct,
     required this.countingCode,
@@ -18,11 +18,10 @@ class ProductItem extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<ProductItem> createState() => _ProductItemState();
+  State<ConsultedProduct> createState() => _ConsultedProductState();
 }
 
-class _ProductItemState extends State<ProductItem> {
-  final GlobalKey<FormState> _formQuantity = GlobalKey<FormState>();
+class _ConsultedProductState extends State<ConsultedProduct> {
   final TextEditingController _controller = TextEditingController();
 
   showErrorMessage(String error) {
@@ -36,7 +35,7 @@ class _ProductItemState extends State<ProductItem> {
     );
   }
 
-  int userQuantity = 0;
+  double userQuantity = 0.0;
 
   final _quantityFocusNode = FocusNode();
 
@@ -139,57 +138,53 @@ class _ProductItemState extends State<ProductItem> {
                   ],
                 ),
                 const SizedBox(height: 8),
-                Form(
-                  key: _formQuantity,
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 10),
-                    child: TextFormField(
-                      controller: _controller,
-                      focusNode: _quantityFocusNode,
-                      inputFormatters: [LengthLimitingTextInputFormatter(5)],
-                      enabled:
-                          quantityProvider.isLoadingQuantity ? false : true,
-                      onChanged: (value) {
-                        if (value.isEmpty || value == '-') {
-                          value = '0';
-                        } else if (value.isNotEmpty && !value.endsWith('-')) {
-                          setState(() {
-                            //se não colocar no setState, não consegue perceber que veio a informação da outra tela e por isso não altera o valor
-                            userQuantity = int.parse(value);
-                          });
-                        }
-                      },
-                      decoration: InputDecoration(
-                        labelText: 'Digite a quantidade aqui',
-                        errorStyle: TextStyle(
-                          fontSize: 17,
-                        ),
-                        disabledBorder: OutlineInputBorder(
-                          // borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(
-                            style: BorderStyle.solid,
-                            width: 2,
-                            color: Theme.of(context).colorScheme.primary,
-                          ),
-                        ),
-                        border: OutlineInputBorder(
-                          // borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(
-                            style: BorderStyle.solid,
-                            width: 2,
-                            color: Theme.of(context).colorScheme.primary,
-                          ),
-                        ),
-                        labelStyle: TextStyle(
-                          fontStyle: FontStyle.italic,
+                Padding(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: TextField(
+                    controller: _controller,
+                    focusNode: _quantityFocusNode,
+                    inputFormatters: [LengthLimitingTextInputFormatter(5)],
+                    enabled: quantityProvider.isLoadingQuantity ? false : true,
+                    onChanged: (value) {
+                      if (value.isEmpty || value == '-') {
+                        value = '0';
+                      } else if (value.isNotEmpty && !value.endsWith('-')) {
+                        setState(() {
+                          //se não colocar no setState, não consegue perceber que veio a informação da outra tela e por isso não altera o valor
+                          userQuantity = double.parse(value);
+                        });
+                      }
+                    },
+                    decoration: InputDecoration(
+                      labelText: 'Digite a quantidade aqui',
+                      errorStyle: TextStyle(
+                        fontSize: 17,
+                      ),
+                      disabledBorder: OutlineInputBorder(
+                        // borderRadius: BorderRadius.circular(10),
+                        borderSide: BorderSide(
+                          style: BorderStyle.solid,
+                          width: 2,
                           color: Theme.of(context).colorScheme.primary,
                         ),
                       ),
-                      style: TextStyle(
-                        fontSize: 20,
+                      border: OutlineInputBorder(
+                        // borderRadius: BorderRadius.circular(10),
+                        borderSide: BorderSide(
+                          style: BorderStyle.solid,
+                          width: 2,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
                       ),
-                      keyboardType: TextInputType.number,
+                      labelStyle: TextStyle(
+                        fontStyle: FontStyle.italic,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
                     ),
+                    style: TextStyle(
+                      fontSize: 20,
+                    ),
+                    keyboardType: TextInputType.number,
                   ),
                 ),
                 FittedBox(
@@ -238,7 +233,6 @@ class _ProductItemState extends State<ProductItem> {
                     countingCode: widget.countingCode,
                     productPackingCode:
                         productProvider.products[0].codigoInternoProEmb,
-                    formQuantity: _formQuantity,
                   ),
                 ),
               ),
