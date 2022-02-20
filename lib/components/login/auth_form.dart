@@ -225,11 +225,6 @@ class _AuthFormState extends State<AuthForm> {
                       )
                     : Text(
                         'Login',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontFamily: 'OpenSans',
-                          color: Theme.of(context).colorScheme.secondary,
-                        ),
                       ),
               ),
             ],

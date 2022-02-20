@@ -5,13 +5,13 @@ import 'package:celta_inventario/utils/user_identity.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class ConfirmQuantityBottom extends StatefulWidget {
+class SubtractQuantityButton extends StatefulWidget {
   final int countingCode;
   final int productPackingCode;
   final Function(String) showErrorMessage;
-  final double userQuantity;
+  final String userQuantity;
   final TextEditingController controllerProduct;
-  ConfirmQuantityBottom({
+  SubtractQuantityButton({
     required this.controllerProduct,
     required this.userQuantity,
     required this.showErrorMessage,
@@ -21,34 +21,30 @@ class ConfirmQuantityBottom extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<ConfirmQuantityBottom> createState() => _ConfirmQuantityBottomState();
+  State<SubtractQuantityButton> createState() => _SubtractQuantityButtonState();
 }
 
-class _ConfirmQuantityBottomState extends State<ConfirmQuantityBottom> {
+class _SubtractQuantityButtonState extends State<SubtractQuantityButton> {
   @override
   Widget build(BuildContext context) {
     QuantityProvider quantityProvider = Provider.of(context, listen: true);
     ProductProvider productProvider = Provider.of(context);
 
     return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
-      ),
       onPressed: quantityProvider.isLoadingQuantity
           ? null
           : () async {
               setState(() {
                 quantityProvider.isLoadingQuantity = true;
               });
+              print('quantity ${widget.userQuantity}');
 
               try {
-                await quantityProvider.entryQuantity(
+                await quantityProvider.subtractQuantity(
                   countingCode: widget.countingCode,
                   productPackingCode:
                       productProvider.products[0].codigoInternoProEmb,
-                  quantity: widget.userQuantity,
+                  quantity: '${widget.userQuantity}',
                   baseUrl: BaseUrl.url,
                   userIdentity: UserIdentity.identity,
                 );
@@ -59,6 +55,8 @@ class _ConfirmQuantityBottomState extends State<ConfirmQuantityBottom> {
                 //pra confirmar a quantidade e por isso vai apresentar a mensagem de erro
                 if (quantityProvider.quantityError != '') {
                   widget.showErrorMessage(quantityProvider.quantityError);
+                  //se a quantidade for nula, nem prossegue
+                  return;
                 } else {
                   //como não houve erro, então pode apagar o texto que é digitado
                   //no campo de consulta do produto. Fiz passando o textEditingController
@@ -73,16 +71,17 @@ class _ConfirmQuantityBottomState extends State<ConfirmQuantityBottom> {
                             .toString() ==
                         'null') {
                       productProvider.products[0].quantidadeInvContProEmb =
-                          widget.userQuantity.toDouble();
+                          double.tryParse(widget.userQuantity);
                     }
-
+                    //se a mensagem de erro ou a quantidade for nula, o app não faz nada
                     if (quantityProvider.quantityError
-                        .contains('não permite fracionamento')) {
+                            .contains('não permite fracionamento') ||
+                        widget.userQuantity.isEmpty) {
                       return;
                     } else {
                       productProvider.products[0].quantidadeInvContProEmb =
-                          (productProvider.products[0].quantidadeInvContProEmb +
-                              widget.userQuantity);
+                          (productProvider.products[0].quantidadeInvContProEmb -
+                              double.tryParse(widget.userQuantity));
                     }
                   });
                 }
@@ -114,19 +113,14 @@ class _ConfirmQuantityBottomState extends State<ConfirmQuantityBottom> {
                 ],
               ),
             )
-          : Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: FittedBox(
-                child: Text(
-                  'SOMAR\nQUANTIDADE',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'OpenSans',
-                    color: Theme.of(context).colorScheme.secondary,
-                    fontSize: 1000,
-                  ),
-                ),
+          : Text(
+              'SUBTRAIR',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontFamily: 'OpenSans',
+                color: Theme.of(context).colorScheme.secondary,
+                fontSize: 12,
               ),
             ),
     );

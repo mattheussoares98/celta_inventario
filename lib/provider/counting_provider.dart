@@ -42,8 +42,6 @@ class CountingProvider with ChangeNotifier {
       final List responseInList = json.decode(responseInString);
       final Map responseInMap = responseInList.asMap();
 
-      print(responseInMap);
-
       responseInMap.forEach((id, data) {
         _countings.add(
           Countings(

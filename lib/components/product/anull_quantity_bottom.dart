@@ -70,9 +70,6 @@ class _AnullQuantityBottomState extends State<AnullQuantityBottom> {
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       primary: Colors.red,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(40),
-                      ),
                     ),
                     onPressed: () {
                       anullQuantity();
@@ -90,11 +87,6 @@ class _AnullQuantityBottomState extends State<AnullQuantityBottom> {
                   ),
                   SizedBox(width: 50),
                   ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(40),
-                      ),
-                    ),
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
@@ -123,9 +115,7 @@ class _AnullQuantityBottomState extends State<AnullQuantityBottom> {
 
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
+        primary: Colors.red,
       ),
       onPressed: quantityProvider.isLoadingQuantity
           ? null
@@ -157,7 +147,7 @@ class _AnullQuantityBottomState extends State<AnullQuantityBottom> {
             )
           : FittedBox(
               child: Text(
-                'ANULAR\nQUANTIDADE',
+                'ANULAR\nCONTAGEM',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,

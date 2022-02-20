@@ -10,8 +10,6 @@ class CountingItems extends StatelessWidget {
   Widget build(BuildContext context) {
     CountingProvider countingProvider = Provider.of(context, listen: true);
 
-    print(countingProvider.countings[0].obsInvCont);
-
     return SizedBox(
       height: 9000,
       // : 100,

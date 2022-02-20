@@ -14,6 +14,7 @@ import 'package:celta_inventario/provider/login_provider.dart';
 import 'package:celta_inventario/provider/product_provider.dart';
 import 'package:celta_inventario/provider/quantity_provider.dart';
 import 'package:celta_inventario/utils/app_routes.dart';
+import 'package:celta_inventario/utils/colors_theme.dart';
 import 'package:celta_inventario/utils/responsive_items.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -31,16 +32,19 @@ void main() {
       ],
       child: MaterialApp(
         theme: ThemeData(
-          primaryColor: Colors.green,
-          secondaryHeaderColor: Colors.black,
+          primaryColor: ColorsTheme.principalColor,
+          secondaryHeaderColor: ColorsTheme.text,
           backgroundColor: Colors.lightGreen[100],
           appBarTheme: ThemeData().appBarTheme.copyWith(
+                actionsIconTheme: IconThemeData(
+                  color: Colors.black,
+                ),
                 toolbarHeight: ResponsiveItems.appBarToolbarHeight,
-                backgroundColor: Colors.green,
+                backgroundColor: ColorsTheme.principalColor,
                 centerTitle: true,
                 titleTextStyle: TextStyle(
                   letterSpacing: 0.7,
-                  color: Colors.white,
+                  color: ColorsTheme.appBarText,
                   fontFamily: 'BebasNeue',
                   fontSize: 30,
                 ),
@@ -48,8 +52,14 @@ void main() {
           elevatedButtonTheme: ElevatedButtonThemeData(
             style: ElevatedButton.styleFrom(
               textStyle: TextStyle(
-                decorationColor: Colors.green,
-                color: Colors.green,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'OpenSans',
+                color: ColorsTheme.elevatedButtonTextColor,
+              ),
+              primary: ColorsTheme.principalColor,
+              onPrimary: ColorsTheme.text,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30),
               ),
             ),
           ),
@@ -58,20 +68,21 @@ void main() {
                 headline6: TextStyle(
                   letterSpacing: 1,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black,
+                  color: ColorsTheme.headline6,
                   fontSize: ResponsiveItems.headline6,
                   fontFamily: 'BebasNeue',
                 ),
                 bodyText1: TextStyle(
                   fontFamily: 'OpenSans',
-                  color: Colors.green,
+                  color: ColorsTheme.headline6,
                   fontWeight: FontWeight.bold,
                   fontSize: 20,
                 ),
               ),
           colorScheme: ThemeData().colorScheme.copyWith(
-                primary: Colors.green,
-                secondary: Colors.white,
+                primary: ColorsTheme.principalColor,
+                secondary: ColorsTheme.text,
+                onSecondary: ColorsTheme.principalColor,
               ),
         ),
         debugShowCheckedModeBanner: false,

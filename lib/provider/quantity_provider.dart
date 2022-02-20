@@ -9,10 +9,10 @@ class QuantityProvider with ChangeNotifier {
 
   bool isConfirmedQuantity = false;
 
-  Future<void> entryQuantity({
+  Future<void> addQuantity({
     int? countingCode,
     int? productPackingCode,
-    double? quantity,
+    String? quantity,
     String? userIdentity,
     String? baseUrl,
   }) async {
@@ -33,10 +33,58 @@ class QuantityProvider with ChangeNotifier {
 
       http.StreamedResponse response = await request.send();
       String resultAsString = await response.stream.bytesToString();
-      print(resultAsString);
+
+      print('response do quantityProvider: $resultAsString');
 
       if (resultAsString.contains('não permite fracionamento')) {
         quantityError = 'Esse produto não permite fracionamento!';
+      }
+
+      if (response.statusCode == 200) {
+        print('deu certo o quantity provider');
+        isConfirmedQuantity = true;
+      } else {
+        print('erro no quantityProvider');
+      }
+    } catch (e) {
+      quantityError =
+          'Erro para confirmar. Verifique a sua internet e tente novamente';
+    } finally {
+      isLoadingQuantity = false;
+    }
+    notifyListeners();
+  }
+
+  Future<void> subtractQuantity({
+    int? countingCode,
+    int? productPackingCode,
+    String? quantity,
+    String? userIdentity,
+    String? baseUrl,
+  }) async {
+    isLoadingQuantity = true;
+    quantityError = '';
+    notifyListeners();
+
+    try {
+      var headers = {'Content-Type': 'application/json'};
+      var request = http.Request(
+        'POST',
+        Uri.parse(
+          '$baseUrl/Inventory/EntryQuantity?countingCode=$countingCode&productPackingCode=$productPackingCode&quantity=-$quantity',
+        ),
+      );
+      request.body = json.encode(userIdentity);
+      request.headers.addAll(headers);
+
+      http.StreamedResponse response = await request.send();
+      String resultAsString = await response.stream.bytesToString();
+
+      print(resultAsString);
+
+      if (resultAsString.contains(
+          'A quantidade ajustada tornará a quantidade contada do produto negativa')) {
+        quantityError = 'A quantidade não pode ser negativa!';
       }
 
       if (response.statusCode == 200) {
@@ -79,7 +127,6 @@ class QuantityProvider with ChangeNotifier {
 
       if (response.statusCode == 200) {
         isConfirmedAnullQuantity = true;
-        print(await response.stream.bytesToString());
       } else {
         print(response.reasonPhrase);
       }

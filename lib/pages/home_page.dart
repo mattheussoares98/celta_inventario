@@ -1,5 +1,6 @@
 import 'package:celta_inventario/provider/login_provider.dart';
 import 'package:celta_inventario/utils/app_routes.dart';
+import 'package:celta_inventario/utils/colors_theme.dart';
 import 'package:celta_inventario/utils/user_identity.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -88,7 +89,10 @@ class _HomePageState extends State<HomePage> {
         // centerTitle: true,
         actions: [
           IconButton(
-            icon: const Icon(Icons.logout),
+            icon: const Icon(
+              Icons.logout,
+              color: ColorsTheme.text,
+            ),
             onPressed: () async {
               LoginProvider loginProvider =
                   Provider.of<LoginProvider>(context, listen: false);

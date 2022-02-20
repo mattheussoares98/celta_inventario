@@ -77,7 +77,6 @@ class LoginProvider with ChangeNotifier {
         _auth = true;
       } else {
         print('Erro no login');
-        print(response.body);
         error = response.body;
         errorMessage(error);
       }

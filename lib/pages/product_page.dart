@@ -4,6 +4,7 @@ import 'package:celta_inventario/components/product/consulted_product.dart';
 import 'package:celta_inventario/models/countings.dart';
 import 'package:celta_inventario/provider/product_provider.dart';
 import 'package:celta_inventario/utils/base_url.dart';
+import 'package:celta_inventario/utils/colors_theme.dart';
 import 'package:celta_inventario/utils/user_identity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -170,93 +171,106 @@ class _ProductPageState extends State<ProductPage> {
                   ],
                 ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Expanded(
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(),
-                      child: isLoadingEanOrPlu
-                          ? Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: FittedBox(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 5),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Expanded(
+                      child: ElevatedButton(
+                        child: isLoadingEanOrPlu
+                            ? Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: FittedBox(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Row(
+                                      children: [
+                                        Text(
+                                          'CONSULTANDO...',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontFamily: 'OpenSans',
+                                            fontSize: 100,
+                                          ),
+                                        ),
+                                        SizedBox(width: 20),
+                                        SizedBox(
+                                          height: 60,
+                                          width: 60,
+                                          child: CircularProgressIndicator(
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              )
+                            : Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 10),
+                                child: FittedBox(
                                   child: Row(
                                     children: [
                                       Text(
-                                        'CONSULTANDO...',
+                                        'CONSULTAR PRODUTO\nOU ACIONAR CÂMERA',
                                         style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontFamily: 'OpenSans',
-                                          fontSize: 100,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .secondary,
+                                          fontSize: 18,
                                         ),
                                       ),
-                                      SizedBox(width: 20),
-                                      SizedBox(
-                                        height: 60,
-                                        width: 60,
-                                        child: CircularProgressIndicator(
-                                          color: Colors.black,
-                                        ),
+                                      const SizedBox(width: 10),
+                                      Icon(
+                                        Icons.camera_alt_outlined,
+                                        size: 40,
                                       ),
                                     ],
                                   ),
                                 ),
                               ),
-                            )
-                          : Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: FittedBox(
-                                child: Text(
-                                  'CONSULTAR PRODUTO',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: 'OpenSans',
-                                    color:
-                                        Theme.of(context).colorScheme.secondary,
-                                    fontSize: 500,
-                                  ),
-                                ),
-                              ),
-                            ),
-                      onPressed: isLoadingEanOrPlu
-                          ? null
-                          : () async {
-                              if (_controllerProduct.text.isEmpty) {
-                                try {
-                                  await scanBarcodeNormal();
-                                  setState(() {
-                                    isLoadingEanOrPlu = true;
-                                  });
-                                } catch (e) {
-                                  e;
-                                } finally {
-                                  final countings = ModalRoute.of(context)!
-                                      .settings
-                                      .arguments as Countings;
-                                  await productProvider.getProductByEan(
-                                    ean: _scanBarcode,
-                                    enterpriseCode:
-                                        productProvider.codigoInternoEmpresa!,
-                                    inventoryProcessCode: productProvider
-                                        .codigoInternoInventario!,
-                                    inventoryCountingCode:
-                                        countings.codigoInternoInvCont,
-                                    userIdentity: UserIdentity.identity,
-                                    baseUrl: BaseUrl.url,
-                                  );
-                                  setState(() {
-                                    isLoadingEanOrPlu = false;
-                                  });
+                        onPressed: isLoadingEanOrPlu
+                            ? null
+                            : () async {
+                                if (_controllerProduct.text.isEmpty) {
+                                  try {
+                                    await scanBarcodeNormal();
+                                    setState(() {
+                                      isLoadingEanOrPlu = true;
+                                    });
+                                  } catch (e) {
+                                    e;
+                                  } finally {
+                                    final countings = ModalRoute.of(context)!
+                                        .settings
+                                        .arguments as Countings;
+                                    await productProvider.getProductByEan(
+                                      ean: _scanBarcode,
+                                      enterpriseCode:
+                                          productProvider.codigoInternoEmpresa!,
+                                      inventoryProcessCode: productProvider
+                                          .codigoInternoInventario!,
+                                      inventoryCountingCode:
+                                          countings.codigoInternoInvCont,
+                                      userIdentity: UserIdentity.identity,
+                                      baseUrl: BaseUrl.url,
+                                    );
+                                    setState(() {
+                                      isLoadingEanOrPlu = false;
+                                    });
+                                  }
+                                } else {
+                                  consultProduct();
                                 }
-                              } else {
-                                consultProduct();
-                              }
-                            },
+                              },
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
               const SizedBox(height: 8),
               if (productProvider.products.isNotEmpty)

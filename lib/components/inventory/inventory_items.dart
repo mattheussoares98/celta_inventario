@@ -55,7 +55,7 @@ class InventoryItems extends StatelessWidget {
                   shape: RoundedRectangleBorder(
                     side: BorderSide(
                       width: 2,
-                      color: Colors.green,
+                      color: Theme.of(context).colorScheme.primary,
                     ),
                     borderRadius: BorderRadius.all(Radius.circular(10)),
                   ),

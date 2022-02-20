@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:celta_inventario/components/login/auth_form.dart';
+import 'package:celta_inventario/utils/colors_theme.dart';
 import 'package:flutter/material.dart';
 
 class AuthPage extends StatefulWidget {
@@ -21,8 +22,8 @@ class _AuthPageState extends State<AuthPage> {
               gradient: LinearGradient(
                 colors: [
                   // Colors.lightGreen,
-                  Color.fromRGBO(80, 241, 62, 1),
-                  Color.fromRGBO(17, 115, 6, 1),
+                  Colors.white,
+                  Theme.of(context).colorScheme.primary,
                 ],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
@@ -43,14 +44,14 @@ class _AuthPageState extends State<AuthPage> {
                   ),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
-                    color: Colors.green[700],
+                    color: Theme.of(context).colorScheme.primary,
                   ),
                   child: const FittedBox(
                     child: Text(
                       'Celta mobile',
                       style: TextStyle(
                         fontSize: 100,
-                        color: Colors.white,
+                        color: ColorsTheme.text,
                         fontFamily: 'BebasNeue',
                       ),
                     ),
