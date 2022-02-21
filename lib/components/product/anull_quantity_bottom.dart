@@ -69,7 +69,7 @@ class _AnullQuantityBottomState extends State<AnullQuantityBottom> {
                 children: [
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.red,
+                      primary: Colors.green,
                     ),
                     onPressed: () {
                       anullQuantity();
@@ -87,6 +87,9 @@ class _AnullQuantityBottomState extends State<AnullQuantityBottom> {
                   ),
                   SizedBox(width: 50),
                   ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.red,
+                    ),
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
@@ -147,7 +150,7 @@ class _AnullQuantityBottomState extends State<AnullQuantityBottom> {
             )
           : FittedBox(
               child: Text(
-                'ANULAR\nCONTAGEM',
+                'ANULAR',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,

@@ -9,23 +9,27 @@ class QuantityProvider with ChangeNotifier {
 
   bool isConfirmedQuantity = false;
 
-  Future<void> addQuantity({
-    int? countingCode,
-    int? productPackingCode,
-    String? quantity,
-    String? userIdentity,
-    String? baseUrl,
+  Future<void> entryQuantity({
+    required int? countingCode,
+    required int? productPackingCode,
+    required String? quantity,
+    required String? userIdentity,
+    required String? baseUrl,
+    required bool? isSubtract,
   }) async {
     isLoadingQuantity = true;
     quantityError = '';
     notifyListeners();
 
     try {
+      quantity = quantity!.replaceAll(RegExp(r','), '.');
       var headers = {'Content-Type': 'application/json'};
       var request = http.Request(
         'POST',
         Uri.parse(
-          '$baseUrl/Inventory/EntryQuantity?countingCode=$countingCode&productPackingCode=$productPackingCode&quantity=$quantity',
+          isSubtract!
+              ? '$baseUrl/Inventory/EntryQuantity?countingCode=$countingCode&productPackingCode=$productPackingCode&quantity=-$quantity'
+              : '$baseUrl/Inventory/EntryQuantity?countingCode=$countingCode&productPackingCode=$productPackingCode&quantity=$quantity',
         ),
       );
       request.body = json.encode(userIdentity);
@@ -38,6 +42,12 @@ class QuantityProvider with ChangeNotifier {
 
       if (resultAsString.contains('não permite fracionamento')) {
         quantityError = 'Esse produto não permite fracionamento!';
+      } else if (resultAsString.contains('request is invalid')) {
+        quantityError = 'Operação inválida';
+      } else if (resultAsString
+          .contains('tornará a quantidade contada do produto negativa')) {
+        quantityError =
+            'A quantidade contada não pode ser negativa! Essa operação tornaria a quantidade negativa';
       }
 
       if (response.statusCode == 200) {
@@ -67,6 +77,7 @@ class QuantityProvider with ChangeNotifier {
     notifyListeners();
 
     try {
+      quantity = quantity!.replaceAll(RegExp(r','), '.');
       var headers = {'Content-Type': 'application/json'};
       var request = http.Request(
         'POST',
@@ -80,16 +91,24 @@ class QuantityProvider with ChangeNotifier {
       http.StreamedResponse response = await request.send();
       String resultAsString = await response.stream.bytesToString();
 
-      print(resultAsString);
+      print('response do quantityProvider: $resultAsString');
 
-      if (resultAsString.contains(
-          'A quantidade ajustada tornará a quantidade contada do produto negativa')) {
-        quantityError = 'A quantidade não pode ser negativa!';
+      if (resultAsString.contains('não permite fracionamento')) {
+        quantityError = 'Esse produto não permite fracionamento!';
+      } else if (resultAsString.contains('request is invalid')) {
+        quantityError = 'Operação inválida';
+      } else if (resultAsString
+          .contains('tornará a quantidade contada do produto negativa')) {
+        quantityError =
+            'A quantidade contada não pode ser negativa! Essa operação tornaria a quantidade negativa';
       }
 
       if (response.statusCode == 200) {
+        print('deu certo o quantity provider');
         isConfirmedQuantity = true;
-      } else {}
+      } else {
+        print('erro no quantityProvider');
+      }
     } catch (e) {
       quantityError =
           'Erro para confirmar. Verifique a sua internet e tente novamente';

@@ -20,8 +20,10 @@ class _CountingPageState extends State<CountingPage> {
           'CONTAGENS',
         ),
       ),
-      body: CountingWidget(
-        codigoInternoInventario: inventorys.codigoInternoInventario,
+      body: Center(
+        child: CountingWidget(
+          codigoInternoInventario: inventorys.codigoInternoInventario,
+        ),
       ),
     );
   }

@@ -3,8 +3,8 @@ import 'dart:ui';
 import 'package:celta_inventario/components/product/consulted_product.dart';
 import 'package:celta_inventario/models/countings.dart';
 import 'package:celta_inventario/provider/product_provider.dart';
+import 'package:celta_inventario/provider/quantity_provider.dart';
 import 'package:celta_inventario/utils/base_url.dart';
-import 'package:celta_inventario/utils/colors_theme.dart';
 import 'package:celta_inventario/utils/user_identity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -19,6 +19,8 @@ class ProductPage extends StatefulWidget {
 }
 
 class _ProductPageState extends State<ProductPage> {
+  final _focusNodeConsultProduct = FocusNode();
+
   String _scanBarcode = '';
   bool isLoadingEanOrPlu = false;
 
@@ -45,7 +47,7 @@ class _ProductPageState extends State<ProductPage> {
       }
     });
 
-    _controllerProduct.text = _scanBarcode;
+    _controllerConsultProduct.text = _scanBarcode;
   }
 
   showErrorMessage(String error) {
@@ -59,12 +61,21 @@ class _ProductPageState extends State<ProductPage> {
     );
   }
 
-  final TextEditingController _controllerProduct = TextEditingController();
+  final TextEditingController _controllerConsultProduct =
+      TextEditingController();
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _focusNodeConsultProduct.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     final countings = ModalRoute.of(context)!.settings.arguments as Countings;
     ProductProvider productProvider = Provider.of(context, listen: true);
+    QuantityProvider quantityProvider = Provider.of(context, listen: true);
 
     Future<void> consultProduct() async {
       setState(() {
@@ -107,6 +118,9 @@ class _ProductPageState extends State<ProductPage> {
         leading: IconButton(
           onPressed: () {
             Navigator.pop(context);
+            if (quantityProvider.isLoadingQuantity) {
+              return;
+            }
             productProvider.clearProducts();
           },
           icon: Icon(Icons.arrow_back),
@@ -131,6 +145,8 @@ class _ProductPageState extends State<ProductPage> {
                       child: Form(
                         key: _formKey,
                         child: TextFormField(
+                          focusNode: _focusNodeConsultProduct,
+                          enabled: isLoadingEanOrPlu ? false : true,
                           autofocus: true,
                           style: const TextStyle(
                             fontSize: 20,
@@ -139,7 +155,7 @@ class _ProductPageState extends State<ProductPage> {
                           inputFormatters: [
                             LengthLimitingTextInputFormatter(14)
                           ],
-                          controller: _controllerProduct,
+                          controller: _controllerConsultProduct,
                           onChanged: (value) => setState(() {
                             _scanBarcode = value;
                           }),
@@ -168,6 +184,18 @@ class _ProductPageState extends State<ProductPage> {
                         ),
                       ),
                     ),
+                    IconButton(
+                      onPressed: () {
+                        _controllerConsultProduct.clear();
+                        FocusScope.of(context)
+                            .requestFocus(_focusNodeConsultProduct);
+                      },
+                      icon: Icon(
+                        Icons.delete,
+                        color: Colors.red,
+                        size: 40,
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -178,7 +206,8 @@ class _ProductPageState extends State<ProductPage> {
                   children: [
                     Expanded(
                       child: ElevatedButton(
-                        child: isLoadingEanOrPlu
+                        child: isLoadingEanOrPlu ||
+                                quantityProvider.isLoadingQuantity
                             ? Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: FittedBox(
@@ -186,9 +215,13 @@ class _ProductPageState extends State<ProductPage> {
                                     padding: const EdgeInsets.all(8.0),
                                     child: Row(
                                       children: [
+                                        SizedBox(width: 50),
                                         Text(
-                                          'CONSULTANDO...',
+                                          quantityProvider.isLoadingQuantity
+                                              ? 'AGUARDE...'
+                                              : 'CONSULTANDO...',
                                           style: TextStyle(
+                                            color: Colors.black,
                                             fontWeight: FontWeight.bold,
                                             fontFamily: 'OpenSans',
                                             fontSize: 100,
@@ -196,12 +229,13 @@ class _ProductPageState extends State<ProductPage> {
                                         ),
                                         SizedBox(width: 20),
                                         SizedBox(
-                                          height: 60,
-                                          width: 60,
+                                          height: 70,
+                                          width: 70,
                                           child: CircularProgressIndicator(
                                             color: Colors.black,
                                           ),
                                         ),
+                                        SizedBox(width: 50),
                                       ],
                                     ),
                                   ),
@@ -211,57 +245,43 @@ class _ProductPageState extends State<ProductPage> {
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 10),
                                 child: FittedBox(
-                                  child: Row(
-                                    children: [
-                                      Text(
-                                        'CONSULTAR PRODUTO\nOU ACIONAR CÂMERA',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontFamily: 'OpenSans',
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .secondary,
-                                          fontSize: 18,
+                                  child: Container(
+                                    height: 60,
+                                    child: Row(
+                                      children: [
+                                        Text(
+                                          'CONSULTAR OU ESCANEAR',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontFamily: 'OpenSans',
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .secondary,
+                                            fontSize: 18,
+                                          ),
                                         ),
-                                      ),
-                                      const SizedBox(width: 10),
-                                      Icon(
-                                        Icons.camera_alt_outlined,
-                                        size: 40,
-                                      ),
-                                    ],
+                                        const SizedBox(width: 10),
+                                        Icon(
+                                          Icons.camera_alt_outlined,
+                                          size: 40,
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
-                        onPressed: isLoadingEanOrPlu
+                        onPressed: isLoadingEanOrPlu ||
+                                quantityProvider.isLoadingQuantity
                             ? null
                             : () async {
-                                if (_controllerProduct.text.isEmpty) {
+                                if (_controllerConsultProduct.text.isEmpty) {
                                   try {
                                     await scanBarcodeNormal();
-                                    setState(() {
-                                      isLoadingEanOrPlu = true;
-                                    });
                                   } catch (e) {
                                     e;
                                   } finally {
-                                    final countings = ModalRoute.of(context)!
-                                        .settings
-                                        .arguments as Countings;
-                                    await productProvider.getProductByEan(
-                                      ean: _scanBarcode,
-                                      enterpriseCode:
-                                          productProvider.codigoInternoEmpresa!,
-                                      inventoryProcessCode: productProvider
-                                          .codigoInternoInventario!,
-                                      inventoryCountingCode:
-                                          countings.codigoInternoInvCont,
-                                      userIdentity: UserIdentity.identity,
-                                      baseUrl: BaseUrl.url,
-                                    );
-                                    setState(() {
-                                      isLoadingEanOrPlu = false;
-                                    });
+                                    if (_controllerConsultProduct.text
+                                        .isNotEmpty) await consultProduct();
                                   }
                                 } else {
                                   consultProduct();
@@ -275,9 +295,10 @@ class _ProductPageState extends State<ProductPage> {
               const SizedBox(height: 8),
               if (productProvider.products.isNotEmpty)
                 ConsultedProduct(
-                  controllerProduct: _controllerProduct,
+                  controllerConsultProduct: _controllerConsultProduct,
                   countingCode: countings.codigoInternoInvCont,
                   productPackingCode: countings.numeroContagemInvCont,
+                  focusNodeConsultProduct: _focusNodeConsultProduct,
                 ),
             ],
           ),
