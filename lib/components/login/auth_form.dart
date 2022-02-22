@@ -56,11 +56,11 @@ class _AuthFormState extends State<AuthForm> {
   _restoreUserAndUrl() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
-      //logo que instala o app, logicamente ainda não tem nada salvo nas URLs
-      //se não fizer essa verificação, vai dar erro no debug console
-      if (prefs.getString('url') == null || prefs.getString('user') == null) {
-        return;
-      }
+    //logo que instala o app, logicamente ainda não tem nada salvo nas URLs
+    //se não fizer essa verificação, vai dar erro no debug console
+    if (prefs.getString('url') == null || prefs.getString('user') == null) {
+      return;
+    }
     setState(() {
       _urlController.text = prefs.getString('url')!;
       _userController.text = prefs.getString('user')!;

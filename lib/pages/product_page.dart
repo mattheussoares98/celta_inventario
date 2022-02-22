@@ -54,7 +54,7 @@ class _ProductPageState extends State<ProductPage> {
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        duration: const Duration(seconds: 7),
+        duration: const Duration(seconds: 5),
         backgroundColor: Colors.red,
         content: Text(error),
       ),
@@ -308,7 +308,7 @@ class _ProductPageState extends State<ProductPage> {
 //estar habilitado novamente. Depois de colocar em um Future, funcionou corretamente
 //a alternação de foco
                                   Future.delayed(
-                                      const Duration(milliseconds: 1), () {
+                                      const Duration(milliseconds: 100), () {
                                     alterFocus();
                                   });
                                 }

@@ -136,6 +136,7 @@ class _ConfirmQuantityButtonState extends State<ConfirmQuantityButton> {
     if (quantityProvider.quantityError != '') {
       widget.showErrorMessage(quantityProvider.quantityError);
 
+      widget.alterFocusToQuantity();
       return;
     }
 

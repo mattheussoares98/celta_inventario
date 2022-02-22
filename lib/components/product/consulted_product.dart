@@ -148,8 +148,9 @@ class _ConsultedProductState extends State<ConsultedProduct> {
                                     .toDouble()
                                     .toString(),
                             style: TextStyle(
-                              fontSize: 20,
+                              fontSize: 25,
                               fontWeight: FontWeight.bold,
+                              fontFamily: 'OpenSans',
                             ),
                           )
                         ],
@@ -175,7 +176,7 @@ class _ConsultedProductState extends State<ConsultedProduct> {
                                 controller: controllerConsultedProduct,
                                 focusNode: _quantityFocusNode,
                                 inputFormatters: [
-                                  LengthLimitingTextInputFormatter(5)
+                                  LengthLimitingTextInputFormatter(7)
                                 ],
                                 onChanged: (value) {
                                   if (value.isEmpty || value == '-') {
