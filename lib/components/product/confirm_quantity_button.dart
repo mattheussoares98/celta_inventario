@@ -9,23 +9,21 @@ class ConfirmQuantityButton extends StatefulWidget {
   final int countingCode;
   final int productPackingCode;
   final Function(String) showErrorMessage;
-  final TextEditingController controllerConsultProduct;
   final TextEditingController controllerConsultedProduct;
   final bool isSubtract;
-  final FocusNode focusNodeConsultProduct;
   final GlobalKey<FormState> formKey;
-  final dynamic lastQuantityConfirmed;
+  final void Function() alterFocusToQuantity;
+  final void Function() updateLastQuantity;
 
   ConfirmQuantityButton({
-    required this.controllerConsultProduct,
     required this.controllerConsultedProduct,
     required this.showErrorMessage,
     required this.countingCode,
     required this.productPackingCode,
     required this.isSubtract,
-    required this.focusNodeConsultProduct,
     required this.formKey,
-    required this.lastQuantityConfirmed,
+    required this.alterFocusToQuantity,
+    required this.updateLastQuantity,
     Key? key,
   }) : super(key: key);
 
@@ -121,7 +119,6 @@ class _ConfirmQuantityButtonState extends State<ConfirmQuantityButton> {
 
     setState(() {
       quantityProvider.isLoadingQuantity = true;
-      widget.lastQuantityConfirmed;
     });
 
     try {
@@ -152,30 +149,21 @@ class _ConfirmQuantityButtonState extends State<ConfirmQuantityButton> {
               int.tryParse('0');
         }
 
-        //se houver mensagem de erro ou se não houver nada digitado,
-        //o app não faz nada
-        if (quantityProvider.quantityError != '' ||
-            widget.controllerConsultedProduct.text.isEmpty) {
-//se der erro pra confirmar a quantidade, o foco continua na digitação da quantidade
-
-          return;
+        if (widget.isSubtract) {
+          productProvider.products[0].quantidadeInvContProEmb =
+              productProvider.products[0].quantidadeInvContProEmb -
+                  double.tryParse(widget.controllerConsultedProduct.text
+                      .replaceAll(RegExp(r','), '.'));
         } else {
-          if (widget.isSubtract) {
-            productProvider.products[0].quantidadeInvContProEmb =
-                productProvider.products[0].quantidadeInvContProEmb -
-                    double.tryParse(widget.controllerConsultedProduct.text
-                        .replaceAll(RegExp(r','), '.'));
-          } else {
-            productProvider.products[0].quantidadeInvContProEmb =
-                productProvider.products[0].quantidadeInvContProEmb +
-                    double.tryParse(widget.controllerConsultedProduct.text
-                        .replaceAll(RegExp(r','), '.'));
-          }
+          productProvider.products[0].quantidadeInvContProEmb =
+              productProvider.products[0].quantidadeInvContProEmb +
+                  double.tryParse(widget.controllerConsultedProduct.text
+                      .replaceAll(RegExp(r','), '.'));
         }
       });
     }
-
-    widget.controllerConsultProduct.clear();
+    widget.updateLastQuantity();
+    widget.alterFocusToQuantity();
     widget.controllerConsultedProduct.clear();
   }
 

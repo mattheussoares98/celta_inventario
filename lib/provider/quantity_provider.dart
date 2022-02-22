@@ -9,6 +9,12 @@ class QuantityProvider with ChangeNotifier {
 
   bool isConfirmedQuantity = false;
 
+  //criado somente pra conseguir identificar quando foi chamado o método de subtração
+  //e atualizar corretamente a mensagem da última quantidade digitada
+  bool subtractedQuantity = false;
+
+  bool canChangeTheFocus = false;
+
   Future<void> entryQuantity({
     required int? countingCode,
     required int? productPackingCode,
@@ -17,8 +23,15 @@ class QuantityProvider with ChangeNotifier {
     required String? baseUrl,
     required bool? isSubtract,
   }) async {
+    if (isSubtract!) {
+      subtractedQuantity = true;
+    } else {
+      subtractedQuantity = false;
+    }
+    isConfirmedQuantity = false;
     isLoadingQuantity = true;
     quantityError = '';
+    canChangeTheFocus = false;
     notifyListeners();
 
     try {
@@ -27,7 +40,7 @@ class QuantityProvider with ChangeNotifier {
       var request = http.Request(
         'POST',
         Uri.parse(
-          isSubtract!
+          isSubtract
               ? '$baseUrl/Inventory/EntryQuantity?countingCode=$countingCode&productPackingCode=$productPackingCode&quantity=-$quantity'
               : '$baseUrl/Inventory/EntryQuantity?countingCode=$countingCode&productPackingCode=$productPackingCode&quantity=$quantity',
         ),
@@ -62,59 +75,7 @@ class QuantityProvider with ChangeNotifier {
     } finally {
       isLoadingQuantity = false;
     }
-    notifyListeners();
-  }
-
-  Future<void> subtractQuantity({
-    int? countingCode,
-    int? productPackingCode,
-    String? quantity,
-    String? userIdentity,
-    String? baseUrl,
-  }) async {
-    isLoadingQuantity = true;
-    quantityError = '';
-    notifyListeners();
-
-    try {
-      quantity = quantity!.replaceAll(RegExp(r','), '.');
-      var headers = {'Content-Type': 'application/json'};
-      var request = http.Request(
-        'POST',
-        Uri.parse(
-          '$baseUrl/Inventory/EntryQuantity?countingCode=$countingCode&productPackingCode=$productPackingCode&quantity=-$quantity',
-        ),
-      );
-      request.body = json.encode(userIdentity);
-      request.headers.addAll(headers);
-
-      http.StreamedResponse response = await request.send();
-      String resultAsString = await response.stream.bytesToString();
-
-      print('response do quantityProvider: $resultAsString');
-
-      if (resultAsString.contains('não permite fracionamento')) {
-        quantityError = 'Esse produto não permite fracionamento!';
-      } else if (resultAsString.contains('request is invalid')) {
-        quantityError = 'Operação inválida';
-      } else if (resultAsString
-          .contains('tornará a quantidade contada do produto negativa')) {
-        quantityError =
-            'A quantidade contada não pode ser negativa! Essa operação tornaria a quantidade negativa';
-      }
-
-      if (response.statusCode == 200) {
-        print('deu certo o quantity provider');
-        isConfirmedQuantity = true;
-      } else {
-        print('erro no quantityProvider');
-      }
-    } catch (e) {
-      quantityError =
-          'Erro para confirmar. Verifique a sua internet e tente novamente';
-    } finally {
-      isLoadingQuantity = false;
-    }
+    canChangeTheFocus = true;
     notifyListeners();
   }
 

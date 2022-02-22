@@ -77,7 +77,7 @@ class ProductProvider with ChangeNotifier {
       });
     } catch (e) {
       productErrorMessage = 'Servidor não encontrado. Verifique a sua internet';
-    } finally {}
+    }
     notifyListeners();
   }
 

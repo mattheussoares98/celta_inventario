@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:ui';
 
 import 'package:celta_inventario/components/product/consulted_product.dart';
@@ -20,7 +21,6 @@ class ProductPage extends StatefulWidget {
 
 class _ProductPageState extends State<ProductPage> {
   final _focusNodeConsultProduct = FocusNode();
-
   String _scanBarcode = '';
   bool isLoadingEanOrPlu = false;
 
@@ -71,20 +71,16 @@ class _ProductPageState extends State<ProductPage> {
   }
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    QuantityProvider quantityProvider = Provider.of(context, listen: true);
-    if(quantityProvider.isLoadingQuantity){
-      FocusScope.of(context)
-                            .requestFocus(_focusNodeConsultProduct);
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
     final countings = ModalRoute.of(context)!.settings.arguments as Countings;
     ProductProvider productProvider = Provider.of(context, listen: true);
     QuantityProvider quantityProvider = Provider.of(context, listen: true);
+
+    alterFocus() {
+      setState(() {
+        FocusScope.of(context).requestFocus(_focusNodeConsultProduct);
+      });
+    }
 
     Future<void> consultProduct() async {
       setState(() {
@@ -155,7 +151,10 @@ class _ProductPageState extends State<ProductPage> {
                         key: _formKey,
                         child: TextFormField(
                           focusNode: _focusNodeConsultProduct,
-                          enabled: isLoadingEanOrPlu ? false : true,
+                          enabled: isLoadingEanOrPlu ||
+                                  quantityProvider.isLoadingQuantity
+                              ? false
+                              : true,
                           autofocus: true,
                           style: const TextStyle(
                             fontSize: 20,
@@ -181,7 +180,16 @@ class _ProductPageState extends State<ProductPage> {
                             labelStyle: TextStyle(
                               color: Theme.of(context).colorScheme.primary,
                             ),
+                            disabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: BorderSide(
+                                style: BorderStyle.solid,
+                                width: 2,
+                                color: Theme.of(context).colorScheme.primary,
+                              ),
+                            ),
                             border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
                               borderSide: BorderSide(
                                 width: 2,
                                 style: BorderStyle.solid,
@@ -209,7 +217,7 @@ class _ProductPageState extends State<ProductPage> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 5),
+                padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
@@ -293,7 +301,16 @@ class _ProductPageState extends State<ProductPage> {
                                         .isNotEmpty) await consultProduct();
                                   }
                                 } else {
-                                  consultProduct();
+                                  await consultProduct();
+                                }
+                                if (productProvider.products.isEmpty) {
+//se não coloca isso em um Future, pelo jeito tenta mudar o foco antes do formfield
+//estar habilitado novamente. Depois de colocar em um Future, funcionou corretamente
+//a alternação de foco
+                                  Future.delayed(
+                                      const Duration(milliseconds: 1), () {
+                                    alterFocus();
+                                  });
                                 }
                               },
                       ),
@@ -304,7 +321,6 @@ class _ProductPageState extends State<ProductPage> {
               const SizedBox(height: 8),
               if (productProvider.products.isNotEmpty)
                 ConsultedProduct(
-                  controllerConsultProduct: _controllerConsultProduct,
                   countingCode: countings.codigoInternoInvCont,
                   productPackingCode: countings.numeroContagemInvCont,
                   focusNodeConsultProduct: _focusNodeConsultProduct,
