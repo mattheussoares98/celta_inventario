@@ -50,16 +50,9 @@ class _ConsultedProductState extends State<ConsultedProduct> {
     ProductProvider productProvider = Provider.of(context, listen: true);
     QuantityProvider quantityProvider = Provider.of(context, listen: true);
 
-    // if (quantityProvider.quantityError != '') {
-    //   Timer.periodic(Duration(seconds: 1), (_) {
-    //     FocusScope.of(context).requestFocus(_quantityFocusNode);
-    //   });
-    // } else {
-    //   print('else');
-    //   Timer.periodic(Duration(seconds: 1), (_) {
-    //     FocusScope.of(context).requestFocus(widget.focusNodeConsultProduct);
-    //   });
-    // }
+    // FocusScope.of(context).requestFocus(widget.focusNodeConsultProduct);
+
+    // FocusScope.of(context).requestFocus(_quantityFocusNode);
   }
 
   String lastQuantityConfirmed = '';
@@ -176,6 +169,7 @@ class _ConsultedProductState extends State<ConsultedProduct> {
                           child: Form(
                             key: _formKey,
                             child: TextFormField(
+                              autofocus: true,
                               controller: controllerConsultedProduct,
                               focusNode: _quantityFocusNode,
                               inputFormatters: [

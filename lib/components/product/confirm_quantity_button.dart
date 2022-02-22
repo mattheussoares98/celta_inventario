@@ -139,13 +139,8 @@ class _ConfirmQuantityButtonState extends State<ConfirmQuantityButton> {
     if (quantityProvider.quantityError != '') {
       widget.showErrorMessage(quantityProvider.quantityError);
 
-      setState(() {
-        quantityProvider.isLoadingQuantity = false;
-      });
-      print('mudou o foco');
       return;
     }
-    print('parou');
 
     if (quantityProvider.isConfirmedQuantity) {
       setState(() {

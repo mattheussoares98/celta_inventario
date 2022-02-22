@@ -66,9 +66,18 @@ class _ProductPageState extends State<ProductPage> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     _focusNodeConsultProduct.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    QuantityProvider quantityProvider = Provider.of(context, listen: true);
+    if(quantityProvider.isLoadingQuantity){
+      FocusScope.of(context)
+                            .requestFocus(_focusNodeConsultProduct);
+    }
   }
 
   @override
