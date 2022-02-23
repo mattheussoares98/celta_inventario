@@ -202,22 +202,23 @@ class _ConfirmQuantityButtonState extends State<ConfirmQuantityButton> {
       child: quantityProvider.isLoadingQuantity
           ? FittedBox(
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisSize: MainAxisSize.max,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 2),
                     child: const Text(
-                      '\nCONFIRMANDO...\n',
+                      'AGUARDE...',
                       style: TextStyle(
                         color: Colors.black,
-                        fontSize: 40,
+                        fontSize: 20,
                       ),
                     ),
                   ),
                   const SizedBox(width: 7),
                   Container(
-                    height: 25,
-                    width: 25,
+                    height: 20,
+                    width: 20,
                     child: CircularProgressIndicator(
                       color: Colors.black,
                     ),

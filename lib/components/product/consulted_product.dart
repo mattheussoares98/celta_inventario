@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:celta_inventario/components/product/anull_quantity_bottom.dart';
 import 'package:celta_inventario/components/product/confirm_quantity_button.dart';
 import 'package:celta_inventario/provider/product_provider.dart';
@@ -258,7 +257,7 @@ class _ConsultedProductState extends State<ConsultedProduct> {
                         Flexible(
                           flex: 3,
                           child: Container(
-                            height: 80,
+                            height: 60,
                             width: double.infinity,
                             child: ConfirmQuantityButton(
                               controllerConsultedProduct:
@@ -278,7 +277,7 @@ class _ConsultedProductState extends State<ConsultedProduct> {
                         Flexible(
                           flex: 1,
                           child: Container(
-                            height: 80,
+                            height: 60,
                             child: ConfirmQuantityButton(
                               controllerConsultedProduct:
                                   controllerConsultedProduct,
@@ -296,37 +295,28 @@ class _ConsultedProductState extends State<ConsultedProduct> {
                       ],
                     ),
                   ),
+                  if (lastQuantityConfirmed != '')
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8),
+                      child: FittedBox(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Última quantidade digitada: ${quantityProvider.subtractedQuantity ? '-$lastQuantityConfirmed' : lastQuantityConfirmed}',
+                              style: TextStyle(
+                                fontSize: 500,
+                                fontStyle: FontStyle.italic,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                 ],
               ),
             ),
           ),
-          if (lastQuantityConfirmed != '')
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: FittedBox(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Última quantidade digitada: ',
-                      style: TextStyle(
-                        fontSize: 300,
-                        fontStyle: FontStyle.italic,
-                      ),
-                    ),
-                    Text(
-                      quantityProvider.subtractedQuantity
-                          ? '-$lastQuantityConfirmed'
-                          : lastQuantityConfirmed,
-                      style: TextStyle(
-                        fontSize: 300,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
         ],
       ),
     );

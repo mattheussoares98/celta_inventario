@@ -10,24 +10,30 @@ class ProductProvider with ChangeNotifier {
     return [..._products];
   }
 
-  bool isChargingEanOrPlu = false;
+  bool isLoadingEanOrPlu = false;
 
   int? codigoInternoEmpresa;
   int? codigoInternoInventario;
 
-  String productErrorMessage = '';
+  String errorMessage = '';
+
+  returnAndNotify() {
+    isLoadingEanOrPlu = false;
+    notifyListeners();
+    return;
+  }
 
   Future<void> getProductByEan({
-    String? ean,
-    int? enterpriseCode,
-    int? inventoryProcessCode,
-    int? inventoryCountingCode,
-    String? userIdentity,
-    String? baseUrl,
+    required String? ean,
+    required int? enterpriseCode,
+    required int? inventoryProcessCode,
+    required int? inventoryCountingCode,
+    required String? userIdentity,
+    required String? baseUrl,
   }) async {
     _products.clear();
-    productErrorMessage = '';
-    isChargingEanOrPlu = true;
+    errorMessage = '';
+    isLoadingEanOrPlu = true;
     notifyListeners();
 
     try {
@@ -43,22 +49,22 @@ class ProductProvider with ChangeNotifier {
       http.StreamedResponse response = await request.send();
       String responseInString = await response.stream.bytesToString();
 
+      print(responseInString);
+
       //tratando a mensagem de retorno aqui mesmo
       if (responseInString.contains('O produto não foi encontrado')) {
-        productErrorMessage =
+        errorMessage =
             'O produto não foi encontrado na contagem do processo de inventário.';
-        notifyListeners();
-        return;
+        returnAndNotify();
       } else if (responseInString.contains(
           "Ocorreu um erro durante a tentativa de atender um serviço de integração 'cross'")) {
-        productErrorMessage =
+        errorMessage =
             'Ocorreu um erro durante a tentativa de atender um serviço de integração "cross". Fale com seu administrador de sistemas, para resolver o problema.';
-        notifyListeners();
-        return;
+        returnAndNotify();
       } else if (responseInString
           .contains('"Message":"O EAN informado não é válido."')) {
-        notifyListeners();
-        return;
+        errorMessage = 'O EAN informado não é válido';
+        returnAndNotify();
       }
 
       List responseInList = json.decode(responseInString);
@@ -76,9 +82,9 @@ class ProductProvider with ChangeNotifier {
         );
       });
     } catch (e) {
-      productErrorMessage = 'Servidor não encontrado. Verifique a sua internet';
+      errorMessage = 'Servidor não encontrado. Verifique a sua internet';
     }
-    isChargingEanOrPlu = false;
+    isLoadingEanOrPlu = false;
     notifyListeners();
   }
 
@@ -91,8 +97,7 @@ class ProductProvider with ChangeNotifier {
     required String? baseUrl,
   }) async {
     _products.clear();
-    productErrorMessage = '';
-    isChargingEanOrPlu = true;
+    errorMessage = '';
     notifyListeners();
 
     try {
@@ -121,7 +126,7 @@ class ProductProvider with ChangeNotifier {
       var responseInString = response.body;
 
       if (responseInString.contains('O produto não foi encontrado')) {
-        productErrorMessage =
+        errorMessage =
             'O produto não foi encontrado na contagem do processo de inventário.';
         notifyListeners();
         return;
@@ -143,9 +148,10 @@ class ProductProvider with ChangeNotifier {
       });
     } catch (e) {
       print('erro pra obter o produto pelo plu: $e');
-      productErrorMessage = 'Servidor não encontrado. Verifique a sua internet';
-    } finally {}
-    isChargingEanOrPlu = false;
+      errorMessage = 'Servidor não encontrado. Verifique a sua internet';
+    }
+
+    isLoadingEanOrPlu = false;
     notifyListeners();
   }
 

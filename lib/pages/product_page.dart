@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:celta_inventario/components/product/add_one_quantity.dart';
 import 'package:celta_inventario/components/product/consulted_product.dart';
 import 'package:celta_inventario/models/countings.dart';
 import 'package:celta_inventario/provider/product_provider.dart';
@@ -20,7 +21,6 @@ class ProductPage extends StatefulWidget {
 class _ProductPageState extends State<ProductPage> {
   final _focusNodeConsultProduct = FocusNode();
   String _scanBarcode = '';
-  bool isLoadingEanOrPlu = false;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -83,7 +83,7 @@ class _ProductPageState extends State<ProductPage> {
 
     Future<void> consultProduct() async {
       setState(() {
-        isLoadingEanOrPlu = true;
+        productProvider.isLoadingEanOrPlu = true;
       });
 
       await productProvider.getProductByEan(
@@ -109,11 +109,11 @@ class _ProductPageState extends State<ProductPage> {
       }
 
       setState(() {
-        isLoadingEanOrPlu = false;
+        productProvider.isLoadingEanOrPlu = false;
       });
 
-      if (productProvider.productErrorMessage != '') {
-        showErrorMessage(productProvider.productErrorMessage);
+      if (productProvider.errorMessage != '') {
+        showErrorMessage(productProvider.errorMessage);
       }
     }
 
@@ -149,11 +149,8 @@ class _ProductPageState extends State<ProductPage> {
                       child: Form(
                         key: _formKey,
                         child: TextFormField(
-                          onFieldSubmitted: (value) {
-                            print('submitted');
-                          },
                           focusNode: _focusNodeConsultProduct,
-                          enabled: isLoadingEanOrPlu ||
+                          enabled: productProvider.isLoadingEanOrPlu ||
                                   quantityProvider.isLoadingQuantity
                               ? false
                               : true,
@@ -204,7 +201,8 @@ class _ProductPageState extends State<ProductPage> {
                       ),
                     ),
                     IconButton(
-                      onPressed: productProvider.isChargingEanOrPlu
+                      onPressed: productProvider.isLoadingEanOrPlu ||
+                              quantityProvider.isLoadingQuantity
                           ? null
                           : () {
                               _controllerConsultProduct.clear();
@@ -213,7 +211,8 @@ class _ProductPageState extends State<ProductPage> {
                             },
                       icon: Icon(
                         Icons.delete,
-                        color: productProvider.isChargingEanOrPlu
+                        color: productProvider.isLoadingEanOrPlu ||
+                                quantityProvider.isLoadingQuantity
                             ? null
                             : Colors.red,
                         size: 40,
@@ -229,7 +228,7 @@ class _ProductPageState extends State<ProductPage> {
                   children: [
                     Expanded(
                       child: ElevatedButton(
-                        child: isLoadingEanOrPlu ||
+                        child: productProvider.isLoadingEanOrPlu ||
                                 quantityProvider.isLoadingQuantity
                             ? Padding(
                                 padding: const EdgeInsets.all(8.0),
@@ -269,7 +268,7 @@ class _ProductPageState extends State<ProductPage> {
                                     const EdgeInsets.symmetric(vertical: 10),
                                 child: FittedBox(
                                   child: Container(
-                                    height: 60,
+                                    height: 50,
                                     child: Row(
                                       children: [
                                         Text(
@@ -293,7 +292,7 @@ class _ProductPageState extends State<ProductPage> {
                                   ),
                                 ),
                               ),
-                        onPressed: isLoadingEanOrPlu ||
+                        onPressed: productProvider.isLoadingEanOrPlu ||
                                 quantityProvider.isLoadingQuantity
                             ? null
                             : () async {
@@ -331,6 +330,14 @@ class _ProductPageState extends State<ProductPage> {
                   productPackingCode: countings.numeroContagemInvCont,
                   focusNodeConsultProduct: _focusNodeConsultProduct,
                 ),
+              AddOneQuantity(
+                ean: _scanBarcode,
+                enterpriseCode: productProvider.codigoInternoEmpresa!,
+                inventoryProcessCode: productProvider.codigoInternoInventario!,
+                inventoryCountingCode: countings.codigoInternoInvCont,
+                userIdentity: UserIdentity.identity,
+                baseUrl: BaseUrl.url,
+              ),
             ],
           ),
         ),
