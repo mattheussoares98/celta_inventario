@@ -5,6 +5,7 @@ import 'package:celta_inventario/components/product/confirm_quantity_button.dart
 import 'package:celta_inventario/provider/product_provider.dart';
 import 'package:celta_inventario/provider/quantity_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
@@ -47,6 +48,7 @@ class _ConsultedProductState extends State<ConsultedProduct> {
   void dispose() {
     super.dispose();
     _quantityFocusNode.dispose();
+    controllerConsultedProduct.dispose();
   }
 
   updateLastQuantity() {
@@ -74,6 +76,7 @@ class _ConsultedProductState extends State<ConsultedProduct> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 5),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Card(
             shape: RoundedRectangleBorder(
@@ -126,36 +129,40 @@ class _ConsultedProductState extends State<ConsultedProduct> {
                     ],
                   ),
                   const SizedBox(height: 10),
-                  FittedBox(
-                    child: Container(
-                      width: 400,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Quantidade contada: ',
-                            style: TextStyle(
-                              fontSize: 25,
-                            ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      //precisei colocar o flexible porque pelo fittedbox não estava funcionando como queria
+                      Flexible(
+                        flex: 20,
+                        child: Text(
+                          'Quantidade contada: ',
+                          style: TextStyle(
+                            fontSize: 20,
                           ),
-                          Text(
-                            productProvider.products[0].quantidadeInvContProEmb
-                                        .toString() ==
-                                    'null'
-                                ? 'sem contagem'
-                                : productProvider
-                                    .products[0].quantidadeInvContProEmb
-                                    .toDouble()
-                                    .toString(),
-                            style: TextStyle(
-                              fontSize: 25,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: 'OpenSans',
-                            ),
-                          )
-                        ],
+                          textAlign: TextAlign.left,
+                        ),
                       ),
-                    ),
+                      Flexible(
+                        flex: 15,
+                        child: Text(
+                          productProvider.products[0].quantidadeInvContProEmb
+                                      .toString() ==
+                                  'null'
+                              ? 'sem contagem'
+                              : productProvider
+                                  .products[0].quantidadeInvContProEmb
+                                  .toDouble()
+                                  .toString(),
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'OpenSans',
+                          ),
+                        ),
+                      )
+                    ],
                   ),
                   const SizedBox(height: 8),
                   Padding(

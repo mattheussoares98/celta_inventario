@@ -100,12 +100,17 @@ class _HomePageState extends State<HomePage> {
                   context: context,
                   builder: (ctx) {
                     return AlertDialog(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      actionsPadding: EdgeInsets.only(bottom: 10),
                       actionsAlignment: MainAxisAlignment.center,
                       title: const FittedBox(
                         child: Text(
-                          'Deseja realmente fazer o logout?',
+                          'Deseja realmente\nfazer o logout?',
                           style: TextStyle(
                             letterSpacing: 2,
+                            fontSize: 50,
                           ),
                         ),
                       ),
@@ -117,25 +122,36 @@ class _HomePageState extends State<HomePage> {
                                 .pushReplacementNamed(APPROUTES.HOME);
                             Navigator.of(context).pop();
                           },
-                          child: Text(
-                            'Sim',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontFamily: 'OpenSans',
-                              color: Theme.of(context).colorScheme.secondary,
+                          child: Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Text(
+                              'Sim',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'OpenSans',
+                                color: Theme.of(context).colorScheme.secondary,
+                                fontSize: 25,
+                              ),
                             ),
                           ),
                         ),
                         ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.red,
+                          ),
                           onPressed: () {
                             Navigator.of(context).pop();
                           },
-                          child: Text(
-                            'Não',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontFamily: 'OpenSans',
-                              color: Theme.of(context).colorScheme.secondary,
+                          child: Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Text(
+                              'Não',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'OpenSans',
+                                color: Theme.of(context).colorScheme.secondary,
+                                fontSize: 25,
+                              ),
                             ),
                           ),
                         ),

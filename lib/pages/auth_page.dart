@@ -21,9 +21,8 @@ class _AuthPageState extends State<AuthPage> {
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  // Colors.lightGreen,
-                  Colors.white,
-                  Theme.of(context).colorScheme.primary,
+                  Color.fromRGBO(51, 255, 51, 1),
+                  Color.fromRGBO(0, 102, 0, 1),
                 ],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,

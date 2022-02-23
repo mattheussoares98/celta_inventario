@@ -60,6 +60,7 @@ class _AnullQuantityBottomState extends State<AnullQuantityBottom> {
               fontWeight: FontWeight.bold,
             ),
           ),
+          actionsPadding: EdgeInsets.all(10),
           actions: [
             FittedBox(
               child: Row(
@@ -68,6 +69,9 @@ class _AnullQuantityBottomState extends State<AnullQuantityBottom> {
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       primary: Colors.green,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(100),
+                      )
                     ),
                     onPressed: () {
                       anullQuantity();
@@ -87,6 +91,9 @@ class _AnullQuantityBottomState extends State<AnullQuantityBottom> {
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       primary: Colors.red,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(100),
+                      )
                     ),
                     onPressed: () {
                       Navigator.of(context).pop();
