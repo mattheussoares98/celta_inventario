@@ -10,7 +10,7 @@ class ProductProvider with ChangeNotifier {
     return [..._products];
   }
 
-  bool isChargingEan = false;
+  bool isChargingEanOrPlu = false;
 
   int? codigoInternoEmpresa;
   int? codigoInternoInventario;
@@ -27,7 +27,7 @@ class ProductProvider with ChangeNotifier {
   }) async {
     _products.clear();
     productErrorMessage = '';
-    isChargingEan = true;
+    isChargingEanOrPlu = true;
     notifyListeners();
 
     try {
@@ -78,6 +78,7 @@ class ProductProvider with ChangeNotifier {
     } catch (e) {
       productErrorMessage = 'Servidor não encontrado. Verifique a sua internet';
     }
+    isChargingEanOrPlu = false;
     notifyListeners();
   }
 
@@ -91,6 +92,7 @@ class ProductProvider with ChangeNotifier {
   }) async {
     _products.clear();
     productErrorMessage = '';
+    isChargingEanOrPlu = true;
     notifyListeners();
 
     try {
@@ -143,6 +145,7 @@ class ProductProvider with ChangeNotifier {
       print('erro pra obter o produto pelo plu: $e');
       productErrorMessage = 'Servidor não encontrado. Verifique a sua internet';
     } finally {}
+    isChargingEanOrPlu = false;
     notifyListeners();
   }
 

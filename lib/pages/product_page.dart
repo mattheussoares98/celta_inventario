@@ -150,6 +150,9 @@ class _ProductPageState extends State<ProductPage> {
                       child: Form(
                         key: _formKey,
                         child: TextFormField(
+                          onFieldSubmitted: (value) {
+                            print('submitted');
+                          },
                           focusNode: _focusNodeConsultProduct,
                           enabled: isLoadingEanOrPlu ||
                                   quantityProvider.isLoadingQuantity
@@ -202,14 +205,18 @@ class _ProductPageState extends State<ProductPage> {
                       ),
                     ),
                     IconButton(
-                      onPressed: () {
-                        _controllerConsultProduct.clear();
-                        FocusScope.of(context)
-                            .requestFocus(_focusNodeConsultProduct);
-                      },
+                      onPressed: productProvider.isChargingEanOrPlu
+                          ? null
+                          : () {
+                              _controllerConsultProduct.clear();
+                              FocusScope.of(context)
+                                  .requestFocus(_focusNodeConsultProduct);
+                            },
                       icon: Icon(
                         Icons.delete,
-                        color: Colors.red,
+                        color: productProvider.isChargingEanOrPlu
+                            ? null
+                            : Colors.red,
                         size: 40,
                       ),
                     ),
