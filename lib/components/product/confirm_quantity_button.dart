@@ -44,9 +44,13 @@ class _ConfirmQuantityButtonState extends State<ConfirmQuantityButton> {
       context: context,
       builder: (context) {
         return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          actionsPadding: const EdgeInsets.all(10),
           title: Text(
             'DESEJA CONFIRMAR A QUANTIDADE?',
-            // textAlign: TextAlign.center,
+            textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 32,
               fontWeight: FontWeight.bold,
@@ -59,6 +63,7 @@ class _ConfirmQuantityButtonState extends State<ConfirmQuantityButton> {
             style: TextStyle(
               fontSize: 30,
             ),
+            textAlign: TextAlign.center,
           ),
           actions: [
             FittedBox(
@@ -67,8 +72,10 @@ class _ConfirmQuantityButtonState extends State<ConfirmQuantityButton> {
                 children: [
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.green,
-                    ),
+                        primary: Colors.green,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(100),
+                        )),
                     onPressed: () {
                       Navigator.of(context).pop();
                       addQuantity();
@@ -86,8 +93,10 @@ class _ConfirmQuantityButtonState extends State<ConfirmQuantityButton> {
                   SizedBox(width: 50),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.red,
-                    ),
+                        primary: Colors.red,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(100),
+                        )),
                     onPressed: () {
                       Navigator.of(context).pop();
                     },

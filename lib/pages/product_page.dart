@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:ui';
-
 import 'package:celta_inventario/components/product/consulted_product.dart';
 import 'package:celta_inventario/models/countings.dart';
 import 'package:celta_inventario/provider/product_provider.dart';
@@ -68,6 +66,7 @@ class _ProductPageState extends State<ProductPage> {
   void dispose() {
     super.dispose();
     _focusNodeConsultProduct.dispose();
+    _controllerConsultProduct.dispose();
   }
 
   @override
