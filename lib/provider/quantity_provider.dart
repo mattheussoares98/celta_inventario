@@ -15,6 +15,8 @@ class QuantityProvider with ChangeNotifier {
 
   bool canChangeTheFocus = false;
 
+  String lastQuantityConfirmed = '';
+
   Future<void> entryQuantity({
     required int? countingCode,
     required int? productPackingCode,
@@ -32,6 +34,7 @@ class QuantityProvider with ChangeNotifier {
     isLoadingQuantity = true;
     quantityError = '';
     canChangeTheFocus = false;
+    lastQuantityConfirmed = '';
     notifyListeners();
 
     try {
@@ -66,6 +69,7 @@ class QuantityProvider with ChangeNotifier {
       if (response.statusCode == 200) {
         print('deu certo o quantity provider');
         isConfirmedQuantity = true;
+        lastQuantityConfirmed = quantity;
       } else {
         print('erro no quantityProvider');
       }

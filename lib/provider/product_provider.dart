@@ -35,7 +35,7 @@ class ProductProvider with ChangeNotifier {
     errorMessage = '';
     isLoadingEanOrPlu = true;
     notifyListeners();
-
+    print('provider consultando ean');
     try {
       var headers = {'Content-Type': 'application/json'};
       var request = http.Request(
@@ -84,6 +84,8 @@ class ProductProvider with ChangeNotifier {
     } catch (e) {
       errorMessage = 'Servidor não encontrado. Verifique a sua internet';
     }
+
+    print('provider término consulta ean');
     isLoadingEanOrPlu = false;
     notifyListeners();
   }
@@ -98,8 +100,9 @@ class ProductProvider with ChangeNotifier {
   }) async {
     _products.clear();
     errorMessage = '';
+    isLoadingEanOrPlu = true;
     notifyListeners();
-
+    print('provider consultando plu');
     try {
       /// Antes estava usando essa forma comentada pra retornar os dados
       /// coloquei pra usar de outra forma pra ter as duas documentadas
@@ -124,6 +127,8 @@ class ProductProvider with ChangeNotifier {
       );
 
       var responseInString = response.body;
+
+      print('plu responseInString $responseInString');
 
       if (responseInString.contains('O produto não foi encontrado')) {
         errorMessage =
@@ -150,7 +155,7 @@ class ProductProvider with ChangeNotifier {
       print('erro pra obter o produto pelo plu: $e');
       errorMessage = 'Servidor não encontrado. Verifique a sua internet';
     }
-
+    print('provider término consulta plu');
     isLoadingEanOrPlu = false;
     notifyListeners();
   }

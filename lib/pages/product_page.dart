@@ -69,6 +69,8 @@ class _ProductPageState extends State<ProductPage> {
     _controllerConsultProduct.dispose();
   }
 
+  bool isIndividual = false;
+
   @override
   Widget build(BuildContext context) {
     final countings = ModalRoute.of(context)!.settings.arguments as Countings;
@@ -84,6 +86,7 @@ class _ProductPageState extends State<ProductPage> {
     Future<void> consultProduct() async {
       setState(() {
         productProvider.isLoadingEanOrPlu = true;
+        quantityProvider.lastQuantityConfirmed = '';
       });
 
       await productProvider.getProductByEan(
@@ -138,206 +141,266 @@ class _ProductPageState extends State<ProductPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 10,
+              if (isIndividual)
+                AddOneQuantity(
+                  inventoryCountingCode: countings.codigoInternoInvCont,
+                  countingCode: countings.codigoInternoInvCont,
+                  productPackingCode: countings.numeroContagemInvCont,
                 ),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Form(
-                        key: _formKey,
-                        child: TextFormField(
-                          focusNode: _focusNodeConsultProduct,
-                          enabled: productProvider.isLoadingEanOrPlu ||
-                                  quantityProvider.isLoadingQuantity
-                              ? false
-                              : true,
-                          autofocus: true,
-                          style: const TextStyle(
-                            fontSize: 20,
-                            color: Colors.black,
-                          ),
-                          inputFormatters: [
-                            LengthLimitingTextInputFormatter(14)
-                          ],
-                          controller: _controllerConsultProduct,
-                          onChanged: (value) => setState(() {
-                            _scanBarcode = value;
-                          }),
-                          validator: (value) {
-                            if (value!.contains(',') ||
-                                value.contains('.') ||
-                                value.contains('-')) {
-                              return 'Escreva somente números ou somente letras';
-                            }
-                            return null;
-                          },
-                          decoration: InputDecoration(
-                            labelText: 'Digite o EAN ou o PLU',
-                            labelStyle: TextStyle(
-                              color: Theme.of(context).colorScheme.primary,
+              if (!isIndividual)
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 10,
+                  ),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Form(
+                          key: _formKey,
+                          child: TextFormField(
+                            focusNode: _focusNodeConsultProduct,
+                            enabled: productProvider.isLoadingEanOrPlu ||
+                                    quantityProvider.isLoadingQuantity
+                                ? false
+                                : true,
+                            autofocus: true,
+                            style: const TextStyle(
+                              fontSize: 20,
+                              color: Colors.black,
                             ),
-                            disabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide: BorderSide(
-                                style: BorderStyle.solid,
-                                width: 2,
+                            inputFormatters: [
+                              LengthLimitingTextInputFormatter(14)
+                            ],
+                            controller: _controllerConsultProduct,
+                            onChanged: (value) => setState(() {
+                              _scanBarcode = value;
+                            }),
+                            validator: (value) {
+                              if (value!.contains(',') ||
+                                  value.contains('.') ||
+                                  value.contains('-')) {
+                                return 'Escreva somente números ou somente letras';
+                              }
+                              return null;
+                            },
+                            decoration: InputDecoration(
+                              labelText: 'Digite o EAN ou o PLU',
+                              labelStyle: TextStyle(
                                 color: Theme.of(context).colorScheme.primary,
                               ),
-                            ),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide: BorderSide(
-                                width: 2,
-                                style: BorderStyle.solid,
-                                color: Theme.of(context).colorScheme.primary,
+                              disabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: BorderSide(
+                                  style: BorderStyle.solid,
+                                  width: 2,
+                                  color: Theme.of(context).colorScheme.primary,
+                                ),
+                              ),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: BorderSide(
+                                  width: 2,
+                                  style: BorderStyle.solid,
+                                  color: Theme.of(context).colorScheme.primary,
+                                ),
                               ),
                             ),
+                            keyboardType: TextInputType.number,
                           ),
-                          keyboardType: TextInputType.number,
                         ),
                       ),
-                    ),
-                    IconButton(
-                      onPressed: productProvider.isLoadingEanOrPlu ||
-                              quantityProvider.isLoadingQuantity
-                          ? null
-                          : () {
-                              _controllerConsultProduct.clear();
-                              FocusScope.of(context)
-                                  .requestFocus(_focusNodeConsultProduct);
-                            },
-                      icon: Icon(
-                        Icons.delete,
-                        color: productProvider.isLoadingEanOrPlu ||
-                                quantityProvider.isLoadingQuantity
-                            ? null
-                            : Colors.red,
-                        size: 40,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Expanded(
-                      child: ElevatedButton(
-                        child: productProvider.isLoadingEanOrPlu ||
-                                quantityProvider.isLoadingQuantity
-                            ? Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: FittedBox(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Row(
-                                      children: [
-                                        SizedBox(width: 50),
-                                        Text(
-                                          quantityProvider.isLoadingQuantity
-                                              ? 'AGUARDE...'
-                                              : 'CONSULTANDO...',
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.bold,
-                                            fontFamily: 'OpenSans',
-                                            fontSize: 100,
-                                          ),
-                                        ),
-                                        SizedBox(width: 20),
-                                        SizedBox(
-                                          height: 70,
-                                          width: 70,
-                                          child: CircularProgressIndicator(
-                                            color: Colors.black,
-                                          ),
-                                        ),
-                                        SizedBox(width: 50),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              )
-                            : Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 10),
-                                child: FittedBox(
-                                  child: Container(
-                                    height: 50,
-                                    child: Row(
-                                      children: [
-                                        Text(
-                                          'CONSULTAR OU ESCANEAR',
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontFamily: 'OpenSans',
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .secondary,
-                                            fontSize: 18,
-                                          ),
-                                        ),
-                                        const SizedBox(width: 10),
-                                        Icon(
-                                          Icons.camera_alt_outlined,
-                                          size: 40,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
+                      IconButton(
                         onPressed: productProvider.isLoadingEanOrPlu ||
                                 quantityProvider.isLoadingQuantity
                             ? null
-                            : () async {
-                                if (_controllerConsultProduct.text.isEmpty) {
-                                  try {
-                                    await scanBarcodeNormal();
-                                  } catch (e) {
-                                    e;
-                                  } finally {
-                                    if (_controllerConsultProduct.text
-                                        .isNotEmpty) await consultProduct();
+                            : () {
+                                _controllerConsultProduct.clear();
+                                FocusScope.of(context)
+                                    .requestFocus(_focusNodeConsultProduct);
+                              },
+                        icon: Icon(
+                          Icons.delete,
+                          color: productProvider.isLoadingEanOrPlu ||
+                                  quantityProvider.isLoadingQuantity
+                              ? null
+                              : Colors.red,
+                          size: 40,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: FittedBox(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Flexible(
+                        flex: 10,
+                        child: Text(
+                          'Inserir individualmente',
+                          style: TextStyle(
+                            fontSize: 30,
+                            color: productProvider.isLoadingEanOrPlu ||
+                                    quantityProvider.isLoadingQuantity
+                                ? Colors.grey
+                                : Colors.blue,
+                          ),
+                        ),
+                      ),
+                      Flexible(
+                        flex: 3,
+                        child: Switch(
+                          value: isIndividual,
+                          onChanged: productProvider.isLoadingEanOrPlu ||
+                                  quantityProvider.isLoadingQuantity
+                              ? null
+                              : (value) {
+                                  setState(() {
+                                    isIndividual = value;
+                                  });
+                                },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              if (productProvider.isLoadingEanOrPlu && isIndividual)
+                FittedBox(
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Consultando EAN ou PLU...',
+                          style: TextStyle(
+                            fontSize: 30,
+                          ),
+                        ),
+                        SizedBox(width: 20),
+                        CircularProgressIndicator(
+                          color: Colors.black,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              if (!isIndividual)
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Expanded(
+                        child: ElevatedButton(
+                          child: productProvider.isLoadingEanOrPlu ||
+                                  quantityProvider.isLoadingQuantity
+                              ? Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: FittedBox(
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Row(
+                                        children: [
+                                          SizedBox(width: 50),
+                                          Text(
+                                            quantityProvider.isLoadingQuantity
+                                                ? 'AGUARDE...'
+                                                : 'CONSULTANDO...',
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold,
+                                              fontFamily: 'OpenSans',
+                                              fontSize: 100,
+                                            ),
+                                          ),
+                                          SizedBox(width: 20),
+                                          SizedBox(
+                                            height: 70,
+                                            width: 70,
+                                            child: CircularProgressIndicator(
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                          SizedBox(width: 50),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              : Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 10),
+                                  child: FittedBox(
+                                    child: Container(
+                                      height: 50,
+                                      child: Row(
+                                        children: [
+                                          Text(
+                                            'CONSULTAR OU ESCANEAR',
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontFamily: 'OpenSans',
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .secondary,
+                                              fontSize: 18,
+                                            ),
+                                          ),
+                                          const SizedBox(width: 10),
+                                          Icon(
+                                            Icons.camera_alt_outlined,
+                                            size: 40,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                          onPressed: productProvider.isLoadingEanOrPlu ||
+                                  quantityProvider.isLoadingQuantity
+                              ? null
+                              : () async {
+                                  if (_controllerConsultProduct.text.isEmpty) {
+                                    try {
+                                      await scanBarcodeNormal();
+                                    } catch (e) {
+                                      e;
+                                    } finally {
+                                      if (_controllerConsultProduct.text
+                                          .isNotEmpty) await consultProduct();
+                                    }
+                                  } else {
+                                    await consultProduct();
                                   }
-                                } else {
-                                  await consultProduct();
-                                }
-                                if (productProvider.products.isEmpty) {
+                                  if (productProvider.products.isEmpty) {
 //se não coloca isso em um Future, pelo jeito tenta mudar o foco antes do formfield
 //estar habilitado novamente. Depois de colocar em um Future, funcionou corretamente
 //a alternação de foco
-                                  Future.delayed(
-                                      const Duration(milliseconds: 100), () {
-                                    alterFocus();
-                                  });
-                                }
-                              },
+                                    Future.delayed(
+                                        const Duration(milliseconds: 100), () {
+                                      alterFocus();
+                                    });
+                                  }
+                                },
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 2),
               if (productProvider.products.isNotEmpty)
                 ConsultedProduct(
                   countingCode: countings.codigoInternoInvCont,
                   productPackingCode: countings.numeroContagemInvCont,
                   focusNodeConsultProduct: _focusNodeConsultProduct,
                 ),
-              AddOneQuantity(
-                ean: _scanBarcode,
-                enterpriseCode: productProvider.codigoInternoEmpresa!,
-                inventoryProcessCode: productProvider.codigoInternoInventario!,
-                inventoryCountingCode: countings.codigoInternoInvCont,
-                userIdentity: UserIdentity.identity,
-                baseUrl: BaseUrl.url,
-              ),
             ],
           ),
         ),

@@ -50,12 +50,6 @@ class _ConsultedProductState extends State<ConsultedProduct> {
     controllerConsultedProduct.dispose();
   }
 
-  updateLastQuantity() {
-    setState(() {
-      lastQuantityConfirmed = controllerConsultedProduct.text;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     ProductProvider productProvider = Provider.of(context, listen: true);
@@ -175,6 +169,7 @@ class _ConsultedProductState extends State<ConsultedProduct> {
                             child: Form(
                               key: _formKey,
                               child: TextFormField(
+                                onFieldSubmitted: (_) {},
                                 autofocus: true,
                                 enabled: quantityProvider.isLoadingQuantity
                                     ? false
@@ -269,7 +264,6 @@ class _ConsultedProductState extends State<ConsultedProduct> {
                               isSubtract: false,
                               formKey: _formKey,
                               alterFocusToQuantity: alterFocusToQuantity,
-                              updateLastQuantity: updateLastQuantity,
                             ),
                           ),
                         ),
@@ -288,14 +282,13 @@ class _ConsultedProductState extends State<ConsultedProduct> {
                               isSubtract: true,
                               formKey: _formKey,
                               alterFocusToQuantity: alterFocusToQuantity,
-                              updateLastQuantity: updateLastQuantity,
                             ),
                           ),
                         ),
                       ],
                     ),
                   ),
-                  if (lastQuantityConfirmed != '')
+                  if (quantityProvider.lastQuantityConfirmed != '')
                     Padding(
                       padding: const EdgeInsets.only(top: 8),
                       child: FittedBox(
@@ -303,7 +296,7 @@ class _ConsultedProductState extends State<ConsultedProduct> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              'Última quantidade digitada: ${quantityProvider.subtractedQuantity ? '-$lastQuantityConfirmed' : lastQuantityConfirmed}',
+                              'Última quantidade inserida: ${quantityProvider.subtractedQuantity ? '-${quantityProvider.lastQuantityConfirmed}' : quantityProvider.lastQuantityConfirmed}',
                               style: TextStyle(
                                 fontSize: 500,
                                 fontStyle: FontStyle.italic,

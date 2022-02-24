@@ -13,7 +13,6 @@ class ConfirmQuantityButton extends StatefulWidget {
   final bool isSubtract;
   final GlobalKey<FormState> formKey;
   final void Function() alterFocusToQuantity;
-  final void Function() updateLastQuantity;
 
   ConfirmQuantityButton({
     required this.controllerConsultedProduct,
@@ -23,7 +22,6 @@ class ConfirmQuantityButton extends StatefulWidget {
     required this.isSubtract,
     required this.formKey,
     required this.alterFocusToQuantity,
-    required this.updateLastQuantity,
     Key? key,
   }) : super(key: key);
 
@@ -172,7 +170,6 @@ class _ConfirmQuantityButtonState extends State<ConfirmQuantityButton> {
         }
       });
     }
-    widget.updateLastQuantity();
     widget.alterFocusToQuantity();
     widget.controllerConsultedProduct.clear();
   }
