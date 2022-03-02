@@ -14,7 +14,7 @@ class AddQuantityController {
         quantity, //coloquei como dynamic porque pode ser um controller ou somente o valor direto, como no caso de quando está inserindo os produtos individualmente que precisa inserir direto a quantidade "1"
     required bool isSubtract,
     required Function(String) showErrorMessage,
-    void Function()? alterFocusToQuantity,
+    void Function()? alterFocusToConsultedProduct,
   }) async {
     QuantityProvider quantityProvider = Provider.of(context, listen: false);
     ProductProvider productProvider = Provider.of(context, listen: false);
@@ -35,7 +35,7 @@ class AddQuantityController {
     }
     if (quantityProvider.quantityError != '') {
       showErrorMessage(quantityProvider.quantityError);
-
+      alterFocusToConsultedProduct!();
       return;
     }
 
@@ -68,7 +68,7 @@ class AddQuantityController {
     quantity.clear();
 
     if (!isIndividual) {
-      alterFocusToQuantity!();
+      alterFocusToConsultedProduct!();
     }
   }
 }

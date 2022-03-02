@@ -32,7 +32,7 @@ class ConfirmQuantityButton extends StatefulWidget {
 class _ConfirmQuantityButtonState extends State<ConfirmQuantityButton> {
   bool isIndividual = false;
 
-  alterFocusToQuantity() {
+  alterFocusToConsultedProduct() {
     print('tá tentando alterar o foco');
     Future.delayed(Duration(milliseconds: 100), () {
       FocusScope.of(context).requestFocus(widget.consultedProductFocusNode);
@@ -93,7 +93,8 @@ class _ConfirmQuantityButtonState extends State<ConfirmQuantityButton> {
                         quantity: widget.consultedProductController,
                         isSubtract: widget.isSubtract,
                         showErrorMessage: widget.showErrorMessage,
-                        alterFocusToQuantity: alterFocusToQuantity,
+                        alterFocusToConsultedProduct:
+                            alterFocusToConsultedProduct,
                       );
                     },
                     child: Padding(
@@ -165,7 +166,7 @@ class _ConfirmQuantityButtonState extends State<ConfirmQuantityButton> {
                   quantity: widget.consultedProductController,
                   isSubtract: widget.isSubtract,
                   showErrorMessage: widget.showErrorMessage,
-                  alterFocusToQuantity: alterFocusToQuantity,
+                  alterFocusToConsultedProduct: alterFocusToConsultedProduct,
                 );
               }
             },

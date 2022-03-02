@@ -82,8 +82,6 @@ class _ProductPageState extends State<ProductPage> {
     });
   }
 
-  String lastQuantityAdded = '';
-
   @override
   Widget build(BuildContext context) {
     final countings = ModalRoute.of(context)!.settings.arguments as Countings;
@@ -91,7 +89,7 @@ class _ProductPageState extends State<ProductPage> {
     QuantityProvider quantityProvider = Provider.of(context, listen: true);
     final AddQuantityController addQuantityController = AddQuantityController();
 
-    Future<void> consultProduct() async {
+    Future<void> consultAndAddProduct() async {
       setState(() {
         isLoadingEanOrPlu = true;
         quantityProvider.lastQuantityAdded = '';
@@ -142,16 +140,16 @@ class _ProductPageState extends State<ProductPage> {
 
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-            if (quantityProvider.isLoadingQuantity) {
-              return;
-            }
-            productProvider.clearProducts();
-          },
-          icon: Icon(Icons.arrow_back),
-        ),
+        // leading: IconButton(
+        //   onPressed: () {
+        //     Navigator.pop(context);
+        //     if (quantityProvider.isLoadingQuantity) {
+        //       return;
+        //     }
+        //     productProvider.clearProducts();
+        //   },
+        //   icon: Icon(Icons.arrow_back),
+        // ),
         title: const Text(
           'Produtos',
         ),
@@ -172,7 +170,11 @@ class _ProductPageState extends State<ProductPage> {
                       child: Form(
                         key: _formKey,
                         child: TextFormField(
-                          onFieldSubmitted: (value) {},
+                          onFieldSubmitted: (value) async {
+                            await consultAndAddProduct();
+                            alterFocusToConsultProduct();
+                            _consultProductController.clear();
+                          },
                           focusNode: _consultProductFocusNode,
                           enabled: isLoadingEanOrPlu ||
                                   quantityProvider.isLoadingQuantity
@@ -249,76 +251,73 @@ class _ProductPageState extends State<ProductPage> {
                       child: ElevatedButton(
                         child: isLoadingEanOrPlu ||
                                 quantityProvider.isLoadingQuantity
-                            ? Padding(
-                                padding: const EdgeInsets.all(8.0),
+                            ? Container(
+                                height: 70,
                                 child: FittedBox(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Row(
-                                      children: [
-                                        SizedBox(width: 50),
-                                        Text(
-                                          quantityProvider.isLoadingQuantity
-                                              ? 'AGUARDE...'
-                                              : 'CONSULTANDO...',
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.bold,
-                                            fontFamily: 'OpenSans',
-                                            fontSize: 100,
-                                          ),
+                                  child: Row(
+                                    children: [
+                                      SizedBox(width: 50),
+                                      Text(
+                                        quantityProvider.isLoadingQuantity
+                                            ? 'ADICIONANDO QUANTIDADE...'
+                                            : 'CONSULTANDO O PRODUTO...',
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: 'OpenSans',
+                                          fontSize: 100,
                                         ),
-                                        SizedBox(width: 20),
-                                        SizedBox(
-                                          height: 70,
-                                          width: 70,
+                                      ),
+                                      SizedBox(width: 30),
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 70),
+                                        child: Container(
+                                          height: 100,
+                                          width: 100,
                                           child: CircularProgressIndicator(
                                             color: Colors.black,
                                           ),
                                         ),
-                                        SizedBox(width: 50),
-                                      ],
-                                    ),
+                                      ),
+                                      SizedBox(width: 50),
+                                    ],
                                   ),
                                 ),
                               )
-                            : Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 10),
+                            : Container(
+                                height: 70,
                                 child: FittedBox(
-                                  child: Container(
-                                    height: 60,
-                                    child: Row(
-                                      children: [
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        isIndividual
+                                            ? 'CONSULTAR E INSERIR UNIDADE'
+                                            : 'CONSULTAR OU ESCANEAR',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: 'OpenSans',
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .secondary,
+                                          fontSize: 18,
+                                        ),
+                                      ),
+                                      const SizedBox(width: 10),
+                                      Icon(
+                                        !isIndividual
+                                            ? Icons.camera_alt_outlined
+                                            : Icons.add,
+                                        size: 40,
+                                      ),
+                                      if (isIndividual)
                                         Text(
-                                          isIndividual
-                                              ? 'CONSULTAR E INSERIR UNIDADE'
-                                              : 'CONSULTAR OU ESCANEAR',
+                                          '1',
                                           style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontFamily: 'OpenSans',
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .secondary,
-                                            fontSize: 18,
+                                            fontSize: 40,
                                           ),
                                         ),
-                                        const SizedBox(width: 10),
-                                        Icon(
-                                          !isIndividual
-                                              ? Icons.camera_alt_outlined
-                                              : Icons.add,
-                                          size: 40,
-                                        ),
-                                        if (isIndividual)
-                                          Text(
-                                            '1',
-                                            style: TextStyle(
-                                              fontSize: 40,
-                                            ),
-                                          ),
-                                      ],
-                                    ),
+                                    ],
                                   ),
                                 ),
                               ),
@@ -332,11 +331,14 @@ class _ProductPageState extends State<ProductPage> {
                                   } catch (e) {
                                     e;
                                   } finally {
-                                    if (_consultProductController.text
-                                        .isNotEmpty) await consultProduct();
+                                    //se ler algum código, vai consultar o produto
+                                    if (_consultProductController
+                                        .text.isNotEmpty) {
+                                      await consultAndAddProduct();
+                                    }
                                   }
                                 } else {
-                                  await consultProduct();
+                                  await consultAndAddProduct();
                                 }
 
                                 if (productProvider.products.isNotEmpty &&
@@ -351,7 +353,7 @@ class _ProductPageState extends State<ProductPage> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
+                padding: const EdgeInsets.only(left: 10, right: 10, top: 4),
                 child: FittedBox(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -372,6 +374,9 @@ class _ProductPageState extends State<ProductPage> {
                                   setState(() {
                                     isIndividual = value;
                                   });
+                                  if (isIndividual) {
+                                    alterFocusToConsultProduct();
+                                  }
                                 }),
                     ],
                   ),
@@ -384,7 +389,6 @@ class _ProductPageState extends State<ProductPage> {
                   isIndividual: isIndividual,
                   countingCode: countings.codigoInternoInvCont,
                   productPackingCode: countings.numeroContagemInvCont,
-                  lastQuantityAdded: lastQuantityAdded,
                   consultedProductFocusNode: _consultedProductFocusNode,
                 ),
             ],
