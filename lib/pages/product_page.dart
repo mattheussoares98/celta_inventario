@@ -94,6 +94,7 @@ class _ProductPageState extends State<ProductPage> {
     Future<void> consultProduct() async {
       setState(() {
         isLoadingEanOrPlu = true;
+        quantityProvider.lastQuantityAdded = '';
       });
 
       await productProvider.getProductByEan(
@@ -349,28 +350,31 @@ class _ProductPageState extends State<ProductPage> {
                   ],
                 ),
               ),
-              FittedBox(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Inserir produto individualmente',
-                      style: TextStyle(
-                        fontSize: 30,
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: FittedBox(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Inserir produto individualmente',
+                        style: TextStyle(
+                          fontSize: 30,
+                        ),
                       ),
-                    ),
-                    SizedBox(width: 20),
-                    Switch(
-                        value: isIndividual,
-                        onChanged: isLoadingEanOrPlu ||
-                                quantityProvider.isLoadingQuantity
-                            ? null
-                            : (value) {
-                                setState(() {
-                                  isIndividual = value;
-                                });
-                              }),
-                  ],
+                      SizedBox(width: 20),
+                      Switch(
+                          value: isIndividual,
+                          onChanged: isLoadingEanOrPlu ||
+                                  quantityProvider.isLoadingQuantity
+                              ? null
+                              : (value) {
+                                  setState(() {
+                                    isIndividual = value;
+                                  });
+                                }),
+                    ],
+                  ),
                 ),
               ),
               // const SizedBox(height: 8),

@@ -59,256 +59,245 @@ class _ConsultedProductState extends State<ConsultedProduct> {
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 5),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Card(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-              side: BorderSide(
-                width: 2,
-                color: Theme.of(context).colorScheme.primary,
+      child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+          side: BorderSide(
+            width: 2,
+            color: Theme.of(context).colorScheme.primary,
+          ),
+        ),
+        elevation: 10,
+        child: Padding(
+          padding: const EdgeInsets.only(
+            left: 10,
+            right: 10,
+            bottom: 10,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 8),
+              FittedBox(
+                child: Row(
+                  children: [
+                    Text(
+                      productProvider.products[0].productName.substring(9),
+                      style: TextStyle(
+                        fontSize: 50,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            elevation: 10,
-            child: Padding(
-              padding: const EdgeInsets.only(
-                left: 10,
-                right: 10,
-                bottom: 10,
-              ),
-              child: Column(
+              const SizedBox(height: 8),
+              Row(
+                // mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const SizedBox(height: 8),
-                  FittedBox(
-                    child: Row(
-                      children: [
-                        Text(
-                          productProvider.products[0].productName.substring(9),
-                          style: TextStyle(
-                            fontSize: 50,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
+                  Text(
+                    'PLU: ',
+                    style: TextStyle(
+                      fontSize: 20,
                     ),
                   ),
-                  const SizedBox(height: 10),
-                  Row(
-                    // mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'PLU: ',
-                        style: TextStyle(
-                          fontSize: 20,
-                        ),
-                      ),
-                      Text(
-                        productProvider.products[0].plu,
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      //precisei colocar o flexible porque pelo fittedbox não estava funcionando como queria
-                      Flexible(
-                        flex: 20,
-                        child: Text(
-                          'Quantidade contada: ',
-                          style: TextStyle(
-                            fontSize: 20,
-                          ),
-                          textAlign: TextAlign.left,
-                        ),
-                      ),
-                      Flexible(
-                        flex: 15,
-                        child: Text(
-                          productProvider.products[0].quantidadeInvContProEmb
-                                      .toString() ==
-                                  'null'
-                              ? 'sem contagem'
-                              : productProvider
-                                  .products[0].quantidadeInvContProEmb
-                                  .toDouble()
-                                  .toString(),
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'OpenSans',
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      //precisei colocar o flexible porque pelo fittedbox não estava funcionando como queria
-                      Flexible(
-                        flex: 20,
-                        child: Text(
-                          'Última quantidade adicionada: ',
-                          style: TextStyle(
-                            fontSize: 20,
-                          ),
-                          textAlign: TextAlign.left,
-                        ),
-                      ),
-                      Flexible(
-                        flex: 3,
-                        child: Text(
-                          widget.lastQuantityAdded,
-                        ),
-                      )
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Flexible(
-                          flex: 3,
-                          child: Container(
-                            child: Form(
-                              key: _formKey,
-                              child: TextFormField(
-                                autofocus: true,
-                                enabled: quantityProvider.isLoadingQuantity
-                                    ? false
-                                    : true,
-                                controller: widget.consultedProductController,
-                                focusNode: widget.consultedProductFocusNode,
-                                inputFormatters: [
-                                  LengthLimitingTextInputFormatter(7)
-                                ],
-                                onChanged: (value) {
-                                  if (value.isEmpty || value == '-') {
-                                    value = '0';
-                                  }
-                                },
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return 'Digite uma quantidade';
-                                  } else if (value.contains('-')) {
-                                    return 'Valor incorreto';
-                                  }
-                                },
-                                decoration: InputDecoration(
-                                  labelText: 'Digite a quantidade aqui',
-                                  errorStyle: TextStyle(
-                                    fontSize: 17,
-                                  ),
-                                  disabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: BorderSide(
-                                      style: BorderStyle.solid,
-                                      width: 2,
-                                      color:
-                                          Theme.of(context).colorScheme.primary,
-                                    ),
-                                  ),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: BorderSide(
-                                      style: BorderStyle.solid,
-                                      width: 2,
-                                      color:
-                                          Theme.of(context).colorScheme.primary,
-                                    ),
-                                  ),
-                                  labelStyle: TextStyle(
-                                    fontStyle: FontStyle.italic,
-                                    color:
-                                        Theme.of(context).colorScheme.primary,
-                                  ),
-                                ),
-                                style: TextStyle(
-                                  fontSize: 20,
-                                ),
-                                keyboardType: TextInputType.number,
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 4),
-                        Flexible(
-                          flex: 1,
-                          child: Container(
-                            child: AnullQuantityBottom(
-                              showErrorMessage: showErrorMessage,
-                              countingCode: widget.countingCode,
-                              productPackingCode: productProvider
-                                  .products[0].codigoInternoProEmb,
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 8),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Flexible(
-                          flex: 3,
-                          child: Container(
-                            height: 80,
-                            width: double.infinity,
-                            child: ConfirmQuantityButton(
-                              isIndividual: isIndividual,
-                              consultedProductController:
-                                  widget.consultedProductController,
-                              showErrorMessage: showErrorMessage,
-                              countingCode: widget.countingCode,
-                              productPackingCode: productProvider
-                                  .products[0].codigoInternoProEmb,
-                              isSubtract: false,
-                              formKey: _formKey,
-                              consultedProductFocusNode:
-                                  widget.consultedProductFocusNode,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        Flexible(
-                          flex: 1,
-                          child: Container(
-                            height: 80,
-                            child: ConfirmQuantityButton(
-                              isIndividual: isIndividual,
-                              consultedProductController:
-                                  widget.consultedProductController,
-                              showErrorMessage: showErrorMessage,
-                              countingCode: widget.countingCode,
-                              productPackingCode: productProvider
-                                  .products[0].codigoInternoProEmb,
-                              isSubtract: true,
-                              formKey: _formKey,
-                              consultedProductFocusNode:
-                                  widget.consultedProductFocusNode,
-                            ),
-                          ),
-                        ),
-                      ],
+                  Text(
+                    productProvider.products[0].plu,
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ],
               ),
-            ),
+              const SizedBox(height: 8),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  //precisei colocar o flexible porque pelo fittedbox não estava funcionando como queria
+                  Flexible(
+                    flex: 20,
+                    child: Text(
+                      'Quantidade contada: ',
+                      style: TextStyle(
+                        fontSize: 20,
+                      ),
+                      textAlign: TextAlign.left,
+                    ),
+                  ),
+                  Flexible(
+                    flex: 15,
+                    child: Text(
+                      productProvider.products[0].quantidadeInvContProEmb
+                                  .toString() ==
+                              'null'
+                          ? 'sem contagem'
+                          : productProvider.products[0].quantidadeInvContProEmb
+                              .toDouble()
+                              .toString(),
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'OpenSans',
+                      ),
+                    ),
+                  )
+                ],
+              ),
+              const SizedBox(height: 8),
+              if (quantityProvider.lastQuantityAdded != '')
+                FittedBox(
+                  child: Text(
+                    quantityProvider.subtractedQuantity
+                        ? 'Última quantidade adicionada: - ${quantityProvider.lastQuantityAdded}'
+                        : 'Última quantidade adicionada: ${quantityProvider.lastQuantityAdded}',
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Theme.of(context).colorScheme.primary,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'OpenSans',
+                    ),
+                    textAlign: TextAlign.left,
+                  ),
+                ),
+              const SizedBox(height: 8),
+              Padding(
+                padding: const EdgeInsets.only(top: 10),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Flexible(
+                      flex: 3,
+                      child: Container(
+                        child: Form(
+                          key: _formKey,
+                          child: TextFormField(
+                            autofocus: true,
+                            enabled: quantityProvider.isLoadingQuantity
+                                ? false
+                                : true,
+                            controller: widget.consultedProductController,
+                            focusNode: widget.consultedProductFocusNode,
+                            inputFormatters: [
+                              LengthLimitingTextInputFormatter(7)
+                            ],
+                            onChanged: (value) {
+                              if (value.isEmpty || value == '-') {
+                                value = '0';
+                              }
+                            },
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Digite uma quantidade';
+                              } else if (value.contains('-')) {
+                                return 'Valor incorreto';
+                              } else if (value == '0') {
+                                return 'Digite uma quantidade';
+                              }
+                              return null;
+                            },
+                            decoration: InputDecoration(
+                              labelText: 'Digite a quantidade aqui',
+                              errorStyle: TextStyle(
+                                fontSize: 17,
+                              ),
+                              disabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: BorderSide(
+                                  style: BorderStyle.solid,
+                                  width: 2,
+                                  color: Theme.of(context).colorScheme.primary,
+                                ),
+                              ),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: BorderSide(
+                                  style: BorderStyle.solid,
+                                  width: 2,
+                                  color: Theme.of(context).colorScheme.primary,
+                                ),
+                              ),
+                              labelStyle: TextStyle(
+                                fontStyle: FontStyle.italic,
+                                color: Theme.of(context).colorScheme.primary,
+                              ),
+                            ),
+                            style: TextStyle(
+                              fontSize: 20,
+                            ),
+                            keyboardType: TextInputType.number,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 4),
+                    Flexible(
+                      flex: 1,
+                      child: Container(
+                        child: AnullQuantityBottom(
+                          showErrorMessage: showErrorMessage,
+                          countingCode: widget.countingCode,
+                          productPackingCode:
+                              productProvider.products[0].codigoInternoProEmb,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 8),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Flexible(
+                      flex: 3,
+                      child: Container(
+                        height: 80,
+                        width: double.infinity,
+                        child: ConfirmQuantityButton(
+                          isIndividual: isIndividual,
+                          consultedProductController:
+                              widget.consultedProductController,
+                          showErrorMessage: showErrorMessage,
+                          countingCode: widget.countingCode,
+                          productPackingCode:
+                              productProvider.products[0].codigoInternoProEmb,
+                          isSubtract: false,
+                          formKey: _formKey,
+                          consultedProductFocusNode:
+                              widget.consultedProductFocusNode,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Flexible(
+                      flex: 1,
+                      child: Container(
+                        height: 80,
+                        child: ConfirmQuantityButton(
+                          isIndividual: isIndividual,
+                          consultedProductController:
+                              widget.consultedProductController,
+                          showErrorMessage: showErrorMessage,
+                          countingCode: widget.countingCode,
+                          productPackingCode:
+                              productProvider.products[0].codigoInternoProEmb,
+                          isSubtract: true,
+                          formKey: _formKey,
+                          consultedProductFocusNode:
+                              widget.consultedProductFocusNode,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

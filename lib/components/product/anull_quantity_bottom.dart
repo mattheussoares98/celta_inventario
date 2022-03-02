@@ -53,12 +53,13 @@ class _AnullQuantityBottomState extends State<AnullQuantityBottom> {
       builder: (context) {
         return AlertDialog(
           content: Text(
-            'DESEJA ANULAR A QUANTIDADE?',
+            'DESEJA ANULAR A CONTAGEM?',
             // textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 32,
               fontWeight: FontWeight.bold,
             ),
+            textAlign: TextAlign.center,
           ),
           actionsPadding: EdgeInsets.all(10),
           actions: [
