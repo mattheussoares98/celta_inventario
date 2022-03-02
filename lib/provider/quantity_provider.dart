@@ -110,6 +110,7 @@ class QuantityProvider with ChangeNotifier {
 
       if (response.statusCode == 200) {
         isConfirmedAnullQuantity = true;
+        lastQuantityAdded = '';
       } else {
         print(response.reasonPhrase);
       }

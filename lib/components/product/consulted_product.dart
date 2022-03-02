@@ -145,6 +145,7 @@ class _ConsultedProductState extends State<ConsultedProduct> {
                   )
                 ],
               ),
+              if (quantityProvider.lastQuantityAdded != '')
               const SizedBox(height: 8),
               if (quantityProvider.lastQuantityAdded != '')
                 FittedBox(
