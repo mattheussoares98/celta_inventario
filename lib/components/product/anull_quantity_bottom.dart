@@ -68,10 +68,11 @@ class _AnullQuantityBottomState extends State<AnullQuantityBottom> {
                 children: [
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                        primary: Colors.green,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(100),
-                        )),
+                      primary: Colors.green,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(100),
+                      )
+                    ),
                     onPressed: () {
                       anullQuantity();
                       Navigator.of(context).pop();
@@ -89,10 +90,11 @@ class _AnullQuantityBottomState extends State<AnullQuantityBottom> {
                   SizedBox(width: 50),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                        primary: Colors.red,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(100),
-                        )),
+                      primary: Colors.red,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(100),
+                      )
+                    ),
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
@@ -134,7 +136,7 @@ class _AnullQuantityBottomState extends State<AnullQuantityBottom> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   const Text(
-                    'AGUARDE...',
+                    '\nCONFIRMANDO...\n',
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 40,

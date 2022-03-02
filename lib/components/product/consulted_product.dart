@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:celta_inventario/components/product/anull_quantity_bottom.dart';
 import 'package:celta_inventario/components/product/confirm_quantity_button.dart';
 import 'package:celta_inventario/provider/product_provider.dart';
@@ -11,12 +12,20 @@ import 'package:provider/provider.dart';
 class ConsultedProduct extends StatefulWidget {
   final int countingCode;
   final int productPackingCode;
-  final FocusNode focusNodeConsultProduct;
+  final bool isIndividual;
+  final bool? isLoadingEanOrPlu;
+  final TextEditingController consultedProductController;
+  final String lastQuantityAdded;
+  final FocusNode consultedProductFocusNode;
   ConsultedProduct({
     Key? key,
     required this.countingCode,
     required this.productPackingCode,
-    required this.focusNodeConsultProduct,
+    required this.isIndividual,
+    required this.consultedProductController,
+    required this.lastQuantityAdded,
+    required this.consultedProductFocusNode,
+    this.isLoadingEanOrPlu,
   }) : super(key: key);
 
   @override
@@ -24,8 +33,6 @@ class ConsultedProduct extends StatefulWidget {
 }
 
 class _ConsultedProductState extends State<ConsultedProduct> {
-  TextEditingController controllerConsultedProduct = TextEditingController();
-
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   showErrorMessage(String error) {
@@ -39,32 +46,16 @@ class _ConsultedProductState extends State<ConsultedProduct> {
     );
   }
 
-  final _quantityFocusNode = FocusNode();
-
-  String lastQuantityConfirmed = '';
-
-  @override //essa função serve para liberar qualquer tipo de memória que esteja sendo utilizado por esses FocusNode e Listner (precisou ser criado pra conseguir carregar a imagem quando trocasse o foco)
-  void dispose() {
-    super.dispose();
-    _quantityFocusNode.dispose();
-    controllerConsultedProduct.dispose();
-  }
+  bool isIndividual = false;
 
   @override
   Widget build(BuildContext context) {
     ProductProvider productProvider = Provider.of(context, listen: true);
     QuantityProvider quantityProvider = Provider.of(context, listen: true);
 
-    void alterFocusToQuantity() {
-      if (!quantityProvider.isLoadingQuantity) {
-//se não coloca isso em um Future, pelo jeito tenta mudar o foco antes do formfield
-//estar habilitado novamente. Depois de colocar em um Future, funcionou corretamente
-//a alternação de foco
-        Future.delayed(const Duration(milliseconds: 100), () {
-          FocusScope.of(context).requestFocus(_quantityFocusNode);
-        });
-      }
-    }
+    setState(() {
+      isIndividual = widget.isIndividual;
+    });
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 5),
@@ -157,6 +148,28 @@ class _ConsultedProductState extends State<ConsultedProduct> {
                       )
                     ],
                   ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      //precisei colocar o flexible porque pelo fittedbox não estava funcionando como queria
+                      Flexible(
+                        flex: 20,
+                        child: Text(
+                          'Última quantidade adicionada: ',
+                          style: TextStyle(
+                            fontSize: 20,
+                          ),
+                          textAlign: TextAlign.left,
+                        ),
+                      ),
+                      Flexible(
+                        flex: 3,
+                        child: Text(
+                          widget.lastQuantityAdded,
+                        ),
+                      )
+                    ],
+                  ),
                   const SizedBox(height: 8),
                   Padding(
                     padding: const EdgeInsets.only(top: 10),
@@ -169,13 +182,12 @@ class _ConsultedProductState extends State<ConsultedProduct> {
                             child: Form(
                               key: _formKey,
                               child: TextFormField(
-                                onFieldSubmitted: (_) {},
                                 autofocus: true,
                                 enabled: quantityProvider.isLoadingQuantity
                                     ? false
                                     : true,
-                                controller: controllerConsultedProduct,
-                                focusNode: _quantityFocusNode,
+                                controller: widget.consultedProductController,
+                                focusNode: widget.consultedProductFocusNode,
                                 inputFormatters: [
                                   LengthLimitingTextInputFormatter(7)
                                 ],
@@ -252,18 +264,20 @@ class _ConsultedProductState extends State<ConsultedProduct> {
                         Flexible(
                           flex: 3,
                           child: Container(
-                            height: 60,
+                            height: 80,
                             width: double.infinity,
                             child: ConfirmQuantityButton(
-                              controllerConsultedProduct:
-                                  controllerConsultedProduct,
+                              isIndividual: isIndividual,
+                              consultedProductController:
+                                  widget.consultedProductController,
                               showErrorMessage: showErrorMessage,
                               countingCode: widget.countingCode,
                               productPackingCode: productProvider
                                   .products[0].codigoInternoProEmb,
                               isSubtract: false,
                               formKey: _formKey,
-                              alterFocusToQuantity: alterFocusToQuantity,
+                              consultedProductFocusNode:
+                                  widget.consultedProductFocusNode,
                             ),
                           ),
                         ),
@@ -271,41 +285,25 @@ class _ConsultedProductState extends State<ConsultedProduct> {
                         Flexible(
                           flex: 1,
                           child: Container(
-                            height: 60,
+                            height: 80,
                             child: ConfirmQuantityButton(
-                              controllerConsultedProduct:
-                                  controllerConsultedProduct,
+                              isIndividual: isIndividual,
+                              consultedProductController:
+                                  widget.consultedProductController,
                               showErrorMessage: showErrorMessage,
                               countingCode: widget.countingCode,
                               productPackingCode: productProvider
                                   .products[0].codigoInternoProEmb,
                               isSubtract: true,
                               formKey: _formKey,
-                              alterFocusToQuantity: alterFocusToQuantity,
+                              consultedProductFocusNode:
+                                  widget.consultedProductFocusNode,
                             ),
                           ),
                         ),
                       ],
                     ),
                   ),
-                  if (quantityProvider.lastQuantityConfirmed != '')
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8),
-                      child: FittedBox(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'Última quantidade inserida: ${quantityProvider.subtractedQuantity ? '-${quantityProvider.lastQuantityConfirmed}' : quantityProvider.lastQuantityConfirmed}',
-                              style: TextStyle(
-                                fontSize: 500,
-                                fontStyle: FontStyle.italic,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
                 ],
               ),
             ),

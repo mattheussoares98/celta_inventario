@@ -1,7 +1,5 @@
-import 'package:celta_inventario/provider/product_provider.dart';
+import 'package:celta_inventario/controller/productPage/add_quantity_controller.dart';
 import 'package:celta_inventario/provider/quantity_provider.dart';
-import 'package:celta_inventario/utils/base_url.dart';
-import 'package:celta_inventario/utils/user_identity.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -9,19 +7,21 @@ class ConfirmQuantityButton extends StatefulWidget {
   final int countingCode;
   final int productPackingCode;
   final Function(String) showErrorMessage;
-  final TextEditingController controllerConsultedProduct;
+  final TextEditingController consultedProductController;
   final bool isSubtract;
   final GlobalKey<FormState> formKey;
-  final void Function() alterFocusToQuantity;
+  final bool isIndividual;
+  final FocusNode consultedProductFocusNode;
 
   ConfirmQuantityButton({
-    required this.controllerConsultedProduct,
+    required this.consultedProductController,
     required this.showErrorMessage,
     required this.countingCode,
     required this.productPackingCode,
     required this.isSubtract,
     required this.formKey,
-    required this.alterFocusToQuantity,
+    required this.isIndividual,
+    required this.consultedProductFocusNode,
     Key? key,
   }) : super(key: key);
 
@@ -30,6 +30,16 @@ class ConfirmQuantityButton extends StatefulWidget {
 }
 
 class _ConfirmQuantityButtonState extends State<ConfirmQuantityButton> {
+  bool isIndividual = false;
+
+  alterFocusToQuantity() {
+    print('tá tentando alterar o foco');
+    Future.delayed(Duration(milliseconds: 100), () {
+      FocusScope.of(context).requestFocus(widget.consultedProductFocusNode);
+    });
+  }
+
+  final AddQuantityController addQuantityController = AddQuantityController();
   confirmQuantity({
     required BuildContext context,
   }) {
@@ -56,8 +66,8 @@ class _ConfirmQuantityButtonState extends State<ConfirmQuantityButton> {
           ),
           content: Text(
             widget.isSubtract
-                ? 'Quantidade digitada: -${widget.controllerConsultedProduct.text}'
-                : 'Quantidade digitada: ${widget.controllerConsultedProduct.text}',
+                ? 'Quantidade digitada: -${widget.consultedProductController.text}'
+                : 'Quantidade digitada: ${widget.consultedProductController.text}',
             style: TextStyle(
               fontSize: 30,
             ),
@@ -76,7 +86,15 @@ class _ConfirmQuantityButtonState extends State<ConfirmQuantityButton> {
                         )),
                     onPressed: () {
                       Navigator.of(context).pop();
-                      addQuantity();
+                      addQuantityController.addQuantity(
+                        isIndividual: isIndividual,
+                        context: context,
+                        countingCode: widget.countingCode,
+                        quantity: widget.consultedProductController,
+                        isSubtract: widget.isSubtract,
+                        showErrorMessage: widget.showErrorMessage,
+                        alterFocusToQuantity: alterFocusToQuantity,
+                      );
                     },
                     child: Padding(
                       padding: const EdgeInsets.all(30),
@@ -120,63 +138,10 @@ class _ConfirmQuantityButtonState extends State<ConfirmQuantityButton> {
     });
   }
 
-  addQuantity() async {
-    QuantityProvider quantityProvider = Provider.of(context, listen: false);
-    ProductProvider productProvider = Provider.of(context, listen: false);
-
-    setState(() {
-      quantityProvider.isLoadingQuantity = true;
-    });
-
-    try {
-      await quantityProvider.entryQuantity(
-        countingCode: widget.countingCode,
-        productPackingCode: productProvider.products[0].codigoInternoProEmb,
-        quantity: widget.controllerConsultedProduct.text,
-        baseUrl: BaseUrl.url,
-        userIdentity: UserIdentity.identity,
-        isSubtract: widget.isSubtract,
-      );
-    } catch (e) {
-      e;
-    }
-    if (quantityProvider.quantityError != '') {
-      widget.showErrorMessage(quantityProvider.quantityError);
-
-      widget.alterFocusToQuantity();
-      return;
-    }
-
-    if (quantityProvider.isConfirmedQuantity) {
-      setState(() {
-        //se estiver como nulo, é porque nenhuma informação foi
-        //adicionada ainda. Por isso precisa deixar o valor como '0'
-        if (productProvider.products[0].quantidadeInvContProEmb.toString() ==
-            'null') {
-          productProvider.products[0].quantidadeInvContProEmb =
-              int.tryParse('0');
-        }
-
-        if (widget.isSubtract) {
-          productProvider.products[0].quantidadeInvContProEmb =
-              productProvider.products[0].quantidadeInvContProEmb -
-                  double.tryParse(widget.controllerConsultedProduct.text
-                      .replaceAll(RegExp(r','), '.'));
-        } else {
-          productProvider.products[0].quantidadeInvContProEmb =
-              productProvider.products[0].quantidadeInvContProEmb +
-                  double.tryParse(widget.controllerConsultedProduct.text
-                      .replaceAll(RegExp(r','), '.'));
-        }
-      });
-    }
-    widget.alterFocusToQuantity();
-    widget.controllerConsultedProduct.clear();
-  }
-
   @override
   Widget build(BuildContext context) {
     QuantityProvider quantityProvider = Provider.of(context, listen: true);
+    final AddQuantityController addQuantityController = AddQuantityController();
 
     return ElevatedButton(
       onPressed: quantityProvider.isLoadingQuantity
@@ -188,34 +153,41 @@ class _ConfirmQuantityButtonState extends State<ConfirmQuantityButton> {
                 return;
               }
 
-              if (double.tryParse(widget.controllerConsultedProduct.text
+              if (double.tryParse(widget.consultedProductController.text
                       .replaceAll(RegExp(r','), '.'))! >=
                   1000) {
                 await confirmQuantity(context: context);
               } else {
-                await addQuantity();
+                addQuantityController.addQuantity(
+                  isIndividual: isIndividual,
+                  context: context,
+                  countingCode: widget.countingCode,
+                  quantity: widget.consultedProductController,
+                  isSubtract: widget.isSubtract,
+                  showErrorMessage: widget.showErrorMessage,
+                  alterFocusToQuantity: alterFocusToQuantity,
+                );
               }
             },
       child: quantityProvider.isLoadingQuantity
           ? FittedBox(
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 2),
+                    padding: const EdgeInsets.all(8.0),
                     child: const Text(
-                      'AGUARDE...',
+                      '\nCONFIRMANDO...\n',
                       style: TextStyle(
                         color: Colors.black,
-                        fontSize: 20,
+                        fontSize: 40,
                       ),
                     ),
                   ),
                   const SizedBox(width: 7),
                   Container(
-                    height: 20,
-                    width: 20,
+                    height: 25,
+                    width: 25,
                     child: CircularProgressIndicator(
                       color: Colors.black,
                     ),
