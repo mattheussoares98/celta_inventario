@@ -6,26 +6,26 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
-    // Widget example1 = SplashScreenView(
-    //   navigateRoute: AuthOrHoMePage(),
-    //   duration: 5000,
-    //   imageSize: width.toInt(),
-    //   imageSrc: "lib/assets/Images/LogoCeltaTransparente.png",
-    //   text: "CELTAWARE",
-    //   textType: TextType.ColorizeAnimationText,
-    //   textStyle: TextStyle(
-    //     fontSize: 40.0,
-    //   ),
-    //   colors: [
-    //     Colors.purple,
-    //     Colors.blue,
-    //     Colors.yellow,
-    //     Colors.red,
-    //   ],
-    //   backgroundColor: Colors.white,
-    // );
+    Widget example1 = SplashScreenView(
+      navigateRoute: AuthOrHoMePage(),
+      duration: 5000,
+      imageSize: width.toInt(),
+      imageSrc: "lib/assets/Images/LogoCeltaTransparente.png",
+      text: "CELTAWARE",
+      textType: TextType.ColorizeAnimationText,
+      textStyle: TextStyle(
+        fontSize: 40.0,
+      ),
+      colors: [
+        Colors.purple,
+        Colors.blue,
+        Colors.yellow,
+        Colors.red,
+      ],
+      backgroundColor: Colors.white,
+    );
 
-    Widget exemple2 = SplashScreenView(
+    Widget example2 = SplashScreenView(
       navigateRoute: AuthOrHoMePage(),
       duration: 3000,
       imageSize: width.toInt(),
@@ -44,8 +44,8 @@ class SplashScreen extends StatelessWidget {
       backgroundColor: Colors.white,
     );
 
-    return Scaffold(
-      body: exemple2,
+    return Container(
+      child: example1,
     );
   }
 }

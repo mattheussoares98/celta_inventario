@@ -120,6 +120,7 @@ class _AuthFormState extends State<AuthForm> {
       });
 
       BaseUrl.url = _urlController.text;
+      Navigator.of(context).pop();
     }
 
     return Card(
@@ -152,7 +153,7 @@ class _AuthFormState extends State<AuthForm> {
                   color: Colors.black,
                   fontSize: 20,
                 ),
-                decoration:  InputDecoration(
+                decoration: InputDecoration(
                   labelStyle: TextStyle(
                     color: Colors.black,
                   ),
@@ -227,19 +228,20 @@ class _AuthFormState extends State<AuthForm> {
                     ? Container(
                         height: 28,
                         width: 28,
-                        margin: EdgeInsets.symmetric(vertical: 10, horizontal: 22),
-                        child: const CircularProgressIndicator(
-                        ),
+                        margin:
+                            EdgeInsets.symmetric(vertical: 10, horizontal: 22),
+                        child: const CircularProgressIndicator(),
                       )
                     : Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 17),
-                      child: Text(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 12, horizontal: 17),
+                        child: Text(
                           'Login',
                           style: TextStyle(
                             fontSize: 17,
                           ),
                         ),
-                    ),
+                      ),
               ),
             ],
           ),
