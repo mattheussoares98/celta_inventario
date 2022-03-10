@@ -7,4 +7,5 @@ class APPROUTES {
   static const AUTH = '/AUTH';
   static const COUNTINGS = '/COUNTINGS';
   static const PRODUCTS = '/PRODUCTS';
+  static const SPLASHSCREEN = '/SPLASHSCREEN';
 }

@@ -5,6 +5,7 @@ import 'package:celta_inventario/pages/enterprise_page.dart';
 import 'package:celta_inventario/pages/inventory_page.dart';
 import 'package:celta_inventario/pages/product_page.dart';
 import 'package:celta_inventario/pages/sales_page.dart';
+import 'package:celta_inventario/pages/splash_screen.dart';
 import 'package:celta_inventario/pages/stock_page.dart';
 import 'package:celta_inventario/provider/counting_provider.dart';
 import 'package:celta_inventario/provider/enterprise_provider.dart';
@@ -86,6 +87,7 @@ void main() {
         ),
         debugShowCheckedModeBanner: false,
         // home: const AuthOrHoMePage(),
+        initialRoute: APPROUTES.SPLASHSCREEN,
         routes: {
           APPROUTES.HOME: (ctx) => const AuthOrHoMePage(),
           APPROUTES.AUTH: (ctx) => const AuthPage(),
@@ -95,6 +97,7 @@ void main() {
           APPROUTES.SALES: (ctx) => const SalesPage(),
           APPROUTES.COUNTINGS: (ctx) => const CountingPage(),
           APPROUTES.PRODUCTS: (ctx) => const ProductPage(),
+          APPROUTES.SPLASHSCREEN: (ctx) => SplashScreen(),
         },
       ),
     ),
