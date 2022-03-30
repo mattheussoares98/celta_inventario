@@ -22,8 +22,9 @@ class _HomePageState extends State<HomePage> {
   }) {
     return InkWell(
       onTap: () {
-        Navigator.of(context).pushNamed(
+        Navigator.of(context).pushNamedAndRemoveUntil(
           route!,
+          (route) => false,
           arguments: UserIdentity.identity,
         );
       },

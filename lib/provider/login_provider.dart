@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:celta_inventario/utils/user_identity.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
@@ -8,16 +9,12 @@ class LoginProvider with ChangeNotifier {
   bool _auth = false;
 
   bool get isAuth {
-    if (_auth == false) {
-      return false;
-    } else {
-      return true;
-    }
+    return _auth;
   }
 
   String loginErrorMessage = '';
 
-  errorMessage(String error) {
+  _errorMessage(String error) {
     if (error.contains('O usuário não foi encontrado')) {
       loginErrorMessage = 'Usuário não encontrado!';
     } else if (error.contains('senha está incorreta')) {
@@ -50,7 +47,6 @@ class LoginProvider with ChangeNotifier {
     String? baseUrl,
   }) async {
     loginErrorMessage = '';
-    String error = '';
     notifyListeners();
 
     try {
@@ -75,24 +71,22 @@ class LoginProvider with ChangeNotifier {
 
       if (response.statusCode == 200) {
         _auth = true;
+        notifyListeners();
+        print('deu certo');
       } else {
         print('Erro no login');
-        error = response.body;
-        errorMessage(error);
+        _errorMessage(response.body);
       }
     } catch (e) {
+      _errorMessage(e.toString());
       print('deu erro no login: $e');
-      error = e.toString();
-      errorMessage(error);
+      notifyListeners();
     }
-
-    notifyListeners();
   }
 
   doAuth() {
-    if (isAuth) {
-      login();
-    }
+    login();
+    notifyListeners();
   }
 
   logout() {

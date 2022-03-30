@@ -1,4 +1,4 @@
-import 'package:celta_inventario/pages/auth_page.dart';
+import 'package:celta_inventario/pages/login_page.dart';
 import 'package:celta_inventario/pages/home_page.dart';
 import 'package:celta_inventario/provider/login_provider.dart';
 import 'package:flutter/material.dart';
@@ -20,12 +20,7 @@ class _AuthOrHoMePageState extends State<AuthOrHoMePage> {
   void initState() {
     super.initState();
     _future = LoginProvider().doAuth();
-  }
-
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
+    print('teste');
   }
 
   @override
@@ -44,7 +39,7 @@ class _AuthOrHoMePageState extends State<AuthOrHoMePage> {
             child: Text('Erro para efetuar o login'),
           );
         } else {
-          return loginProvider.isAuth ? const HomePage() : const AuthPage();
+          return loginProvider.isAuth ? const HomePage() : const LoginPage();
         }
       },
     );

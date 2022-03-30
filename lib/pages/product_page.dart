@@ -5,6 +5,7 @@ import 'package:celta_inventario/models/countings.dart';
 import 'package:celta_inventario/provider/product_provider.dart';
 import 'package:celta_inventario/provider/quantity_provider.dart';
 import 'package:celta_inventario/utils/base_url.dart';
+import 'package:celta_inventario/utils/show_error_message.dart';
 import 'package:celta_inventario/utils/user_identity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -48,17 +49,6 @@ class _ProductPageState extends State<ProductPage> {
     });
 
     _consultProductController.text = _scanBarcode;
-  }
-
-  showErrorMessage(String error) {
-    ScaffoldMessenger.of(context).hideCurrentSnackBar();
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        duration: const Duration(seconds: 5),
-        backgroundColor: Colors.red,
-        content: Text(error),
-      ),
-    );
   }
 
   final TextEditingController _consultProductController =
@@ -122,7 +112,10 @@ class _ProductPageState extends State<ProductPage> {
       });
 
       if (productProvider.productErrorMessage != '') {
-        showErrorMessage(productProvider.productErrorMessage);
+        ShowErrorMessage().showErrorMessage(
+          error: productProvider.productErrorMessage,
+          context: context,
+        );
         alterFocusToConsultProduct();
       }
 
@@ -133,23 +126,16 @@ class _ProductPageState extends State<ProductPage> {
           countingCode: countings.codigoInternoInvCont,
           quantity: '1',
           isSubtract: false,
-          showErrorMessage: showErrorMessage,
+          showErrorMessage: ShowErrorMessage().showErrorMessage(
+            error: quantityProvider.quantityError,
+            context: context,
+          ),
         );
       }
     }
 
     return Scaffold(
       appBar: AppBar(
-        // leading: IconButton(
-        //   onPressed: () {
-        //     Navigator.pop(context);
-        //     if (quantityProvider.isLoadingQuantity) {
-        //       return;
-        //     }
-        //     productProvider.clearProducts();
-        //   },
-        //   icon: Icon(Icons.arrow_back),
-        // ),
         title: const Text(
           'Produtos',
         ),

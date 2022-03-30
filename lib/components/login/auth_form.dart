@@ -1,5 +1,6 @@
 import 'package:celta_inventario/provider/login_provider.dart';
 import 'package:celta_inventario/utils/base_url.dart';
+import 'package:celta_inventario/utils/show_error_message.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -25,19 +26,6 @@ class _AuthFormState extends State<AuthForm> {
   };
 
   bool _isLoading = false;
-
-  showErrorMessage(String error) {
-    ScaffoldMessenger.of(context).hideCurrentSnackBar();
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          error,
-          textAlign: TextAlign.center,
-        ),
-        backgroundColor: Colors.red,
-      ),
-    );
-  }
 
   bool isLoaded = false;
 
@@ -110,7 +98,10 @@ class _AuthFormState extends State<AuthForm> {
       );
 
       if (_loginProvider.loginErrorMessage != '') {
-        showErrorMessage(_loginProvider.loginErrorMessage);
+        ShowErrorMessage().showErrorMessage(
+          error: _loginProvider.loginErrorMessage,
+          context: context,
+        );
       }
       setState(() {
         _isLoading = false;
@@ -120,7 +111,7 @@ class _AuthFormState extends State<AuthForm> {
       });
 
       BaseUrl.url = _urlController.text;
-      Navigator.of(context).pop();
+      // Navigator.of(context).pop();
     }
 
     return Card(

@@ -4,6 +4,7 @@ import 'package:celta_inventario/components/product/anull_quantity_bottom.dart';
 import 'package:celta_inventario/components/product/confirm_quantity_button.dart';
 import 'package:celta_inventario/provider/product_provider.dart';
 import 'package:celta_inventario/provider/quantity_provider.dart';
+import 'package:celta_inventario/utils/show_error_message.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
@@ -32,17 +33,6 @@ class ConsultedProduct extends StatefulWidget {
 
 class _ConsultedProductState extends State<ConsultedProduct> {
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
-  showErrorMessage(String error) {
-    ScaffoldMessenger.of(context).hideCurrentSnackBar();
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        duration: const Duration(seconds: 7),
-        backgroundColor: Colors.red,
-        content: Text(error),
-      ),
-    );
-  }
 
   bool isIndividual = false;
 
@@ -246,7 +236,11 @@ class _ConsultedProductState extends State<ConsultedProduct> {
                           flex: 1,
                           child: Container(
                             child: AnullQuantityBottom(
-                              showErrorMessage: showErrorMessage,
+                              showErrorMessage:
+                                  ShowErrorMessage().showErrorMessage(
+                                error: quantityProvider.quantityError,
+                                context: context,
+                              ),
                               countingCode: widget.countingCode,
                               productPackingCode: productProvider
                                   .products[0].codigoInternoProEmb,
@@ -270,7 +264,11 @@ class _ConsultedProductState extends State<ConsultedProduct> {
                                 isIndividual: isIndividual,
                                 consultedProductController:
                                     widget.consultedProductController,
-                                showErrorMessage: showErrorMessage,
+                                showErrorMessage:
+                                    ShowErrorMessage().showErrorMessage(
+                                  error: quantityProvider.quantityError,
+                                  context: context,
+                                ),
                                 countingCode: widget.countingCode,
                                 productPackingCode: productProvider
                                     .products[0].codigoInternoProEmb,
@@ -290,7 +288,11 @@ class _ConsultedProductState extends State<ConsultedProduct> {
                                 isIndividual: isIndividual,
                                 consultedProductController:
                                     widget.consultedProductController,
-                                showErrorMessage: showErrorMessage,
+                                showErrorMessage:
+                                    ShowErrorMessage().showErrorMessage(
+                                  error: quantityProvider.quantityError,
+                                  context: context,
+                                ),
                                 countingCode: widget.countingCode,
                                 productPackingCode: productProvider
                                     .products[0].codigoInternoProEmb,

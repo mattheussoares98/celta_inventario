@@ -1,5 +1,5 @@
-import 'package:celta_inventario/pages/auth_or_home_page.dart';
-import 'package:celta_inventario/pages/auth_page.dart';
+import 'package:celta_inventario/pages/login_or_home_page.dart';
+import 'package:celta_inventario/pages/login_page.dart';
 import 'package:celta_inventario/pages/counting_page.dart';
 import 'package:celta_inventario/pages/enterprise_page.dart';
 import 'package:celta_inventario/pages/inventory_page.dart';
@@ -90,7 +90,7 @@ void main() {
         initialRoute: APPROUTES.SPLASHSCREEN,
         routes: {
           APPROUTES.HOME: (ctx) => const AuthOrHoMePage(),
-          APPROUTES.AUTH: (ctx) => const AuthPage(),
+          APPROUTES.AUTH: (ctx) => const LoginPage(),
           APPROUTES.ENTERPRISES: (ctx) => const EnterprisePage(),
           APPROUTES.INVENTORY: (ctx) => const InventoryPage(),
           APPROUTES.STOCK: (ctx) => const StockPage(),
