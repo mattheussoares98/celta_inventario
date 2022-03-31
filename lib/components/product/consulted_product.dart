@@ -236,11 +236,6 @@ class _ConsultedProductState extends State<ConsultedProduct> {
                           flex: 1,
                           child: Container(
                             child: AnullQuantityBottom(
-                              showErrorMessage:
-                                  ShowErrorMessage().showErrorMessage(
-                                error: quantityProvider.quantityError,
-                                context: context,
-                              ),
                               countingCode: widget.countingCode,
                               productPackingCode: productProvider
                                   .products[0].codigoInternoProEmb,
@@ -264,11 +259,6 @@ class _ConsultedProductState extends State<ConsultedProduct> {
                                 isIndividual: isIndividual,
                                 consultedProductController:
                                     widget.consultedProductController,
-                                showErrorMessage:
-                                    ShowErrorMessage().showErrorMessage(
-                                  error: quantityProvider.quantityError,
-                                  context: context,
-                                ),
                                 countingCode: widget.countingCode,
                                 productPackingCode: productProvider
                                     .products[0].codigoInternoProEmb,
@@ -288,11 +278,6 @@ class _ConsultedProductState extends State<ConsultedProduct> {
                                 isIndividual: isIndividual,
                                 consultedProductController:
                                     widget.consultedProductController,
-                                showErrorMessage:
-                                    ShowErrorMessage().showErrorMessage(
-                                  error: quantityProvider.quantityError,
-                                  context: context,
-                                ),
                                 countingCode: widget.countingCode,
                                 productPackingCode: productProvider
                                     .products[0].codigoInternoProEmb,

@@ -1,6 +1,7 @@
 import 'package:celta_inventario/provider/product_provider.dart';
 import 'package:celta_inventario/provider/quantity_provider.dart';
 import 'package:celta_inventario/utils/base_url.dart';
+import 'package:celta_inventario/utils/show_error_message.dart';
 import 'package:celta_inventario/utils/user_identity.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
@@ -13,7 +14,6 @@ class AddQuantityController {
     required dynamic
         quantity, //coloquei como dynamic porque pode ser um controller ou somente o valor direto, como no caso de quando está inserindo os produtos individualmente que precisa inserir direto a quantidade "1"
     required bool isSubtract,
-    required Function(String) showErrorMessage,
     void Function()? alterFocusToConsultedProduct,
   }) async {
     QuantityProvider quantityProvider = Provider.of(context, listen: false);
@@ -34,7 +34,10 @@ class AddQuantityController {
       e;
     }
     if (quantityProvider.quantityError != '') {
-      showErrorMessage(quantityProvider.quantityError);
+      ShowErrorMessage().showErrorMessage(
+        error: quantityProvider.quantityError,
+        context: context,
+      );
       alterFocusToConsultedProduct!();
       return;
     }

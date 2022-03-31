@@ -17,14 +17,9 @@ class AuthForm extends StatefulWidget {
 
 TextEditingController _urlController = TextEditingController();
 TextEditingController _userController = TextEditingController();
+TextEditingController _passwordController = TextEditingController();
 
 class _AuthFormState extends State<AuthForm> {
-  final Map<String, String> _data = {
-    'user': '',
-    'password': '',
-    'url': '',
-  };
-
   bool _isLoading = false;
 
   bool isLoaded = false;
@@ -73,46 +68,42 @@ class _AuthFormState extends State<AuthForm> {
     await prefs.setString('user', _userController.text);
   }
 
+  _submit({required LoginProvider loginProvider}) async {
+    bool isValid = widget.formKey.currentState!.validate();
+
+    if (!isValid) {
+      return;
+    }
+
+    setState(() {
+      _isLoading = true;
+    });
+
+    await _saveUserAndUrl();
+
+    await loginProvider.login(
+      user: _userController.text,
+      password: _passwordController.text,
+      baseUrl: _urlController.text,
+    );
+
+    if (loginProvider.loginErrorMessage != '') {
+      ShowErrorMessage().showErrorMessage(
+        error: loginProvider.loginErrorMessage,
+        context: context,
+      );
+    }
+    setState(() {
+      _isLoading = false;
+    });
+
+    BaseUrl.url = _urlController.text;
+  }
+
   @override
   Widget build(BuildContext context) {
     LoginProvider _loginProvider =
         Provider.of<LoginProvider>(context, listen: true);
-
-    _submit() async {
-      bool isValid = widget.formKey.currentState!.validate();
-
-      if (!isValid) {
-        return;
-      }
-
-      setState(() {
-        _isLoading = true;
-      });
-
-      await _saveUserAndUrl();
-
-      await _loginProvider.login(
-        user: _userController.text,
-        password: _data['password']!,
-        baseUrl: _urlController.text,
-      );
-
-      if (_loginProvider.loginErrorMessage != '') {
-        ShowErrorMessage().showErrorMessage(
-          error: _loginProvider.loginErrorMessage,
-          context: context,
-        );
-      }
-      setState(() {
-        _isLoading = false;
-        if (_loginProvider.isAuth) {
-          _data['password'] = '';
-        }
-      });
-
-      BaseUrl.url = _urlController.text;
-      // Navigator.of(context).pop();
-    }
 
     return Card(
       margin: const EdgeInsets.all(20),
@@ -155,6 +146,7 @@ class _AuthFormState extends State<AuthForm> {
                 ),
               ),
               TextFormField(
+                controller: _passwordController,
                 enabled: _isLoading ? false : true,
                 focusNode: _passwordFocusNode,
                 onFieldSubmitted: (_) =>
@@ -167,13 +159,12 @@ class _AuthFormState extends State<AuthForm> {
                   fontSize: 20,
                 ),
                 validator: (_name) {
-                  _name = _data['password'];
-                  if (_data['password']!.trim().isEmpty) {
+                  _name = _passwordController.text;
+                  if (_passwordController.text.trim().isEmpty) {
                     return 'Preencha a senha';
                   }
                   return null;
                 },
-                onChanged: (value) => _data['password'] = value,
                 decoration: const InputDecoration(
                   labelText: 'Senha',
                   labelStyle: TextStyle(
@@ -185,7 +176,7 @@ class _AuthFormState extends State<AuthForm> {
               TextFormField(
                 enabled: _isLoading ? false : true,
                 controller: _urlController,
-                onFieldSubmitted: (_) => _submit(),
+                onFieldSubmitted: (_) => _submit(loginProvider: _loginProvider),
                 focusNode: _urlFocusNode,
                 style: TextStyle(
                   fontWeight: FontWeight.w500,
@@ -214,7 +205,11 @@ class _AuthFormState extends State<AuthForm> {
               ),
               const SizedBox(height: 20),
               ElevatedButton(
-                onPressed: _isLoading ? null : _submit,
+                onPressed: _isLoading
+                    ? null
+                    : () => _submit(
+                          loginProvider: _loginProvider,
+                        ),
                 child: _isLoading
                     ? Container(
                         height: 28,
