@@ -126,7 +126,7 @@ class _HomePageState extends State<HomePage> {
                           onPressed: () async {
                             await loginProvider.logout();
                             Navigator.of(context)
-                                .pushReplacementNamed(APPROUTES.HOME);
+                                .pushReplacementNamed(APPROUTES.LOGIN_PAGE);
                             Navigator.of(context).pop();
                           },
                           child: Padding(

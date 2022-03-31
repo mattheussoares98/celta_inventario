@@ -1,17 +1,11 @@
+import 'dart:async';
 import 'dart:convert';
-import 'dart:developer';
 import 'package:celta_inventario/utils/user_identity.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:xml2json/xml2json.dart';
 
 class LoginProvider with ChangeNotifier {
-  bool _auth = false;
-
-  bool get isAuth {
-    return _auth;
-  }
-
   String loginErrorMessage = '';
 
   _errorMessage(String error) {
@@ -39,6 +33,24 @@ class LoginProvider with ChangeNotifier {
     } else {
       loginErrorMessage = 'Servidor indisponível';
     }
+  }
+
+  static bool _isAuth = false;
+
+  bool get isAuth {
+    return _isAuth;
+  }
+
+  static MultiStreamController<bool>? _controller;
+  static final _isAuthStream = Stream<bool>.multi((controller) {
+    _controller = controller;
+
+    //esse stream está sendo usado no AuthOrHomePage
+    //quando da certo o login, ele adiciona o _isAuth no controller
+  });
+
+  Stream get authStream {
+    return _isAuthStream;
   }
 
   login({
@@ -70,8 +82,8 @@ class LoginProvider with ChangeNotifier {
       }
 
       if (response.statusCode == 200) {
-        _auth = true;
-        notifyListeners();
+        _isAuth = true;
+        _controller?.add(_isAuth);
         print('deu certo');
       } else {
         print('Erro no login');
@@ -84,13 +96,8 @@ class LoginProvider with ChangeNotifier {
     }
   }
 
-  doAuth() {
-    login();
-    notifyListeners();
-  }
-
   logout() {
-    _auth = false;
-    notifyListeners();
+    _isAuth = false;
+    _controller?.add(_isAuth);
   }
 }
