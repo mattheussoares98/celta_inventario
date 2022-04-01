@@ -158,7 +158,6 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        // centerTitle: true,
         actions: [
           IconButton(
             icon: const Icon(
@@ -178,28 +177,30 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          const SizedBox(height: 5),
-          imagem(
-            imagePath: 'lib/assets/Images/inventory.jpg',
-            routine: 'Inventário',
-            route: APPROUTES.ENTERPRISES,
-          ),
-          imagem(
-            imagePath: 'lib/assets/Images/pedidoDeVendas.jpg',
-            routine: 'Pedido de compras',
-            route: APPROUTES.SALES,
-          ),
-          imagem(
-            imagePath: 'lib/assets/Images/stock.jpg',
-            routine: 'Estoque',
-            route: APPROUTES.STOCK,
-          ),
-          const SizedBox(height: 5),
-        ],
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const SizedBox(height: 5),
+            imagem(
+              imagePath: 'lib/assets/Images/inventory.jpg',
+              routine: 'Inventário',
+              route: APPROUTES.ENTERPRISES,
+            ),
+            imagem(
+              imagePath: 'lib/assets/Images/pedidoDeVendas.jpg',
+              routine: 'Pedido de compras',
+              route: APPROUTES.SALES,
+            ),
+            imagem(
+              imagePath: 'lib/assets/Images/stock.jpg',
+              routine: 'Estoque',
+              route: APPROUTES.STOCK,
+            ),
+            const SizedBox(height: 5),
+          ],
+        ),
       ),
     );
   }

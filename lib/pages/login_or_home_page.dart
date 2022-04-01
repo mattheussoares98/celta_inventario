@@ -1,7 +1,6 @@
 import 'package:celta_inventario/pages/login_page.dart';
 import 'package:celta_inventario/pages/home_page.dart';
 import 'package:celta_inventario/provider/login_provider.dart';
-import 'package:celta_inventario/utils/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

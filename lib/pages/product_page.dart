@@ -308,16 +308,12 @@ class _ProductPageState extends State<ProductPage> {
                             ? null
                             : () async {
                                 if (_consultProductController.text.isEmpty) {
-                                  try {
-                                    await scanBarcodeNormal();
-                                  } catch (e) {
-                                    e;
-                                  } finally {
-                                    //se ler algum código, vai consultar o produto
-                                    if (_consultProductController
-                                        .text.isNotEmpty) {
-                                      await consultAndAddProduct();
-                                    }
+                                  await scanBarcodeNormal();
+
+                                  //se ler algum código, vai consultar o produto
+                                  if (_consultProductController
+                                      .text.isNotEmpty) {
+                                    await consultAndAddProduct();
                                   }
                                 } else {
                                   await consultAndAddProduct();

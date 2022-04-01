@@ -40,7 +40,6 @@ class EnterpriseProvider with ChangeNotifier {
 
     if (_enterprises.isNotEmpty) {
       _enterprises.clear();
-      notifyListeners();
     }
 
     try {

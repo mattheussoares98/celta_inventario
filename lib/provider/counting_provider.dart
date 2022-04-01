@@ -66,6 +66,7 @@ class CountingProvider with ChangeNotifier {
         );
       });
     } catch (e) {
+      print('erro ao consultar a contagem ==== $e');
       _errorMessage =
           'O servidor não foi encontrado. Verifique a sua internet!';
     } finally {
