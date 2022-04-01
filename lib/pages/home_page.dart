@@ -22,9 +22,8 @@ class _HomePageState extends State<HomePage> {
   }) {
     return InkWell(
       onTap: () {
-        Navigator.of(context).pushNamedAndRemoveUntil(
+        Navigator.of(context).pushNamed(
           route!,
-          (route) => false,
           arguments: UserIdentity.identity,
         );
       },
@@ -84,8 +83,74 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+  }
+
+  confirmLogout() {
+    LoginProvider loginProvider =
+        Provider.of<LoginProvider>(context, listen: false);
+    showDialog(
+        context: context,
+        builder: (ctx) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            actionsPadding: EdgeInsets.only(bottom: 10),
+            actionsAlignment: MainAxisAlignment.center,
+            title: const FittedBox(
+              child: Text(
+                'Deseja realmente\nfazer o logout?',
+                style: TextStyle(
+                  letterSpacing: 2,
+                  fontSize: 50,
+                ),
+              ),
+            ),
+            actions: [
+              ElevatedButton(
+                onPressed: () async {
+                  await loginProvider.logout();
+                  Navigator.of(context)
+                      .pushReplacementNamed(APPROUTES.LOGIN_PAGE);
+                  Navigator.of(context).pop();
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Text(
+                    'Sim',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'OpenSans',
+                      color: Theme.of(context).colorScheme.secondary,
+                      fontSize: 25,
+                    ),
+                  ),
+                ),
+              ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.red,
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Text(
+                    'Não',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'OpenSans',
+                      color: Theme.of(context).colorScheme.secondary,
+                      fontSize: 25,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          );
+        });
   }
 
   @override
@@ -101,70 +166,7 @@ class _HomePageState extends State<HomePage> {
               color: ColorsTheme.text,
             ),
             onPressed: () async {
-              LoginProvider loginProvider =
-                  Provider.of<LoginProvider>(context, listen: false);
-              showDialog(
-                  context: context,
-                  builder: (ctx) {
-                    return AlertDialog(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      actionsPadding: EdgeInsets.only(bottom: 10),
-                      actionsAlignment: MainAxisAlignment.center,
-                      title: const FittedBox(
-                        child: Text(
-                          'Deseja realmente\nfazer o logout?',
-                          style: TextStyle(
-                            letterSpacing: 2,
-                            fontSize: 50,
-                          ),
-                        ),
-                      ),
-                      actions: [
-                        ElevatedButton(
-                          onPressed: () async {
-                            await loginProvider.logout();
-                            Navigator.of(context)
-                                .pushReplacementNamed(APPROUTES.LOGIN_PAGE);
-                            Navigator.of(context).pop();
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Text(
-                              'Sim',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontFamily: 'OpenSans',
-                                color: Theme.of(context).colorScheme.secondary,
-                                fontSize: 25,
-                              ),
-                            ),
-                          ),
-                        ),
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            primary: Colors.red,
-                          ),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Text(
-                              'Não',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontFamily: 'OpenSans',
-                                color: Theme.of(context).colorScheme.secondary,
-                                fontSize: 25,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    );
-                  });
+              confirmLogout();
             },
           ),
         ],
@@ -176,28 +178,28 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            const SizedBox(height: 5),
-            imagem(
-              imagePath: 'lib/assets/Images/inventory.jpg',
-              routine: 'Inventário',
-              route: APPROUTES.ENTERPRISES,
-            ),
-            imagem(
-              imagePath: 'lib/assets/Images/pedidoDeVendas.jpg',
-              routine: 'Pedido de compras',
-              route: APPROUTES.SALES,
-            ),
-            imagem(
-              imagePath: 'lib/assets/Images/stock.jpg',
-              routine: 'Estoque',
-              route: APPROUTES.STOCK,
-            ),
-          ],
-        ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          const SizedBox(height: 5),
+          imagem(
+            imagePath: 'lib/assets/Images/inventory.jpg',
+            routine: 'Inventário',
+            route: APPROUTES.ENTERPRISES,
+          ),
+          imagem(
+            imagePath: 'lib/assets/Images/pedidoDeVendas.jpg',
+            routine: 'Pedido de compras',
+            route: APPROUTES.SALES,
+          ),
+          imagem(
+            imagePath: 'lib/assets/Images/stock.jpg',
+            routine: 'Estoque',
+            route: APPROUTES.STOCK,
+          ),
+          const SizedBox(height: 5),
+        ],
       ),
     );
   }

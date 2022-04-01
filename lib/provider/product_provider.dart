@@ -10,7 +10,11 @@ class ProductProvider with ChangeNotifier {
     return [..._products];
   }
 
-  bool isChargingEanOrPlu = false;
+  static bool _isLodingEanOrPlu = false;
+
+  bool get isLodingEanOrPlu {
+    return _isLodingEanOrPlu;
+  }
 
   int? codigoInternoEmpresa;
   int? codigoInternoInventario;
@@ -27,7 +31,7 @@ class ProductProvider with ChangeNotifier {
   }) async {
     _products.clear();
     productErrorMessage = '';
-    isChargingEanOrPlu = true;
+    _isLodingEanOrPlu = true;
     notifyListeners();
 
     try {
@@ -78,7 +82,10 @@ class ProductProvider with ChangeNotifier {
     } catch (e) {
       productErrorMessage = 'Servidor não encontrado. Verifique a sua internet';
     }
-    isChargingEanOrPlu = false;
+
+    if (products.isNotEmpty) {
+      _isLodingEanOrPlu = false;
+    }
     notifyListeners();
   }
 
@@ -92,7 +99,7 @@ class ProductProvider with ChangeNotifier {
   }) async {
     _products.clear();
     productErrorMessage = '';
-    isChargingEanOrPlu = true;
+    _isLodingEanOrPlu = true;
     notifyListeners();
 
     try {
@@ -145,7 +152,7 @@ class ProductProvider with ChangeNotifier {
       print('erro pra obter o produto pelo plu: $e');
       productErrorMessage = 'Servidor não encontrado. Verifique a sua internet';
     } finally {}
-    isChargingEanOrPlu = false;
+    _isLodingEanOrPlu = false;
     notifyListeners();
   }
 

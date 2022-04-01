@@ -31,6 +31,7 @@ class _AuthFormState extends State<AuthForm> {
   @override //essa função serve para liberar qualquer tipo de memória que esteja sendo utilizado por esses FocusNode e Listner
   void dispose() {
     super.dispose();
+    _passwordController.clear();
     _userFocusNode.dispose();
     _passwordFocusNode.dispose();
     _urlFocusNode.dispose();
@@ -87,9 +88,9 @@ class _AuthFormState extends State<AuthForm> {
       baseUrl: _urlController.text,
     );
 
-    if (loginProvider.loginErrorMessage != '') {
+    if (loginProvider.errorMessage != '') {
       ShowErrorMessage().showErrorMessage(
-        error: loginProvider.loginErrorMessage,
+        error: loginProvider.errorMessage,
         context: context,
       );
     }

@@ -14,17 +14,26 @@ class CountingProvider with ChangeNotifier {
     return countings.length;
   }
 
-  String countingsErrorMessage = '';
+  static String _errorMessage = '';
 
-  bool isChargingCountings = false;
+  String get errorMessage {
+    return _errorMessage;
+  }
+
+  static bool _isLoadingCountings = false;
+
+  bool get isLoadingCountings {
+    return _isLoadingCountings;
+  }
+
   getCountings({
     int? inventoryProcessCode,
     String? userIdentity,
     String? baseUrl,
   }) async {
     _countings.clear();
-    countingsErrorMessage = '';
-    isChargingCountings = true;
+    _errorMessage = '';
+    _isLoadingCountings = true;
 
     try {
       var headers = {'Content-Type': 'application/json'};
@@ -57,10 +66,10 @@ class CountingProvider with ChangeNotifier {
         );
       });
     } catch (e) {
-      countingsErrorMessage =
+      _errorMessage =
           'O servidor não foi encontrado. Verifique a sua internet!';
     } finally {
-      isChargingCountings = false;
+      _isLoadingCountings = false;
     }
 
     notifyListeners();

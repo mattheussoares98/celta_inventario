@@ -15,9 +15,17 @@ class EnterpriseProvider with ChangeNotifier {
     return _enterprises.length;
   }
 
-  String enterpriseErrorMessage = '';
+  String _errorMessage = '';
 
-  bool isChargingEnterprises = false;
+  String get errorMessage {
+    return _errorMessage;
+  }
+
+  static bool _isLoadingEnterprises = false;
+
+  bool get isLoadingEnterprises {
+    return _isLoadingEnterprises;
+  }
 
   clearEnterprises() {
     _enterprises.clear();
@@ -27,11 +35,12 @@ class EnterpriseProvider with ChangeNotifier {
     String? userIdentity,
     String? baseUrl,
   }) async {
-    enterpriseErrorMessage = '';
-    isChargingEnterprises = true;
+    _errorMessage = '';
+    _isLoadingEnterprises = true;
 
     if (_enterprises.isNotEmpty) {
       _enterprises.clear();
+      notifyListeners();
     }
 
     try {
@@ -58,16 +67,16 @@ class EnterpriseProvider with ChangeNotifier {
     } catch (e) {
       print('erro na empresa: $e');
       if (e.toString().contains('No route')) {
-        enterpriseErrorMessage =
+        _errorMessage =
             'O servidor não foi encontrado. Verifique a sua internet!';
       } else if (e.toString().contains('Connection timed')) {
-        enterpriseErrorMessage = 'Time out. Tente novamente';
+        _errorMessage = 'Time out. Tente novamente';
       } else {
-        enterpriseErrorMessage =
+        _errorMessage =
             'O servidor não foi encontrado. Verifique a sua internet!';
       }
     } finally {
-      isChargingEnterprises = false;
+      _isLoadingEnterprises = false;
     }
 
     notifyListeners();

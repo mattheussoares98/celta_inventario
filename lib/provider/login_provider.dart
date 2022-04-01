@@ -6,32 +6,31 @@ import 'package:http/http.dart' as http;
 import 'package:xml2json/xml2json.dart';
 
 class LoginProvider with ChangeNotifier {
-  String loginErrorMessage = '';
+  String errorMessage = '';
 
   _errorMessage(String error) {
     if (error.contains('O usuário não foi encontrado')) {
-      loginErrorMessage = 'Usuário não encontrado!';
+      errorMessage = 'Usuário não encontrado!';
     } else if (error.contains('senha está incorreta')) {
-      loginErrorMessage = 'A senha está incorreta!';
+      errorMessage = 'A senha está incorreta!';
     } else if (error.contains('Connection timed out')) {
-      loginErrorMessage = 'Time out! Tente novamente!';
+      errorMessage = 'Time out! Tente novamente!';
     } else if (error.contains('Connection')) {
-      loginErrorMessage =
-          'O servidor não foi encontrado. Verifique a sua internet';
+      errorMessage = 'O servidor não foi encontrado. Verifique a sua internet';
     } else if (error.contains('Software caused connection abort')) {
-      loginErrorMessage = 'Conexão abortada. Tente novamente';
+      errorMessage = 'Conexão abortada. Tente novamente';
     } else if (error.contains('No host specifie')) {
-      loginErrorMessage = 'URL inválida!';
+      errorMessage = 'URL inválida!';
     } else if (error.contains('Failed host lookup')) {
-      loginErrorMessage = 'URL inválida!';
+      errorMessage = 'URL inválida!';
     } else if (error.contains('FormatException')) {
-      loginErrorMessage = 'URL inválida!';
+      errorMessage = 'URL inválida!';
     } else if (error.contains('Invalid port')) {
-      loginErrorMessage = 'Url inválida!';
+      errorMessage = 'Url inválida!';
     } else if (error.contains('No route')) {
-      loginErrorMessage = 'Servidor não encontrado!';
+      errorMessage = 'Servidor não encontrado!';
     } else {
-      loginErrorMessage = 'Servidor indisponível';
+      errorMessage = 'Servidor indisponível';
     }
   }
 
@@ -58,7 +57,7 @@ class LoginProvider with ChangeNotifier {
     String? password,
     String? baseUrl,
   }) async {
-    loginErrorMessage = '';
+    errorMessage = '';
     notifyListeners();
 
     try {

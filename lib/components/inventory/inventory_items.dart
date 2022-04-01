@@ -10,14 +10,6 @@ class InventoryItems extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final availableSize = MediaQuery.of(context)
-            .size
-            .height - //altura total do dispositivo
-        65 - //altura do appBar
-        40 - //altura do título
-        10 - //padding
-        MediaQuery.of(context).padding.top; //altura da barra de notificações
-
     InventoryProvider inventoryProvider = Provider.of(context);
     ProductProvider productProvider = Provider.of(context);
 
@@ -35,8 +27,14 @@ class InventoryItems extends StatelessWidget {
 
     return Column(
       children: [
-        Container(
-          height: availableSize * 0.9,
+        Padding(
+          padding: const EdgeInsets.only(top: 8),
+          child: Text(
+            'Selecione o inventário',
+            style: Theme.of(context).textTheme.headline6,
+          ),
+        ),
+        Expanded(
           child: ListView.builder(
             itemCount: inventoryProvider.inventoryCount,
             itemBuilder: (context, index) {
