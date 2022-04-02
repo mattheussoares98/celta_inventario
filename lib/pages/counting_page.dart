@@ -1,5 +1,5 @@
 import 'package:celta_inventario/components/count/counting_items.dart';
-import 'package:celta_inventario/components/error_message.dart';
+import 'package:celta_inventario/utils/error_message.dart';
 import 'package:celta_inventario/models/inventory.dart';
 import 'package:celta_inventario/provider/counting_provider.dart';
 import 'package:celta_inventario/utils/base_url.dart';

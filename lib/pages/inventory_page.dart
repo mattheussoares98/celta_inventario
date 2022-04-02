@@ -1,4 +1,4 @@
-import 'package:celta_inventario/components/error_message.dart';
+import 'package:celta_inventario/utils/error_message.dart';
 import 'package:celta_inventario/components/inventory/inventory_items.dart';
 import 'package:celta_inventario/models/enterprise.dart';
 import 'package:celta_inventario/provider/inventory_provider.dart';

@@ -1,5 +1,5 @@
 import 'package:celta_inventario/components/enterprise/enterprise_widget.dart';
-import 'package:celta_inventario/components/error_message.dart';
+import 'package:celta_inventario/utils/error_message.dart';
 import 'package:celta_inventario/provider/enterprise_provider.dart';
 import 'package:celta_inventario/utils/base_url.dart';
 import 'package:celta_inventario/utils/consulting.dart';
