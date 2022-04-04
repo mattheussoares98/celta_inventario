@@ -1,9 +1,9 @@
-import 'package:celta_inventario/components/count/counting_items.dart';
-import 'package:celta_inventario/components/error_message.dart';
+import 'package:celta_inventario/pages/counting_page/counting_items.dart';
+import 'package:celta_inventario/utils/error_message.dart';
 import 'package:celta_inventario/models/inventory.dart';
 import 'package:celta_inventario/provider/counting_provider.dart';
 import 'package:celta_inventario/utils/base_url.dart';
-import 'package:celta_inventario/utils/consulting.dart';
+import 'package:celta_inventario/utils/consulting_widget.dart';
 import 'package:celta_inventario/utils/user_identity.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

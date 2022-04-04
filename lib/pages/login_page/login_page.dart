@@ -1,5 +1,5 @@
 import 'dart:math';
-import 'package:celta_inventario/components/login/auth_form.dart';
+import 'package:celta_inventario/pages/login_page/auth_form.dart';
 import 'package:celta_inventario/utils/colors_theme.dart';
 import 'package:flutter/material.dart';
 

@@ -4,14 +4,14 @@ import 'package:celta_inventario/utils/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class EnterpriseWidget extends StatefulWidget {
-  const EnterpriseWidget({Key? key}) : super(key: key);
+class EnterpriseItems extends StatefulWidget {
+  const EnterpriseItems({Key? key}) : super(key: key);
 
   @override
-  State<EnterpriseWidget> createState() => _EnterpriseWidgetState();
+  State<EnterpriseItems> createState() => _EnterpriseItemsState();
 }
 
-class _EnterpriseWidgetState extends State<EnterpriseWidget> {
+class _EnterpriseItemsState extends State<EnterpriseItems> {
   @override
   Widget build(BuildContext context) {
     EnterpriseProvider loginProvider = Provider.of(context, listen: true);

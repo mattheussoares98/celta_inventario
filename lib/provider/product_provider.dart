@@ -47,6 +47,8 @@ class ProductProvider with ChangeNotifier {
       http.StreamedResponse response = await request.send();
       String responseInString = await response.stream.bytesToString();
 
+      print('resposta para consulta do EAN = $responseInString');
+
       //tratando a mensagem de retorno aqui mesmo
       if (responseInString.contains('O produto não foi encontrado')) {
         productErrorMessage =
@@ -59,8 +61,8 @@ class ProductProvider with ChangeNotifier {
             'Ocorreu um erro durante a tentativa de atender um serviço de integração "cross". Fale com seu administrador de sistemas, para resolver o problema.';
         notifyListeners();
         return;
-      } else if (responseInString
-          .contains('"Message":"O EAN informado não é válido."')) {
+      } else if (responseInString.contains('O EAN informado não é válido')) {
+        productErrorMessage = 'O EAN informado não é válido';
         notifyListeners();
         return;
       }
@@ -127,9 +129,17 @@ class ProductProvider with ChangeNotifier {
 
       var responseInString = response.body;
 
+      print('resposta da solicitação para consultar o PLU = $responseInString');
+
       if (responseInString.contains('O produto não foi encontrado')) {
         productErrorMessage =
             'O produto não foi encontrado na contagem do processo de inventário.';
+        notifyListeners();
+        return;
+      } else if (responseInString
+          .contains("tentativa de atender um serviço de integração 'cross'")) {
+        productErrorMessage =
+            "Ocorreu um erro durante a tentativa de atender um serviço de integração 'cross'";
         notifyListeners();
         return;
       }

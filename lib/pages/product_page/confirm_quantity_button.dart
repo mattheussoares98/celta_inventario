@@ -1,4 +1,4 @@
-import 'package:celta_inventario/controller/productPage/add_quantity_controller.dart';
+import 'package:celta_inventario/pages/product_page/add_quantity_controller.dart';
 import 'package:celta_inventario/provider/quantity_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

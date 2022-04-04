@@ -1,10 +1,10 @@
 import 'package:celta_inventario/pages/home_page.dart';
 import 'package:celta_inventario/pages/login_or_home_page.dart';
-import 'package:celta_inventario/pages/login_page.dart';
-import 'package:celta_inventario/pages/counting_page.dart';
-import 'package:celta_inventario/pages/enterprise_page.dart';
-import 'package:celta_inventario/pages/inventory_page.dart';
-import 'package:celta_inventario/pages/product_page.dart';
+import 'package:celta_inventario/pages/login_page/login_page.dart';
+import 'package:celta_inventario/pages/counting_page/counting_page.dart';
+import 'package:celta_inventario/pages/enterprise_page/enterprise_page.dart';
+import 'package:celta_inventario/pages/inventory_page/inventory_page.dart';
+import 'package:celta_inventario/pages/product_page/product_page.dart';
 import 'package:celta_inventario/pages/sales_page.dart';
 import 'package:celta_inventario/pages/splash_screen.dart';
 import 'package:celta_inventario/pages/stock_page.dart';

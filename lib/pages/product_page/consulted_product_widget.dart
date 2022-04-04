@@ -1,36 +1,43 @@
-import 'package:celta_inventario/components/product/anull_quantity_bottom.dart';
-import 'package:celta_inventario/components/product/confirm_quantity_button.dart';
+import 'package:celta_inventario/pages/product_page/anull_quantity_bottom.dart';
+import 'package:celta_inventario/pages/product_page/confirm_quantity_button.dart';
 import 'package:celta_inventario/provider/product_provider.dart';
 import 'package:celta_inventario/provider/quantity_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
-class ConsultedProduct extends StatefulWidget {
+class ConsultedProductWidget extends StatefulWidget {
   final int countingCode;
   final int productPackingCode;
   final bool isIndividual;
   final bool? isLoadingEanOrPlu;
-  final TextEditingController consultedProductController;
-  final FocusNode consultedProductFocusNode;
-  ConsultedProduct({
+  ConsultedProductWidget({
     Key? key,
     required this.countingCode,
     required this.productPackingCode,
     required this.isIndividual,
-    required this.consultedProductController,
-    required this.consultedProductFocusNode,
     this.isLoadingEanOrPlu,
   }) : super(key: key);
 
   @override
-  State<ConsultedProduct> createState() => _ConsultedProductState();
+  State<ConsultedProductWidget> createState() => ConsultedProductWidgetState();
 }
 
-class _ConsultedProductState extends State<ConsultedProduct> {
+class ConsultedProductWidgetState extends State<ConsultedProductWidget> {
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   bool isIndividual = false;
+
+  static final TextEditingController _consultedProductController =
+      TextEditingController();
+
+  final _consultedProductFocusNode = FocusNode();
+
+  @override
+  void dispose() {
+    super.dispose();
+    _consultedProductFocusNode.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -170,8 +177,8 @@ class _ConsultedProductState extends State<ConsultedProduct> {
                                 enabled: quantityProvider.isLoadingQuantity
                                     ? false
                                     : true,
-                                controller: widget.consultedProductController,
-                                focusNode: widget.consultedProductFocusNode,
+                                controller: _consultedProductController,
+                                focusNode: _consultedProductFocusNode,
                                 inputFormatters: [
                                   LengthLimitingTextInputFormatter(7)
                                 ],
@@ -254,14 +261,14 @@ class _ConsultedProductState extends State<ConsultedProduct> {
                               child: ConfirmQuantityButton(
                                 isIndividual: isIndividual,
                                 consultedProductController:
-                                    widget.consultedProductController,
+                                    _consultedProductController,
                                 countingCode: widget.countingCode,
                                 productPackingCode: productProvider
                                     .products[0].codigoInternoProEmb,
                                 isSubtract: false,
                                 formKey: _formKey,
                                 consultedProductFocusNode:
-                                    widget.consultedProductFocusNode,
+                                    _consultedProductFocusNode,
                               ),
                             ),
                           ),
@@ -273,14 +280,14 @@ class _ConsultedProductState extends State<ConsultedProduct> {
                               child: ConfirmQuantityButton(
                                 isIndividual: isIndividual,
                                 consultedProductController:
-                                    widget.consultedProductController,
+                                    _consultedProductController,
                                 countingCode: widget.countingCode,
                                 productPackingCode: productProvider
                                     .products[0].codigoInternoProEmb,
                                 isSubtract: true,
                                 formKey: _formKey,
                                 consultedProductFocusNode:
-                                    widget.consultedProductFocusNode,
+                                    _consultedProductFocusNode,
                               ),
                             ),
                           ),
