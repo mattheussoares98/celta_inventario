@@ -172,9 +172,9 @@ class _ConfirmQuantityButtonState extends State<ConfirmQuantityButton> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(0.0),
                     child: const Text(
-                      '\nCONFIRMANDO...\n',
+                      'CONFIRMANDO...',
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: 40,
@@ -183,8 +183,8 @@ class _ConfirmQuantityButtonState extends State<ConfirmQuantityButton> {
                   ),
                   const SizedBox(width: 7),
                   Container(
-                    height: 25,
-                    width: 25,
+                    height: 40,
+                    width: 40,
                     child: CircularProgressIndicator(
                       color: Colors.black,
                     ),

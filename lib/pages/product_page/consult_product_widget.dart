@@ -12,6 +12,7 @@ class ConsultProductWidget extends StatefulWidget {
   final FocusNode consultProductFocusNode;
   final bool isLoadingEanOrPlu;
   final Function() consultAndAddProduct;
+  final TextEditingController consultProductController;
   const ConsultProductWidget({
     Key? key,
     required this.formKey,
@@ -19,6 +20,7 @@ class ConsultProductWidget extends StatefulWidget {
     required this.consultProductFocusNode,
     required this.isLoadingEanOrPlu,
     required this.consultAndAddProduct,
+    required this.consultProductController,
   }) : super(key: key);
 
   @override
@@ -26,11 +28,6 @@ class ConsultProductWidget extends StatefulWidget {
 }
 
 class _ConsultProductWidgetState extends State<ConsultProductWidget> {
-  String _scanBarcode = '';
-
-  static final TextEditingController _consultProductController =
-      TextEditingController();
-
   alterFocusToConsultProduct() {
     ConsultProductController.instance.alterFocusToConsultProduct(
       consultProductFocusNode: widget.consultProductFocusNode,
@@ -58,7 +55,7 @@ class _ConsultProductWidgetState extends State<ConsultProductWidget> {
                   child: TextFormField(
                     onFieldSubmitted: (value) async {
                       await widget.consultAndAddProduct();
-                      _consultProductController.clear();
+                      widget.consultProductController.clear();
                     },
                     focusNode: widget.consultProductFocusNode,
                     enabled: widget.isLoadingEanOrPlu ||
@@ -71,9 +68,9 @@ class _ConsultProductWidgetState extends State<ConsultProductWidget> {
                       color: Colors.black,
                     ),
                     inputFormatters: [LengthLimitingTextInputFormatter(14)],
-                    controller: _consultProductController,
+                    controller: widget.consultProductController,
                     onChanged: (value) => setState(() {
-                      _scanBarcode = value;
+                      // print(widget.consultProductController.text);
                     }),
                     validator: (value) {
                       if (value!.contains(',') ||
@@ -110,15 +107,19 @@ class _ConsultProductWidgetState extends State<ConsultProductWidget> {
                 ),
               ),
               IconButton(
-                onPressed: widget.isLoadingEanOrPlu
+                onPressed: widget.isLoadingEanOrPlu ||
+                        quantityProvider.isLoadingQuantity
                     ? null
                     : () {
-                        _consultProductController.clear();
+                        widget.consultProductController.clear();
                         alterFocusToConsultProduct();
                       },
                 icon: Icon(
                   Icons.delete,
-                  color: widget.isLoadingEanOrPlu ? null : Colors.red,
+                  color: widget.isLoadingEanOrPlu ||
+                          quantityProvider.isLoadingQuantity
+                      ? null
+                      : Colors.red,
                   size: 40,
                 ),
               ),
@@ -207,16 +208,17 @@ class _ConsultProductWidgetState extends State<ConsultProductWidget> {
                           quantityProvider.isLoadingQuantity
                       ? null
                       : () async {
-                          if (_consultProductController.text.isEmpty) {
+                          if (widget.consultProductController.text.isEmpty) {
                             await ConsultProductController.instance
                                 .scanBarcodeNormal(
-                              scanBarCode: _scanBarcode,
+                              scanBarCode: widget.consultProductController.text,
                               consultProductController:
-                                  _consultProductController,
+                                  widget.consultProductController,
                             );
 
                             //se ler algum código, vai consultar o produto
-                            if (_consultProductController.text.isNotEmpty) {
+                            if (widget
+                                .consultProductController.text.isNotEmpty) {
                               await widget.consultAndAddProduct();
                             }
                           } else {
@@ -225,7 +227,7 @@ class _ConsultProductWidgetState extends State<ConsultProductWidget> {
 
                           if (productProvider.products.isNotEmpty &&
                               widget.isIndividual) {
-                            _consultProductController.clear();
+                            widget.consultProductController.clear();
                             alterFocusToConsultProduct();
                           }
                         },

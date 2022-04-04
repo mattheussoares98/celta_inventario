@@ -137,7 +137,7 @@ class _AnullQuantityBottomState extends State<AnullQuantityBottom> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   const Text(
-                    '\nCONFIRMANDO...\n',
+                    'CONFIRMANDO...',
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 40,

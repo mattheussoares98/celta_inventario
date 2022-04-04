@@ -20,9 +20,12 @@ class _ProductPageState extends State<ProductPage> {
   bool isLoadingEanOrPlu = false;
   final _consultProductFocusNode = FocusNode();
 
-  static String _scanBarcode = '';
+  // static String _scanBarcode = '';
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  static final TextEditingController _consultProductController =
+      TextEditingController();
 
   @override
   void dispose() {
@@ -38,9 +41,11 @@ class _ProductPageState extends State<ProductPage> {
       isLoadingEanOrPlu = true;
     });
 
+    print(_consultProductController.text);
+
     await ConsultProductController.instance.consultAndAddProduct(
       context: context,
-      scanBarCode: _scanBarcode,
+      scanBarCode: _consultProductController.text,
       codigoInternoInvCont: countings.codigoInternoInvCont,
       consultProductFocusNode: _consultProductFocusNode,
       isIndividual: isIndividual,
@@ -80,6 +85,7 @@ class _ProductPageState extends State<ProductPage> {
                 consultProductFocusNode: _consultProductFocusNode,
                 isLoadingEanOrPlu: isLoadingEanOrPlu,
                 consultAndAddProduct: () async => await consultAndAddProduct(),
+                consultProductController: _consultProductController,
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 10, right: 10, top: 4),

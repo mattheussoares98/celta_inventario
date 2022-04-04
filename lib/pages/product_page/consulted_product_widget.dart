@@ -190,10 +190,22 @@ class ConsultedProductWidgetState extends State<ConsultedProductWidget> {
                                 validator: (value) {
                                   if (value!.isEmpty) {
                                     return 'Digite uma quantidade';
-                                  } else if (value.contains('-')) {
-                                    return 'Valor incorreto';
-                                  } else if (value == '0') {
+                                  } else if (value == '0' ||
+                                      value == '0.' ||
+                                      value == '0,') {
                                     return 'Digite uma quantidade';
+                                  } else if (value.contains('..')) {
+                                    return 'Carácter inválido';
+                                  } else if (value.contains(',,')) {
+                                    return 'Carácter inválido';
+                                  } else if (value.contains(',.')) {
+                                    return 'Carácter inválido';
+                                  } else if (value.contains('.,')) {
+                                    return 'Carácter inválido';
+                                  } else if (value.contains('-')) {
+                                    return 'Carácter inválido';
+                                  } else if (value.contains(' ')) {
+                                    return 'Carácter inválido';
                                   }
                                   return null;
                                 },
