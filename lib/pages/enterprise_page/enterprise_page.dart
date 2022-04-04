@@ -1,4 +1,8 @@
+<<<<<<< HEAD:lib/pages/enterprise_page/enterprise_page.dart
 import 'package:celta_inventario/pages/enterprise_page/enterprise_items.dart';
+=======
+import 'package:celta_inventario/components/enterprise/enterprise_widget.dart';
+>>>>>>> 46d357282900d38d8c5bd553ded8827d7644e3e3:lib/pages/enterprise_page.dart
 import 'package:celta_inventario/utils/error_message.dart';
 import 'package:celta_inventario/provider/enterprise_provider.dart';
 import 'package:celta_inventario/utils/base_url.dart';

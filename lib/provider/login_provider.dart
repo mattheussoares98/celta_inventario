@@ -6,31 +6,35 @@ import 'package:http/http.dart' as http;
 import 'package:xml2json/xml2json.dart';
 
 class LoginProvider with ChangeNotifier {
-  String errorMessage = '';
+  String _errorMessage = '';
 
-  _errorMessage(String error) {
+  String get errorMessage {
+    return _errorMessage;
+  }
+
+  _updateErrorMessage(String error) {
     if (error.contains('O usuário não foi encontrado')) {
-      errorMessage = 'Usuário não encontrado!';
+      _errorMessage = 'Usuário não encontrado!';
     } else if (error.contains('senha está incorreta')) {
-      errorMessage = 'A senha está incorreta!';
+      _errorMessage = 'A senha está incorreta!';
     } else if (error.contains('Connection timed out')) {
-      errorMessage = 'Time out! Tente novamente!';
+      _errorMessage = 'Time out! Tente novamente!';
     } else if (error.contains('Connection')) {
-      errorMessage = 'O servidor não foi encontrado. Verifique a sua internet';
+      _errorMessage = 'O servidor não foi encontrado. Verifique a sua internet';
     } else if (error.contains('Software caused connection abort')) {
-      errorMessage = 'Conexão abortada. Tente novamente';
+      _errorMessage = 'Conexão abortada. Tente novamente';
     } else if (error.contains('No host specifie')) {
-      errorMessage = 'URL inválida!';
+      _errorMessage = 'URL inválida!';
     } else if (error.contains('Failed host lookup')) {
-      errorMessage = 'URL inválida!';
+      _errorMessage = 'URL inválida!';
     } else if (error.contains('FormatException')) {
-      errorMessage = 'URL inválida!';
+      _errorMessage = 'URL inválida!';
     } else if (error.contains('Invalid port')) {
-      errorMessage = 'Url inválida!';
+      _errorMessage = 'Url inválida!';
     } else if (error.contains('No route')) {
-      errorMessage = 'Servidor não encontrado!';
+      _errorMessage = 'Servidor não encontrado!';
     } else {
-      errorMessage = 'Servidor indisponível';
+      _errorMessage = 'Servidor indisponível';
     }
   }
 
@@ -57,7 +61,7 @@ class LoginProvider with ChangeNotifier {
     String? password,
     String? baseUrl,
   }) async {
-    errorMessage = '';
+    _errorMessage = '';
     notifyListeners();
 
     try {
@@ -85,11 +89,12 @@ class LoginProvider with ChangeNotifier {
         _controller?.add(_isAuth);
         print('deu certo');
       } else {
-        print('Erro no login');
-        _errorMessage(response.body);
+        print('Erro no login === ' + response.body);
+
+        _updateErrorMessage(response.body);
       }
     } catch (e) {
-      _errorMessage(e.toString());
+      _updateErrorMessage(e.toString());
       print('deu erro no login: $e');
       notifyListeners();
     }

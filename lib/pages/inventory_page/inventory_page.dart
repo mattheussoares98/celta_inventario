@@ -1,5 +1,9 @@
 import 'package:celta_inventario/utils/error_message.dart';
+<<<<<<< HEAD:lib/pages/inventory_page/inventory_page.dart
 import 'package:celta_inventario/pages/inventory_page/inventory_items.dart';
+=======
+import 'package:celta_inventario/components/inventory/inventory_items.dart';
+>>>>>>> 46d357282900d38d8c5bd553ded8827d7644e3e3:lib/pages/inventory_page.dart
 import 'package:celta_inventario/models/enterprise.dart';
 import 'package:celta_inventario/provider/inventory_provider.dart';
 import 'package:celta_inventario/utils/base_url.dart';

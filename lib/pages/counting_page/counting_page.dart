@@ -1,4 +1,8 @@
+<<<<<<< HEAD:lib/pages/counting_page/counting_page.dart
 import 'package:celta_inventario/pages/counting_page/counting_items.dart';
+=======
+import 'package:celta_inventario/components/count/counting_items.dart';
+>>>>>>> 46d357282900d38d8c5bd553ded8827d7644e3e3:lib/pages/counting_page.dart
 import 'package:celta_inventario/utils/error_message.dart';
 import 'package:celta_inventario/models/inventory.dart';
 import 'package:celta_inventario/provider/counting_provider.dart';
