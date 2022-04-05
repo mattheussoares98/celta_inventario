@@ -70,29 +70,43 @@ class CountingItems extends StatelessWidget {
                         ),
                         const SizedBox(height: 8),
                         Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Observação: ',
+                              'Observações: ',
                               style: TextStyle(
                                 fontFamily: 'OpenSans',
                                 fontSize: 20,
                                 color: Colors.black,
                               ),
                             ),
-                            Expanded(
-                              child: Text(
-                                countingProvider.countings[index].obsInvCont,
-                                style: const TextStyle(
-                                  fontFamily: 'OpenSans',
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black,
+                            if (countingProvider
+                                    .countings[index].obsInvCont.length <
+                                19)
+                              Expanded(
+                                child: Text(
+                                  countingProvider.countings[index].obsInvCont,
                                 ),
                               ),
-                            ),
                           ],
                         ),
+                        if (countingProvider
+                                .countings[index].obsInvCont.length >
+                            19)
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  countingProvider.countings[index].obsInvCont,
+                                  style: const TextStyle(
+                                    fontFamily: 'OpenSans',
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                       ],
                     ),
                   ),

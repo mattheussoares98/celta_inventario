@@ -69,13 +69,31 @@ class ConsultedProductWidgetState extends State<ConsultedProductWidget> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 8),
+              // if(productProvider.products[0].productName.length )
               FittedBox(
                 child: Row(
+                  // mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      productProvider.products[0].productName.substring(9),
+                      'Produto: ',
                       style: TextStyle(
-                        fontSize: 50,
+                        fontSize: 20,
+                      ),
+                    ),
+                    //26
+                    Text(
+                      productProvider.products[0].productName.replaceRange(
+                              26,
+                              productProvider.products[0].productName.length,
+                              '\n') +
+                          productProvider.products[0].productName
+                              .substring(26)
+                              .replaceFirst(
+                                RegExp(r'\('),
+                                '\n\(',
+                              ),
+                      style: TextStyle(
+                        fontSize: 20,
                         fontWeight: FontWeight.bold,
                       ),
                     ),

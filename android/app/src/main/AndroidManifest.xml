@@ -4,6 +4,7 @@
    <application
         android:label="Celta mobile"
         android:icon="@mipmap/ic_launcher">
+        android:extractNativeLibs=false
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

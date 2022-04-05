@@ -63,20 +63,21 @@ class InventoryItems extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        FittedBox(
-                          child: Row(
-                            children: [
-                              Text(
-                                'Empresa: ',
-                                style: _fontSizeStyle,
-                              ),
-                              const SizedBox(height: 25),
-                              Text(
+                        Row(
+                          children: [
+                            Text(
+                              'Empresa: ',
+                              style: _fontSizeStyle,
+                            ),
+                            const SizedBox(height: 25),
+                            Expanded(
+                              child: Text(
                                 inventoryProvider.inventorys[index].nomeempresa,
                                 style: _fontSizeAndBoldStyle,
+                                maxLines: 2,
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                         const SizedBox(height: 5),
                         FittedBox(
@@ -167,18 +168,35 @@ class InventoryItems extends StatelessWidget {
                               'Observações: ',
                               style: _fontSizeStyle,
                             ),
-                            Expanded(
-                              child: Text(
-                                inventoryProvider
-                                        .inventorys[index].obsInventario.isEmpty
-                                    ? 'Não há observações'
-                                    : inventoryProvider
-                                        .inventorys[index].obsInventario,
-                                style: _fontSizeAndBoldStyle,
+                            if (inventoryProvider
+                                    .inventorys[index].obsInventario.length <
+                                19)
+                              Expanded(
+                                child: Text(
+                                  inventoryProvider.inventorys[index]
+                                          .obsInventario.isEmpty
+                                      ? 'Não há observações'
+                                      : inventoryProvider
+                                          .inventorys[index].obsInventario,
+                                  style: _fontSizeAndBoldStyle,
+                                ),
                               ),
-                            ),
                           ],
                         ),
+                        if (inventoryProvider
+                                .inventorys[index].obsInventario.length >
+                            19)
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  inventoryProvider
+                                      .inventorys[index].obsInventario,
+                                  style: _fontSizeAndBoldStyle,
+                                ),
+                              ),
+                            ],
+                          ),
                         const SizedBox(height: 5),
                       ],
                     ),

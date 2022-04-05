@@ -192,18 +192,15 @@ class _ConfirmQuantityButtonState extends State<ConfirmQuantityButton> {
                 ],
               ),
             )
-          : Padding(
-              padding: const EdgeInsets.all(0.0),
-              child: FittedBox(
-                child: Text(
-                  widget.isSubtract ? 'SUBTRAIR' : 'SOMAR',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'OpenSans',
-                    color: Theme.of(context).colorScheme.secondary,
-                    fontSize: 40,
-                  ),
+          : FittedBox(
+              child: Text(
+                widget.isSubtract ? 'SUBTRAIR' : 'SOMAR',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'OpenSans',
+                  color: Theme.of(context).colorScheme.secondary,
+                  fontSize: 40,
                 ),
               ),
             ),

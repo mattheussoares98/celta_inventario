@@ -14,7 +14,7 @@ class EnterpriseItems extends StatefulWidget {
 class _EnterpriseItemsState extends State<EnterpriseItems> {
   @override
   Widget build(BuildContext context) {
-    EnterpriseProvider loginProvider = Provider.of(context, listen: true);
+    EnterpriseProvider enterpriseProvider = Provider.of(context, listen: true);
     ProductProvider productProvider = Provider.of(context);
 
     return Column(
@@ -28,7 +28,7 @@ class _EnterpriseItemsState extends State<EnterpriseItems> {
         ),
         Expanded(
           child: ListView.builder(
-            itemCount: loginProvider.enterpriseCount,
+            itemCount: enterpriseProvider.enterpriseCount,
             itemBuilder: (ctx, index) {
               return Card(
                 shape: RoundedRectangleBorder(
@@ -44,7 +44,7 @@ class _EnterpriseItemsState extends State<EnterpriseItems> {
                 // color: Theme.of(context).colorScheme.primary,
                 child: ListTile(
                   title: Text(
-                    loginProvider.enterprises[index].nomeEmpresa,
+                    enterpriseProvider.enterprises[index].nomeEmpresa,
                     style: TextStyle(
                       fontFamily: 'OpenSans',
                       fontWeight: FontWeight.bold,
@@ -52,19 +52,20 @@ class _EnterpriseItemsState extends State<EnterpriseItems> {
                     ),
                   ),
                   leading: Text(
-                    loginProvider.enterprises[index].codigoEmpresa.toString(),
+                    enterpriseProvider.enterprises[index].codigoEmpresa
+                        .toString(),
                     style: TextStyle(
                       color: Colors.black,
                       fontFamily: 'OpenSans',
                     ),
                   ),
                   onTap: () {
-                    productProvider.codigoInternoEmpresa =
-                        loginProvider.enterprises[index].codigoInternoEmpresa;
+                    productProvider.codigoInternoEmpresa = enterpriseProvider
+                        .enterprises[index].codigoInternoEmpresa;
 
                     Navigator.of(context).pushNamed(
                       APPROUTES.INVENTORY,
-                      arguments: loginProvider.enterprises[index],
+                      arguments: enterpriseProvider.enterprises[index],
                     );
                   },
                 ),

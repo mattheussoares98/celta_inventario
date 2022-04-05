@@ -36,7 +36,7 @@ class ImageComponent {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Image.asset(
-                imagePath!,
+                imagePath,
                 height: 200,
                 width: double.infinity,
                 fit: BoxFit.fitWidth,
