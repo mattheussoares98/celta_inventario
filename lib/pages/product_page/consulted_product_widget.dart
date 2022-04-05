@@ -82,16 +82,20 @@ class ConsultedProductWidgetState extends State<ConsultedProductWidget> {
                     ),
                     //26
                     Text(
-                      productProvider.products[0].productName.replaceRange(
-                              26,
-                              productProvider.products[0].productName.length,
-                              '\n') +
-                          productProvider.products[0].productName
-                              .substring(26)
-                              .replaceFirst(
-                                RegExp(r'\('),
-                                '\n\(',
-                              ),
+                      productProvider.products[0].productName.length > 26
+                          ? productProvider.products[0].productName
+                                  .replaceRange(
+                                      26,
+                                      productProvider
+                                          .products[0].productName.length,
+                                      '\n') +
+                              productProvider.products[0].productName
+                                  .substring(26)
+                                  .replaceFirst(
+                                    RegExp(r'\('),
+                                    '\n\(',
+                                  )
+                          : productProvider.products[0].productName,
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
