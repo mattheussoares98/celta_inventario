@@ -6,20 +6,20 @@ import 'package:celta_inventario/utils/user_identity.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class AnullQuantityBottom extends StatefulWidget {
+class AnullQuantityButton extends StatefulWidget {
   final int countingCode;
   final int productPackingCode;
-  const AnullQuantityBottom({
+  const AnullQuantityButton({
     Key? key,
     required this.countingCode,
     required this.productPackingCode,
   }) : super(key: key);
 
   @override
-  State<AnullQuantityBottom> createState() => _AnullQuantityBottomState();
+  State<AnullQuantityButton> createState() => _AnullQuantityButtonState();
 }
 
-class _AnullQuantityBottomState extends State<AnullQuantityBottom> {
+class _AnullQuantityButtonState extends State<AnullQuantityButton> {
   anullQuantity() async {
     QuantityProvider quantityProvider = Provider.of(context, listen: false);
     ProductProvider productProvider = Provider.of(context, listen: false);

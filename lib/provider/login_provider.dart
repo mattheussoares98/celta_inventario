@@ -52,7 +52,7 @@ class LoginProvider with ChangeNotifier {
     //quando da certo o login, ele adiciona o _isAuth no controller
   });
 
-  Stream get authStream {
+  Stream<bool> get authStream {
     return _isAuthStream;
   }
 

@@ -1,4 +1,4 @@
-import 'package:celta_inventario/pages/product_page/anull_quantity_bottom.dart';
+import 'package:celta_inventario/pages/product_page/anull_quantity_button.dart';
 import 'package:celta_inventario/pages/product_page/confirm_quantity_button.dart';
 import 'package:celta_inventario/provider/product_provider.dart';
 import 'package:celta_inventario/provider/quantity_provider.dart';
@@ -250,7 +250,7 @@ class ConsultedProductWidgetState extends State<ConsultedProductWidget> {
                         Flexible(
                           flex: 1,
                           child: Container(
-                            child: AnullQuantityBottom(
+                            child: AnullQuantityButton(
                               countingCode: widget.countingCode,
                               productPackingCode: productProvider
                                   .products[0].codigoInternoProEmb,
