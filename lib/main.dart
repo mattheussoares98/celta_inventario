@@ -1,13 +1,13 @@
 import 'package:celta_inventario/pages/home_page/home_page.dart';
-import 'package:celta_inventario/pages/login_or_home_page.dart';
+import 'package:celta_inventario/pages/login_or_home_page/login_or_home_page.dart';
 import 'package:celta_inventario/pages/login_page/login_page.dart';
 import 'package:celta_inventario/pages/counting_page/counting_page.dart';
 import 'package:celta_inventario/pages/enterprise_page/enterprise_page.dart';
 import 'package:celta_inventario/pages/inventory_page/inventory_page.dart';
 import 'package:celta_inventario/pages/product_page/product_page.dart';
-import 'package:celta_inventario/pages/sales_page.dart';
-import 'package:celta_inventario/pages/splash_screen.dart';
-import 'package:celta_inventario/pages/stock_page.dart';
+import 'package:celta_inventario/pages/sales_page/sales_page.dart';
+import 'package:celta_inventario/pages/splash_screen/splash_screen.dart';
+import 'package:celta_inventario/pages/stock_page/stock_page.dart';
 import 'package:celta_inventario/provider/counting_provider.dart';
 import 'package:celta_inventario/provider/enterprise_provider.dart';
 import 'package:celta_inventario/provider/inventory_provider.dart';
@@ -87,7 +87,6 @@ void main() {
               ),
         ),
         debugShowCheckedModeBanner: false,
-        // home: const AuthOrHoMePage(),
         initialRoute: APPROUTES.AUTH_OR_HOME_PAGE,
         routes: {
           APPROUTES.AUTH_OR_HOME_PAGE: (ctx) => const AuthOrHoMePage(),

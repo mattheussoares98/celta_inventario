@@ -20,7 +20,6 @@ class _AuthOrHoMePageState extends State<AuthOrHoMePage> {
       body: StreamBuilder<bool>(
         stream: loginProvider.authStream,
         builder: (context, snapshot) {
-          print(snapshot.data);
           if (snapshot.data == false || snapshot.data == null) {
             return LoginPage();
           } else {

@@ -38,12 +38,6 @@ class LoginProvider with ChangeNotifier {
     }
   }
 
-  static bool _isAuth = false;
-
-  bool get isAuth {
-    return _isAuth;
-  }
-
   static MultiStreamController<bool>? _controller;
   static final _isAuthStream = Stream<bool>.multi((controller) {
     _controller = controller;
@@ -85,8 +79,8 @@ class LoginProvider with ChangeNotifier {
       }
 
       if (response.statusCode == 200) {
-        _isAuth = true;
-        _controller?.add(_isAuth);
+        _controller?.add(
+            true); //como deu certo o login, adiciona o valor "true" pra na tela AuthOrHome identificar que está como true e ir para a homePage
         print('deu certo');
       } else {
         print('Erro no login === ' + response.body);
@@ -101,7 +95,6 @@ class LoginProvider with ChangeNotifier {
   }
 
   logout() {
-    _isAuth = false;
-    _controller?.add(_isAuth);
+    _controller?.add(false);
   }
 }
