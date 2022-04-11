@@ -1,6 +1,7 @@
 import 'package:celta_inventario/provider/product_provider.dart';
 import 'package:celta_inventario/provider/quantity_provider.dart';
 import 'package:celta_inventario/utils/base_url.dart';
+import 'package:celta_inventario/utils/show_alert_dialog.dart';
 import 'package:celta_inventario/utils/show_error_message.dart';
 import 'package:celta_inventario/utils/user_identity.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +24,7 @@ class _AnullQuantityButtonState extends State<AnullQuantityButton> {
   anullQuantity() async {
     QuantityProvider quantityProvider = Provider.of(context, listen: false);
     ProductProvider productProvider = Provider.of(context, listen: false);
+    print('teste');
     await quantityProvider.anullQuantity(
       countingCode: widget.countingCode,
       productPackingCode: widget.productPackingCode,
@@ -33,89 +35,15 @@ class _AnullQuantityButtonState extends State<AnullQuantityButton> {
       if (quantityProvider.isConfirmedAnullQuantity) {
         productProvider.products[0].quantidadeInvContProEmb = 'null';
       }
-      //caso o quantityError esteja diferente de '' é porque deu erro
+      //caso o errorMessage esteja diferente de '' é porque deu erro
       //pra confirmar a quantidade e por isso vai apresentar a mensagem de erro
-      if (quantityProvider.quantityError != '') {
+      if (quantityProvider.errorMessage != '') {
         ShowErrorMessage().showErrorMessage(
-          error: quantityProvider.quantityError,
+          error: quantityProvider.errorMessage,
           context: context,
         );
-      } else {
-        //como não houve erro, então pode apagar o texto que é digitado
-        //no campo de consulta do produto. Fiz passando o textEditingController
-        //como parâmetro
-        // widget.controllerProduct.clear();
       }
     });
-  }
-
-  confirmAnullQuantity(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          content: Text(
-            'DESEJA ANULAR A CONTAGEM?',
-            // textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 32,
-              fontWeight: FontWeight.bold,
-            ),
-            textAlign: TextAlign.center,
-          ),
-          actionsPadding: EdgeInsets.all(10),
-          actions: [
-            FittedBox(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        primary: Colors.green,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(100),
-                        )),
-                    onPressed: () {
-                      anullQuantity();
-                      Navigator.of(context).pop();
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(30),
-                      child: const Text(
-                        'SIM',
-                        style: TextStyle(
-                          fontSize: 300,
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(width: 50),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        primary: Colors.red,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(100),
-                        )),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(30),
-                      child: const Text(
-                        'NÃO',
-                        style: TextStyle(
-                          fontSize: 300,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        );
-      },
-    );
   }
 
   @override
@@ -128,8 +56,16 @@ class _AnullQuantityButtonState extends State<AnullQuantityButton> {
       ),
       onPressed: quantityProvider.isLoadingQuantity
           ? null
-          : () {
-              confirmAnullQuantity(context);
+          : () async {
+              print('teste');
+              ShowAlertDialog().showAlertDialog(
+                context: context,
+                title: 'Deseja anular a quantidade?',
+                function: () async {
+                  print('teste');
+                  await anullQuantity();
+                },
+              );
             },
       child: quantityProvider.isLoadingQuantity
           ? FittedBox(

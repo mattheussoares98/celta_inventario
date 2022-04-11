@@ -10,16 +10,14 @@ class ConsultProductWidget extends StatefulWidget {
   final GlobalKey<FormState> formKey;
   final bool isIndividual;
   final FocusNode consultProductFocusNode;
-  final bool isLoadingEanOrPlu;
-  final Function() consultAndAddProduct;
+  // final Function() consultAndAddProduct;
   final TextEditingController consultProductController;
   const ConsultProductWidget({
     Key? key,
     required this.formKey,
     required this.isIndividual,
     required this.consultProductFocusNode,
-    required this.isLoadingEanOrPlu,
-    required this.consultAndAddProduct,
+    // required this.consultAndAddProduct,
     required this.consultProductController,
   }) : super(key: key);
 
@@ -32,6 +30,18 @@ class _ConsultProductWidgetState extends State<ConsultProductWidget> {
     ConsultProductController.instance.alterFocusToConsultProduct(
       consultProductFocusNode: widget.consultProductFocusNode,
       context: context,
+    );
+  }
+
+  Future<void> consultAndAddProduct() async {
+    final countings = ModalRoute.of(context)!.settings.arguments as Countings;
+
+    await ConsultProductController.instance.consultAndAddProduct(
+      context: context,
+      scanBarCode: widget.consultProductController.text,
+      codigoInternoInvCont: countings.codigoInternoInvCont,
+      consultProductFocusNode: widget.consultProductFocusNode,
+      isIndividual: widget.isIndividual,
     );
   }
 
@@ -54,11 +64,11 @@ class _ConsultProductWidgetState extends State<ConsultProductWidget> {
                   key: widget.formKey,
                   child: TextFormField(
                     onFieldSubmitted: (value) async {
-                      await widget.consultAndAddProduct();
+                      await consultAndAddProduct();
                       widget.consultProductController.clear();
                     },
                     focusNode: widget.consultProductFocusNode,
-                    enabled: widget.isLoadingEanOrPlu ||
+                    enabled: productProvider.isLodingEanOrPlu ||
                             quantityProvider.isLoadingQuantity
                         ? false
                         : true,
@@ -107,7 +117,7 @@ class _ConsultProductWidgetState extends State<ConsultProductWidget> {
                 ),
               ),
               IconButton(
-                onPressed: widget.isLoadingEanOrPlu ||
+                onPressed: productProvider.isLodingEanOrPlu ||
                         quantityProvider.isLoadingQuantity
                     ? null
                     : () {
@@ -116,7 +126,7 @@ class _ConsultProductWidgetState extends State<ConsultProductWidget> {
                       },
                 icon: Icon(
                   Icons.delete,
-                  color: widget.isLoadingEanOrPlu ||
+                  color: productProvider.isLodingEanOrPlu ||
                           quantityProvider.isLoadingQuantity
                       ? null
                       : Colors.red,
@@ -129,100 +139,89 @@ class _ConsultProductWidgetState extends State<ConsultProductWidget> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               Expanded(
                 child: ElevatedButton(
-                  child: widget.isLoadingEanOrPlu ||
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: Size(double.infinity, 70),
+                    maximumSize: Size(double.infinity, 70),
+                  ),
+                  child: productProvider.isLodingEanOrPlu ||
                           quantityProvider.isLoadingQuantity
-                      ? Container(
-                          height: 70,
-                          child: FittedBox(
-                            child: Row(
-                              children: [
-                                SizedBox(width: 50),
-                                Text(
-                                  quantityProvider.isLoadingQuantity
-                                      ? 'ADICIONANDO QUANTIDADE...'
-                                      : 'CONSULTANDO O PRODUTO...',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: 'OpenSans',
-                                    fontSize: 100,
-                                  ),
+                      ? FittedBox(
+                          child: Row(
+                            children: [
+                              Text(
+                                quantityProvider.isLoadingQuantity
+                                    ? 'ADICIONANDO QUANTIDADE...'
+                                    : 'CONSULTANDO O PRODUTO...',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'OpenSans',
+                                  fontSize: 100,
                                 ),
-                                SizedBox(width: 30),
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 70),
-                                  child: Container(
-                                    height: 100,
-                                    width: 100,
-                                    child: CircularProgressIndicator(
-                                      color: Colors.black,
-                                    ),
-                                  ),
+                              ),
+                              SizedBox(width: 30),
+                              Container(
+                                height: 100,
+                                width: 100,
+                                child: CircularProgressIndicator(
+                                  color: Colors.black,
                                 ),
-                                SizedBox(width: 50),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         )
-                      : Container(
-                          height: 70,
-                          child: FittedBox(
-                            child: Row(
-                              children: [
+                      : FittedBox(
+                          child: Row(
+                            children: [
+                              Text(
+                                widget.isIndividual
+                                    ? 'CONSULTAR E INSERIR UNIDADE'
+                                    : 'CONSULTAR OU ESCANEAR',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'OpenSans',
+                                  color:
+                                      Theme.of(context).colorScheme.secondary,
+                                  fontSize: 50,
+                                ),
+                              ),
+                              const SizedBox(width: 10),
+                              Icon(
+                                widget.isIndividual
+                                    ? Icons.add
+                                    : Icons.camera_alt_outlined,
+                                size: 70,
+                              ),
+                              if (widget.isIndividual)
                                 Text(
-                                  widget.isIndividual
-                                      ? 'CONSULTAR E INSERIR UNIDADE'
-                                      : 'CONSULTAR OU ESCANEAR',
+                                  '1',
                                   style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: 'OpenSans',
-                                    color:
-                                        Theme.of(context).colorScheme.secondary,
-                                    fontSize: 18,
+                                    fontSize: 70,
                                   ),
                                 ),
-                                const SizedBox(width: 10),
-                                Icon(
-                                  !widget.isIndividual
-                                      ? Icons.camera_alt_outlined
-                                      : Icons.add,
-                                  size: 40,
-                                ),
-                                if (widget.isIndividual)
-                                  Text(
-                                    '1',
-                                    style: TextStyle(
-                                      fontSize: 40,
-                                    ),
-                                  ),
-                              ],
-                            ),
+                            ],
                           ),
                         ),
-                  onPressed: widget.isLoadingEanOrPlu ||
+                  onPressed: productProvider.isLodingEanOrPlu ||
                           quantityProvider.isLoadingQuantity
                       ? null
                       : () async {
                           if (widget.consultProductController.text.isEmpty) {
+                            //se não digitar o ean ou plu, vai abrir a câmera
                             await ConsultProductController.instance
                                 .scanBarcodeNormal(
                               scanBarCode: widget.consultProductController.text,
                               consultProductController:
                                   widget.consultProductController,
                             );
+                          }
 
-                            //se ler algum código, vai consultar o produto
-                            if (widget
-                                .consultProductController.text.isNotEmpty) {
-                              await widget.consultAndAddProduct();
-                            }
-                          } else {
-                            await widget.consultAndAddProduct();
+                          //se ler algum código, vai consultar o produto
+                          if (widget.consultProductController.text.isNotEmpty) {
+                            await consultAndAddProduct();
                           }
 
                           if (productProvider.products.isNotEmpty &&

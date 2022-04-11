@@ -27,9 +27,9 @@ class InventoryProvider with ChangeNotifier {
   }
 
   Future<void> getInventory({
-    String? enterpriseCode,
-    String? userIdentity,
-    String? baseUrl,
+    required String? enterpriseCode,
+    required String? userIdentity,
+    required String? baseUrl,
   }) async {
     _isLoadingInventorys = true;
     _inventorys.clear();

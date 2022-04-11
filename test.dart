@@ -1,35 +1,38 @@
 // {
-//     "id": 100,
-//     "saleRequestNumber": "202204050001",
-//     "enterpriseId": 2,
-//     "dateHourOfCreation": "2022-04-05T09:27:40.2240662-03:00",
-//     "totalLiquid": 100,
-//     "discountValue": 0,
-//     "observations": "null",
-//     "customer": {
+//     "requestType": {
 //         "id": 1,
-//         "name": "CELTAWARE SISTEMAS E TECNOLOGIA LTDA.",
-//         "dateOfBirth": "2021-01-01T00:00:00",
-//         "personType": "Masculino|Feminino|Comercial",
-//         "cpfCnpjNumber": "05865503000143",
-//         "contactName": "CLIENTE CONSUMIDOR",
-//         "email": "adm@celtaware.com.br",
+//         "personalizedCode": "Venda",
+//         "name": "Venda"
+//     },
+//     "enterpriseId": 2,
+//     "dateHourOfCreation": "2022-04-12T14:57:07.943",
+//     "totalLiquid": 3.99,
+//     "discountValue": 0,
+//     "observations": "Pedido de exemplo de geração JSON",
+//     "customer": {
+//         "id": 386,
+//         "name": "Mattheus Soares",
+//         "dateOfBirth": "1998-03-31T00:00:00",
+//         "personType": "F",
+//         "cpfCnpjNumber": "39367504837",
+//         "contactName": "Mattheus",
+//         "email": "mattheussbarbosa@hotmail.com",
 //         "phoneArea": "11",
 //         "phoneNumber": "31256767"
 //     },
 //     "seller": {
-//         "id": 1,
-//         "name": "x"
+//         "id": 3,
+//         "name": "Mattheus Soares"
 //     },
 //     "delivery": {
 //         "transporter": "Correios",
-//         "totalValue": 0.00,
+//         "totalValue": 10.55,
 //         "deliveryAddress": {
 //             "zipCode": "01047020",
 //             "streetName": "Rua Braúlio Gomes",
 //             "number": "141",
 //             "complement": "Próximo á biblioteca Mario de Andrade",
-//             "reference": "Referência",
+//             "reference": "Referência do endereço",
 //             "district": "República",
 //             "city": "São Paulo",
 //             "state": "SP"
@@ -39,33 +42,32 @@
 //         {
 //             "id": "1",
 //             "name": "Dinheiro",
-//             "totalValue": 107.55,
+//             "totalValue": 3.99,
 //             "portionQuantity": 1
 //         }
 //     ],
 //     "products": [
 //         {
-//             "id": 0,
-//             "quantity": 10,
-//             "unitValue": 10,
-//             "totalLiquid": 100.00,
-//             "totalDiscountValue": 0.00,
+//             "id": 1193,
+//             "quantity": 1.000,
+//             "unitValue": 3.990000,
+//             "totalLiquid": 3.99,
+//             "totalDiscountValue": 0,
 //             "product": {
-//                 "id": 60,
-//                 "plu": "10017-5",
-//                 "name": "Consignado",
-//                 "packingQuantity": 0
+//                 "id": 45,
+//                 "plu": "00012-3",
+//                 "name": "Tributado KG",
+//                 "packingQuantity": 1.0000
 //             }
 //         }
 //     ],
 //     "address": {
-//         "zipCode": "01047020",
-//         "streetName": "Rua Braúlio Gomes",
-//         "number": "141",
-//         "complement": "Próximo á biblioteca Mario de Andrade",
-//         "reference": "Referência do endereço",
-//         "district": "República",
-//         "city": "São Paulo",
+//         "zipCode": "07082560",
+//         "streetName": "Annunciato Thomeu",
+//         "number": "304",
+//         "complement": "Casa",
+//         "district": "Jardim City",
+//         "city": "Guarulhos",
 //         "state": "SP"
 //     }
 // }

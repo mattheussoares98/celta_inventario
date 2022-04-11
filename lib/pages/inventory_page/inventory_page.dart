@@ -44,7 +44,7 @@ class _InventoryPageState extends State<InventoryPage> {
     );
   }
 
-  bool isLoaded = false;
+  bool _isLoaded = false;
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -52,13 +52,13 @@ class _InventoryPageState extends State<InventoryPage> {
     Enterprise enterprise =
         ModalRoute.of(context)!.settings.arguments as Enterprise;
 
-    if (!isLoaded) {
+    if (!_isLoaded) {
       Provider.of<InventoryProvider>(context, listen: false).getInventory(
         enterpriseCode: enterprise.codigoInternoEmpresa.toString(),
         userIdentity: UserIdentity.identity,
         baseUrl: BaseUrl.url,
       );
-      isLoaded = true;
+      _isLoaded = true;
     }
   }
 

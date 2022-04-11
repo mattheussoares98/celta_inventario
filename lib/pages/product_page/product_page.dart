@@ -6,7 +6,6 @@ import 'package:celta_inventario/pages/product_page/consult_product_controller.d
 import 'package:celta_inventario/provider/product_provider.dart';
 import 'package:celta_inventario/provider/quantity_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 class ProductPage extends StatefulWidget {
@@ -17,42 +16,21 @@ class ProductPage extends StatefulWidget {
 }
 
 class _ProductPageState extends State<ProductPage> {
-  bool isLoadingEanOrPlu = false;
   final _consultProductFocusNode = FocusNode();
 
-  // static String _scanBarcode = '';
+  bool isIndividual = false;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   static final TextEditingController _consultProductController =
       TextEditingController();
 
+  // static String _scanBarcode = '';
+
   @override
   void dispose() {
     super.dispose();
     _consultProductFocusNode.dispose();
-  }
-
-  bool isIndividual = false;
-
-  Future<void> consultAndAddProduct() async {
-    final countings = ModalRoute.of(context)!.settings.arguments as Countings;
-    setState(() {
-      isLoadingEanOrPlu = true;
-    });
-
-    print(_consultProductController.text);
-
-    await ConsultProductController.instance.consultAndAddProduct(
-      context: context,
-      scanBarCode: _consultProductController.text,
-      codigoInternoInvCont: countings.codigoInternoInvCont,
-      consultProductFocusNode: _consultProductFocusNode,
-      isIndividual: isIndividual,
-    );
-    setState(() {
-      isLoadingEanOrPlu = false;
-    });
   }
 
   alterFocusToConsultProduct() {
@@ -77,14 +55,13 @@ class _ProductPageState extends State<ProductPage> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
+            mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               ConsultProductWidget(
                 formKey: _formKey,
                 isIndividual: isIndividual,
                 consultProductFocusNode: _consultProductFocusNode,
-                isLoadingEanOrPlu: isLoadingEanOrPlu,
-                consultAndAddProduct: () async => await consultAndAddProduct(),
                 consultProductController: _consultProductController,
               ),
               Padding(
@@ -102,7 +79,7 @@ class _ProductPageState extends State<ProductPage> {
                       SizedBox(width: 20),
                       Switch(
                         value: isIndividual,
-                        onChanged: isLoadingEanOrPlu ||
+                        onChanged: productProvider.isLodingEanOrPlu ||
                                 quantityProvider.isLoadingQuantity
                             ? null
                             : (value) {

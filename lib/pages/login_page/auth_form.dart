@@ -20,10 +20,6 @@ TextEditingController _userController = TextEditingController();
 TextEditingController _passwordController = TextEditingController();
 
 class _AuthFormState extends State<AuthForm> {
-  bool _isLoading = false;
-
-  bool isLoaded = false;
-
   final _userFocusNode = FocusNode();
   final _passwordFocusNode = FocusNode();
   final _urlFocusNode = FocusNode();
@@ -35,32 +31,6 @@ class _AuthFormState extends State<AuthForm> {
     _userFocusNode.dispose();
     _passwordFocusNode.dispose();
     _urlFocusNode.dispose();
-  }
-
-  _restoreUserAndUrl() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    //logo que instala o app, logicamente ainda não tem nada salvo nas URLs
-    //se não fizer essa verificação, vai dar erro no debug console
-    if (prefs.getString('url') == null || prefs.getString('user') == null) {
-      return;
-    }
-    setState(() {
-      _urlController.text = prefs.getString('url')!;
-      _userController.text = prefs.getString('user')!;
-    });
-  }
-
-  @override
-  void didChangeDependencies() async {
-    super.didChangeDependencies();
-
-    if (!isLoaded) {
-      await _restoreUserAndUrl();
-    }
-    setState(() {
-      isLoaded = true;
-    });
   }
 
   _saveUserAndUrl() async {
@@ -76,10 +46,6 @@ class _AuthFormState extends State<AuthForm> {
       return;
     }
 
-    setState(() {
-      _isLoading = true;
-    });
-
     await _saveUserAndUrl();
 
     await loginProvider.login(
@@ -94,17 +60,32 @@ class _AuthFormState extends State<AuthForm> {
         context: context,
       );
     }
-    setState(() {
-      _isLoading = false;
-    });
 
     BaseUrl.url = _urlController.text;
   }
 
+  _restoreUserAndUrl() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    //logo que instala o app, logicamente ainda não tem nada salvo nas URLs
+    //se não fizer essa verificação, vai dar erro no debug console
+    if (prefs.getString('url') == null || prefs.getString('user') == null) {
+      return;
+    }
+
+    _urlController.text = prefs.getString('url')!;
+    _userController.text = prefs.getString('user')!;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _restoreUserAndUrl();
+  }
+
   @override
   Widget build(BuildContext context) {
-    LoginProvider _loginProvider =
-        Provider.of<LoginProvider>(context, listen: true);
+    LoginProvider _loginProvider = Provider.of(context, listen: true);
 
     return Card(
       margin: const EdgeInsets.all(20),
@@ -117,7 +98,7 @@ class _AuthFormState extends State<AuthForm> {
             mainAxisSize: MainAxisSize.min,
             children: [
               TextFormField(
-                enabled: _isLoading ? false : true,
+                enabled: _loginProvider.isLoading ? false : true,
                 controller: _userController,
                 focusNode: _userFocusNode,
                 onFieldSubmitted: (_) =>
@@ -148,7 +129,7 @@ class _AuthFormState extends State<AuthForm> {
               ),
               TextFormField(
                 controller: _passwordController,
-                enabled: _isLoading ? false : true,
+                enabled: _loginProvider.isLoading ? false : true,
                 focusNode: _passwordFocusNode,
                 onFieldSubmitted: (_) =>
                     FocusScope.of(context).requestFocus(_urlFocusNode),
@@ -175,7 +156,7 @@ class _AuthFormState extends State<AuthForm> {
                 obscureText: true,
               ),
               TextFormField(
-                enabled: _isLoading ? false : true,
+                enabled: _loginProvider.isLoading ? false : true,
                 controller: _urlController,
                 onFieldSubmitted: (_) => _submit(loginProvider: _loginProvider),
                 focusNode: _urlFocusNode,
@@ -206,26 +187,48 @@ class _AuthFormState extends State<AuthForm> {
               ),
               const SizedBox(height: 20),
               ElevatedButton(
-                onPressed: _isLoading
+                style: ElevatedButton.styleFrom(
+                  minimumSize: Size(double.infinity, 60),
+                  maximumSize: Size(double.infinity, 60),
+                ),
+                onPressed: _loginProvider.isLoading
                     ? null
                     : () => _submit(
                           loginProvider: _loginProvider,
                         ),
-                child: _isLoading
-                    ? Container(
-                        height: 28,
-                        width: 28,
-                        margin:
-                            EdgeInsets.symmetric(vertical: 10, horizontal: 22),
-                        child: const CircularProgressIndicator(),
+                child: _loginProvider.isLoading
+                    ? Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: FittedBox(
+                          child: Row(
+                            children: [
+                              const Text(
+                                'Efetuando login...',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              Container(
+                                height: 16,
+                                width: 16,
+                                child: const CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       )
-                    : Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 12, horizontal: 17),
-                        child: Text(
-                          'Login',
-                          style: TextStyle(
-                            fontSize: 17,
+                    : FittedBox(
+                        child: Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: Text(
+                            'Login',
+                            style: TextStyle(
+                              fontSize: 20,
+                            ),
                           ),
                         ),
                       ),

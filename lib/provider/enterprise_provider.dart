@@ -35,12 +35,9 @@ class EnterpriseProvider with ChangeNotifier {
     String? userIdentity,
     String? baseUrl,
   }) async {
+    clearEnterprises();
     _errorMessage = '';
     _isLoadingEnterprises = true;
-
-    if (_enterprises.isNotEmpty) {
-      _enterprises.clear();
-    }
 
     try {
       var headers = {'Content-Type': 'application/json'};

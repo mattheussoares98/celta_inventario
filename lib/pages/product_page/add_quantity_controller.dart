@@ -19,8 +19,6 @@ class AddQuantityController {
     QuantityProvider quantityProvider = Provider.of(context, listen: false);
     ProductProvider productProvider = Provider.of(context, listen: false);
 
-    quantityProvider.isLoadingQuantity = true;
-
     try {
       await quantityProvider.entryQuantity(
         countingCode: countingCode,
@@ -33,9 +31,9 @@ class AddQuantityController {
     } catch (e) {
       e;
     }
-    if (quantityProvider.quantityError != '') {
+    if (quantityProvider.errorMessage != '') {
       ShowErrorMessage().showErrorMessage(
-        error: quantityProvider.quantityError,
+        error: quantityProvider.errorMessage,
         context: context,
       );
       alterFocusToConsultedProduct!();

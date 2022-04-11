@@ -11,9 +11,9 @@ import 'package:provider/provider.dart';
 import 'add_quantity_controller.dart';
 
 class ConsultProductController {
-  static final ConsultProductController instance = ConsultProductController();
+  static final ConsultProductController instance = ConsultProductController._();
 
-  ConsultProductController();
+  ConsultProductController._();
 
   Future<void> scanBarcodeNormal(
       {required String scanBarCode,
@@ -43,11 +43,8 @@ class ConsultProductController {
     required FocusNode consultProductFocusNode,
     required bool isIndividual,
   }) async {
-    QuantityProvider quantityProvider = Provider.of(context, listen: false);
     ProductProvider productProvider = Provider.of(context, listen: false);
     final AddQuantityController addQuantityController = AddQuantityController();
-
-    quantityProvider.lastQuantityAdded = '';
 
     await productProvider.getProductByEan(
       ean: scanBarCode,
@@ -76,12 +73,15 @@ class ConsultProductController {
         error: productProvider.productErrorMessage,
         context: context,
       );
+
       Future.delayed(Duration(milliseconds: 100), () {
+        //se não colocar em um future pra mudar o foco, não funciona corretamente
         FocusScope.of(context).requestFocus(consultProductFocusNode);
       });
     }
 
     if (productProvider.productErrorMessage == '' && isIndividual) {
+      //se estiver habilitado pra inserir individualmente, assim que efetuar a consulta do produto já vai tentar adicionar uma unidade
       await addQuantityController.addQuantity(
         isIndividual: true,
         context: context,
@@ -97,6 +97,7 @@ class ConsultProductController {
     required FocusNode consultProductFocusNode,
   }) {
     Future.delayed(Duration(milliseconds: 100), () {
+      //se não colocar em um future pra mudar o foco, não funciona corretamente
       FocusScope.of(context).requestFocus(consultProductFocusNode);
     });
   }

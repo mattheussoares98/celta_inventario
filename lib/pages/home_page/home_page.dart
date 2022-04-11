@@ -1,8 +1,8 @@
-import 'package:celta_inventario/pages/home_page/confirm_logout_component.dart';
 import 'package:celta_inventario/pages/home_page/image_component.dart';
 import 'package:celta_inventario/provider/login_provider.dart';
 import 'package:celta_inventario/utils/app_routes.dart';
 import 'package:celta_inventario/utils/colors_theme.dart';
+import 'package:celta_inventario/utils/show_alert_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -27,9 +27,14 @@ class _HomePageState extends State<HomePage> {
               color: ColorsTheme.text,
             ),
             onPressed: () async {
-              ConfirmLogoutComponent.instance.confirmLogout(
-                loginProvider: loginProvider,
+              ShowAlertDialog().showAlertDialog(
                 context: context,
+                title: 'Deseja fazer o logout?',
+                function: () async {
+                  await loginProvider.logout();
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                      APPROUTES.AUTH_OR_HOME_PAGE, (route) => false);
+                },
               );
             },
           ),

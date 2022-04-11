@@ -15,48 +15,36 @@ class EnterprisePage extends StatefulWidget {
 }
 
 class EnterprisePageState extends State<EnterprisePage> {
-  bool isLoaded = false;
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    EnterpriseProvider enterpriseProvider = Provider.of(
-      context,
-      listen: true,
-    );
-
-    if (!isLoaded) {
-      enterpriseProvider.getEnterprises(
-        userIdentity: UserIdentity.identity,
-        baseUrl: BaseUrl.url,
-      );
-    }
-
-    isLoaded = true;
-  }
-
-  tryAgain() {
-    EnterpriseProvider enterpriseProvider = Provider.of(
-      context,
-      listen: true,
-    );
+  tryAgain(EnterpriseProvider enterpriseProvider) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         ErrorMessage(text: enterpriseProvider.errorMessage),
         TextButton(
           onPressed: () {
-            setState(() {
-              enterpriseProvider.getEnterprises(
-                userIdentity: UserIdentity.identity,
-                baseUrl: BaseUrl.url,
-              );
-            });
+            enterpriseProvider.getEnterprises(
+              userIdentity: UserIdentity.identity,
+              baseUrl: BaseUrl.url,
+            );
           },
           child: const Text('Tentar novamente'),
         ),
       ],
     );
+  }
+
+  getEnterprises(EnterpriseProvider enterpriseProvider) async {
+    await enterpriseProvider.getEnterprises(
+      userIdentity: UserIdentity.identity,
+      baseUrl: BaseUrl.url,
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    EnterpriseProvider enterpriseProvider = Provider.of(context, listen: false);
+    getEnterprises(enterpriseProvider);
   }
 
   @override
@@ -73,7 +61,7 @@ class EnterprisePageState extends State<EnterprisePage> {
       body: enterpriseProvider.isLoadingEnterprises
           ? ConsultingWidget().consultingWidget(title: 'Consultando empresas')
           : enterpriseProvider.errorMessage != ''
-              ? tryAgain()
+              ? tryAgain(enterpriseProvider)
               : EnterpriseItems(),
     );
   }

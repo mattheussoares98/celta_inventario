@@ -7,9 +7,9 @@ class SalesPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        // centerTitle: true,
+        centerTitle: true,
         title: const Text(
-          'Pedido de compras',
+          'Consulta de vendas',
         ),
       ),
       body: const Center(

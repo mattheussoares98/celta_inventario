@@ -26,13 +26,11 @@ class _CountingPageState extends State<CountingPage> {
         ErrorMessage(text: countingProvider.errorMessage),
         TextButton(
           onPressed: () {
-            setState(() {
-              countingProvider.getCountings(
-                inventoryProcessCode: inventorys.codigoInternoInventario,
-                userIdentity: UserIdentity.identity,
-                baseUrl: BaseUrl.url,
-              );
-            });
+            countingProvider.getCountings(
+              inventoryProcessCode: inventorys.codigoInternoInventario,
+              userIdentity: UserIdentity.identity,
+              baseUrl: BaseUrl.url,
+            );
           },
           child: const Text('Tentar novamente'),
         ),
@@ -49,7 +47,6 @@ class _CountingPageState extends State<CountingPage> {
     CountingProvider countingProvider = Provider.of(context, listen: true);
 
     if (!isLoaded) {
-      print('consultando');
       countingProvider.getCountings(
         inventoryProcessCode: inventorys.codigoInternoInventario,
         userIdentity: UserIdentity.identity,

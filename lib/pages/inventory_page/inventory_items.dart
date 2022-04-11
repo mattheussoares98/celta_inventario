@@ -13,12 +13,12 @@ class InventoryItems extends StatelessWidget {
     InventoryProvider inventoryProvider = Provider.of(context);
     ProductProvider productProvider = Provider.of(context);
 
-    TextStyle _fontSizeStyle = TextStyle(
+    TextStyle _fontStyle = TextStyle(
       fontSize: 20,
       color: Colors.black,
       fontFamily: 'OpenSans',
     );
-    TextStyle _fontSizeAndBoldStyle = TextStyle(
+    TextStyle _fontBoldStyle = TextStyle(
       fontFamily: 'OpenSans',
       fontSize: 20,
       fontWeight: FontWeight.bold,
@@ -67,13 +67,13 @@ class InventoryItems extends StatelessWidget {
                           children: [
                             Text(
                               'Empresa: ',
-                              style: _fontSizeStyle,
+                              style: _fontStyle,
                             ),
                             const SizedBox(height: 25),
                             Expanded(
                               child: Text(
                                 inventoryProvider.inventorys[index].nomeempresa,
-                                style: _fontSizeAndBoldStyle,
+                                style: _fontBoldStyle,
                                 maxLines: 2,
                               ),
                             ),
@@ -85,12 +85,12 @@ class InventoryItems extends StatelessWidget {
                             children: [
                               Text(
                                 'Tipo de estoque: ',
-                                style: _fontSizeStyle,
+                                style: _fontStyle,
                               ),
                               Text(
                                 inventoryProvider
                                     .inventorys[index].nomeTipoEstoque,
-                                style: _fontSizeAndBoldStyle,
+                                style: _fontBoldStyle,
                               )
                             ],
                           ),
@@ -101,13 +101,13 @@ class InventoryItems extends StatelessWidget {
                             children: [
                               Text(
                                 'Responsável: ',
-                                style: _fontSizeStyle,
+                                style: _fontStyle,
                               ),
                               const SizedBox(height: 25),
                               Text(
                                 inventoryProvider
                                     .inventorys[index].nomefuncionario,
-                                style: _fontSizeAndBoldStyle,
+                                style: _fontBoldStyle,
                               ),
                             ],
                           ),
@@ -117,7 +117,7 @@ class InventoryItems extends StatelessWidget {
                           child: Row(children: [
                             Text(
                               'Congelado em: ',
-                              style: _fontSizeStyle,
+                              style: _fontStyle,
                             ),
                             const SizedBox(height: 25),
                             Text(
@@ -138,7 +138,7 @@ class InventoryItems extends StatelessWidget {
                                   ss
                                 ],
                               ),
-                              style: _fontSizeAndBoldStyle,
+                              style: _fontBoldStyle,
                             ),
                           ]),
                         ),
@@ -147,7 +147,7 @@ class InventoryItems extends StatelessWidget {
                         // Row(children: [
                         //   Text(
                         //     'Criado em: ',
-                        //     style: _fontSizeStyle,
+                        //     style: _fontStyle,
                         //   ),
                         //   const SizedBox(height: 25),
                         //   Text(
@@ -156,7 +156,7 @@ class InventoryItems extends StatelessWidget {
                         //           .inventorys[index].dataCriacaoInventario,
                         //       [dd, '-', mm, '-', yyyy, ' ', hh, ':', mm, ':', ss],
                         //     ),
-                        //     style: _fontSizeAndBoldStyle,
+                        //     style: _fontBoldStyle,
                         //   ),
                         // ]),
                         const SizedBox(height: 5),
@@ -166,11 +166,12 @@ class InventoryItems extends StatelessWidget {
                           children: [
                             Text(
                               'Observações: ',
-                              style: _fontSizeStyle,
+                              style: _fontStyle,
                             ),
                             if (inventoryProvider
                                     .inventorys[index].obsInventario.length <
                                 19)
+                              //se houver poucos caracteres na observação, exibe na mesma linha...
                               Expanded(
                                 child: Text(
                                   inventoryProvider.inventorys[index]
@@ -178,7 +179,7 @@ class InventoryItems extends StatelessWidget {
                                       ? 'Não há observações'
                                       : inventoryProvider
                                           .inventorys[index].obsInventario,
-                                  style: _fontSizeAndBoldStyle,
+                                  style: _fontBoldStyle,
                                 ),
                               ),
                           ],
@@ -186,13 +187,14 @@ class InventoryItems extends StatelessWidget {
                         if (inventoryProvider
                                 .inventorys[index].obsInventario.length >
                             19)
+                          //se houver bastante caracteres, quebra a linha pra exibir melhor
                           Row(
                             children: [
                               Expanded(
                                 child: Text(
                                   inventoryProvider
                                       .inventorys[index].obsInventario,
-                                  style: _fontSizeAndBoldStyle,
+                                  style: _fontBoldStyle,
                                 ),
                               ),
                             ],

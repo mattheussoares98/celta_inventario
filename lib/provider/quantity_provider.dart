@@ -3,19 +3,43 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class QuantityProvider with ChangeNotifier {
-  bool isLoadingQuantity = false;
+  bool _isLoadingQuantity = false;
 
-  String quantityError = '';
+  bool get isLoadingQuantity {
+    return _isLoadingQuantity;
+  }
 
-  bool isConfirmedQuantity = false;
+  String _errorMessage = '';
+
+  String get errorMessage {
+    return _errorMessage;
+  }
+
+  bool _isConfirmedQuantity = false;
+
+  bool get isConfirmedQuantity {
+    return _isConfirmedQuantity;
+  }
 
   //criado somente pra conseguir identificar quando foi chamado o método de subtração
   //e atualizar corretamente a mensagem da última quantidade digitada
-  bool subtractedQuantity = false;
+  bool _isSubtract = false;
 
-  bool canChangeTheFocus = false;
+  bool get isSubtract {
+    return _isSubtract;
+  }
 
-  String lastQuantityAdded = '';
+  bool _canChangeTheFocus = false;
+
+  bool get canChangeTheFocus {
+    return _canChangeTheFocus;
+  }
+
+  String _lastQuantityAdded = '';
+
+  String get lastQuantityAdded {
+    return _lastQuantityAdded;
+  }
 
   Future<void> entryQuantity({
     required int? countingCode,
@@ -26,14 +50,15 @@ class QuantityProvider with ChangeNotifier {
     required bool? isSubtract,
   }) async {
     if (isSubtract!) {
-      subtractedQuantity = true;
+      _isSubtract = true;
     } else {
-      subtractedQuantity = false;
+      _isSubtract = false;
     }
-    isConfirmedQuantity = false;
-    isLoadingQuantity = true;
-    quantityError = '';
-    canChangeTheFocus = false;
+    _isConfirmedQuantity = false;
+    _isLoadingQuantity = true;
+    _errorMessage = '';
+    _canChangeTheFocus = false;
+    _lastQuantityAdded = '';
     notifyListeners();
 
     try {
@@ -56,29 +81,29 @@ class QuantityProvider with ChangeNotifier {
       print('response do quantityProvider: $resultAsString');
 
       if (resultAsString.contains('não permite fracionamento')) {
-        quantityError = 'Esse produto não permite fracionamento!';
+        _errorMessage = 'Esse produto não permite fracionamento!';
       } else if (resultAsString.contains('request is invalid')) {
-        quantityError = 'Operação inválida';
+        _errorMessage = 'Operação inválida';
       } else if (resultAsString
           .contains('tornará a quantidade contada do produto negativa')) {
-        quantityError =
+        _errorMessage =
             'A quantidade contada não pode ser negativa! Essa operação tornaria a quantidade negativa';
       }
 
       if (response.statusCode == 200) {
         print('deu certo o quantity provider');
-        isConfirmedQuantity = true;
-        lastQuantityAdded = quantity;
+        _isConfirmedQuantity = true;
+        _lastQuantityAdded = quantity;
       } else {
         print('erro no quantityProvider');
       }
     } catch (e) {
-      quantityError =
+      _errorMessage =
           'Erro para confirmar. Verifique a sua internet e tente novamente';
     } finally {
-      isLoadingQuantity = false;
+      _isLoadingQuantity = false;
     }
-    canChangeTheFocus = true;
+    _canChangeTheFocus = true;
     notifyListeners();
   }
 
@@ -90,8 +115,9 @@ class QuantityProvider with ChangeNotifier {
     String? userIdentity,
   }) async {
     isConfirmedAnullQuantity = false;
-    quantityError = '';
-    isLoadingQuantity = true;
+    _errorMessage = '';
+    _isLoadingQuantity = true;
+    _lastQuantityAdded = '';
     notifyListeners();
 
     try {
@@ -110,17 +136,20 @@ class QuantityProvider with ChangeNotifier {
 
       if (response.statusCode == 200) {
         isConfirmedAnullQuantity = true;
-        lastQuantityAdded = '';
+        _lastQuantityAdded = '';
+        notifyListeners();
       } else {
         print(response.reasonPhrase);
       }
     } catch (e) {
-      quantityError =
+      _errorMessage =
           'Erro para confirmar. Verifique a sua internet e tente novamente';
       print('Erro no anullQuantity: $e');
-    } finally {}
+      _lastQuantityAdded = '';
+    }
 
-    isLoadingQuantity = false;
+    _isLoadingQuantity = false;
+    print(_lastQuantityAdded);
     notifyListeners();
   }
 }

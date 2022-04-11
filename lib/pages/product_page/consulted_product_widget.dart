@@ -44,9 +44,12 @@ class ConsultedProductWidgetState extends State<ConsultedProductWidget> {
     ProductProvider productProvider = Provider.of(context, listen: true);
     QuantityProvider quantityProvider = Provider.of(context, listen: true);
 
-    setState(() {
-      isIndividual = widget.isIndividual;
-    });
+    double? lastQuantityAdded =
+        double.tryParse(quantityProvider.lastQuantityAdded);
+
+    String? atualQuantity = productProvider.products[0].quantidadeInvContProEmb?
+        .toStringAsFixed(3)
+        .toString();
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 5),
@@ -83,6 +86,7 @@ class ConsultedProductWidgetState extends State<ConsultedProductWidget> {
                     //26
                     Text(
                       productProvider.products[0].productName.length > 26
+                          //se o nome do produto tiver mais de 26 caracteres, vai ficar ruim a exibição somente em uma linha, aí ele quebra a linha no 26º caracter
                           ? productProvider.products[0].productName
                                   .replaceRange(
                                       26,
@@ -142,14 +146,9 @@ class ConsultedProductWidgetState extends State<ConsultedProductWidget> {
                     flex: 15,
                     child: FittedBox(
                       child: Text(
-                        productProvider.products[0].quantidadeInvContProEmb
-                                    .toString() ==
-                                'null'
+                        atualQuantity == null
                             ? 'sem contagem'
-                            : productProvider
-                                .products[0].quantidadeInvContProEmb
-                                .toDouble()
-                                .toString(),
+                            : atualQuantity,
                         textAlign: TextAlign.left,
                         style: TextStyle(
                           fontSize: 25,
@@ -166,10 +165,10 @@ class ConsultedProductWidgetState extends State<ConsultedProductWidget> {
               if (quantityProvider.lastQuantityAdded != '')
                 FittedBox(
                   child: Text(
-                    quantityProvider.subtractedQuantity &&
+                    quantityProvider.isSubtract &&
                             quantityProvider.isConfirmedQuantity
-                        ? 'Última quantidade adicionada:  -${quantityProvider.lastQuantityAdded} '
-                        : 'Última quantidade adicionada:  ${quantityProvider.lastQuantityAdded} ',
+                        ? 'Última quantidade adicionada:  -${lastQuantityAdded!.toStringAsPrecision(3)} '
+                        : 'Última quantidade adicionada:  ${lastQuantityAdded!.toStringAsFixed(3)} ',
                     style: TextStyle(
                       fontSize: 100,
                       color: Theme.of(context).colorScheme.primary,
@@ -202,7 +201,7 @@ class ConsultedProductWidgetState extends State<ConsultedProductWidget> {
                                 controller: _consultedProductController,
                                 focusNode: _consultedProductFocusNode,
                                 inputFormatters: [
-                                  LengthLimitingTextInputFormatter(7)
+                                  LengthLimitingTextInputFormatter(10)
                                 ],
                                 onChanged: (value) {
                                   if (value.isEmpty || value == '-') {
@@ -288,41 +287,34 @@ class ConsultedProductWidgetState extends State<ConsultedProductWidget> {
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           Flexible(
-                            flex: 3,
-                            child: Container(
-                              height: 70,
-                              width: double.infinity,
-                              child: ConfirmQuantityButton(
-                                isIndividual: isIndividual,
-                                consultedProductController:
-                                    _consultedProductController,
-                                countingCode: widget.countingCode,
-                                productPackingCode: productProvider
-                                    .products[0].codigoInternoProEmb,
-                                isSubtract: false,
-                                formKey: _formKey,
-                                consultedProductFocusNode:
-                                    _consultedProductFocusNode,
-                              ),
+                            flex: 5,
+                            child: ConfirmQuantityButton(
+                              isIndividual: isIndividual,
+                              consultedProductController:
+                                  _consultedProductController,
+                              countingCode: widget.countingCode,
+                              productPackingCode: productProvider
+                                  .products[0].codigoInternoProEmb,
+                              isSubtract: false,
+                              formKey: _formKey,
+                              consultedProductFocusNode:
+                                  _consultedProductFocusNode,
                             ),
                           ),
                           const SizedBox(width: 8),
                           Flexible(
-                            flex: 1,
-                            child: Container(
-                              height: 70,
-                              child: ConfirmQuantityButton(
-                                isIndividual: isIndividual,
-                                consultedProductController:
-                                    _consultedProductController,
-                                countingCode: widget.countingCode,
-                                productPackingCode: productProvider
-                                    .products[0].codigoInternoProEmb,
-                                isSubtract: true,
-                                formKey: _formKey,
-                                consultedProductFocusNode:
-                                    _consultedProductFocusNode,
-                              ),
+                            flex: 2,
+                            child: ConfirmQuantityButton(
+                              isIndividual: isIndividual,
+                              consultedProductController:
+                                  _consultedProductController,
+                              countingCode: widget.countingCode,
+                              productPackingCode: productProvider
+                                  .products[0].codigoInternoProEmb,
+                              isSubtract: true,
+                              formKey: _formKey,
+                              consultedProductFocusNode:
+                                  _consultedProductFocusNode,
                             ),
                           ),
                         ],

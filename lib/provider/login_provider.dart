@@ -12,6 +12,12 @@ class LoginProvider with ChangeNotifier {
     return _errorMessage;
   }
 
+  bool _isLoading = false;
+
+  bool get isLoading {
+    return _isLoading;
+  }
+
   _updateErrorMessage(String error) {
     if (error.contains('O usuário não foi encontrado')) {
       _errorMessage = 'Usuário não encontrado!';
@@ -39,11 +45,10 @@ class LoginProvider with ChangeNotifier {
   }
 
   static MultiStreamController<bool>? _controller;
+  //esse stream está sendo usado no AuthOrHomePage
+  //quando da certo o login, ele adiciona o _isAuth no controller
   static final _isAuthStream = Stream<bool>.multi((controller) {
     _controller = controller;
-
-    //esse stream está sendo usado no AuthOrHomePage
-    //quando da certo o login, ele adiciona o _isAuth no controller
   });
 
   Stream<bool> get authStream {
@@ -56,6 +61,7 @@ class LoginProvider with ChangeNotifier {
     String? baseUrl,
   }) async {
     _errorMessage = '';
+    _isLoading = true;
     notifyListeners();
 
     try {
@@ -81,7 +87,6 @@ class LoginProvider with ChangeNotifier {
       if (response.statusCode == 200) {
         _controller?.add(
             true); //como deu certo o login, adiciona o valor "true" pra na tela AuthOrHome identificar que está como true e ir para a homePage
-        print('deu certo');
       } else {
         print('Erro no login === ' + response.body);
 
@@ -92,6 +97,9 @@ class LoginProvider with ChangeNotifier {
       print('deu erro no login: $e');
       notifyListeners();
     }
+
+    _isLoading = false;
+    notifyListeners();
   }
 
   logout() {
