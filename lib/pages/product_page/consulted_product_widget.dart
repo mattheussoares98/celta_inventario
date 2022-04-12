@@ -47,9 +47,7 @@ class ConsultedProductWidgetState extends State<ConsultedProductWidget> {
     double? lastQuantityAdded =
         double.tryParse(quantityProvider.lastQuantityAdded);
 
-    String? atualQuantity = productProvider.products[0].quantidadeInvContProEmb?
-        .toStringAsFixed(3)
-        .toString();
+    dynamic atualQuantity = productProvider.products[0].quantidadeInvContProEmb;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 5),
@@ -146,9 +144,13 @@ class ConsultedProductWidgetState extends State<ConsultedProductWidget> {
                     flex: 15,
                     child: FittedBox(
                       child: Text(
-                        atualQuantity == null
-                            ? 'sem contagem'
-                            : atualQuantity,
+                        atualQuantity == double
+                            ? double.tryParse(atualQuantity.toString())!
+                                .toStringAsFixed(3)
+                            : atualQuantity.toString() == 'null'
+                                ? 'Sem contagem'
+                                : double.tryParse(atualQuantity.toString())!
+                                    .toStringAsFixed(3),
                         textAlign: TextAlign.left,
                         style: TextStyle(
                           fontSize: 25,
@@ -167,7 +169,7 @@ class ConsultedProductWidgetState extends State<ConsultedProductWidget> {
                   child: Text(
                     quantityProvider.isSubtract &&
                             quantityProvider.isConfirmedQuantity
-                        ? 'Última quantidade adicionada:  -${lastQuantityAdded!.toStringAsPrecision(3)} '
+                        ? 'Última quantidade adicionada:  -${lastQuantityAdded!.toStringAsFixed(3)} '
                         : 'Última quantidade adicionada:  ${lastQuantityAdded!.toStringAsFixed(3)} ',
                     style: TextStyle(
                       fontSize: 100,
