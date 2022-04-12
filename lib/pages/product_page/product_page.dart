@@ -1,10 +1,10 @@
 import 'dart:async';
-import 'package:celta_inventario/pages/product_page/consult_product_widget.dart';
-import 'package:celta_inventario/pages/product_page/consulted_product_widget.dart';
+import 'package:celta_inventario/pages/product_page/controller/consult_product_controller.dart';
+import 'package:celta_inventario/pages/product_page/widgets/consult_product_widget.dart';
+import 'package:celta_inventario/pages/product_page/widgets/consulted_product_widget.dart';
 import 'package:celta_inventario/models/countings.dart';
-import 'package:celta_inventario/pages/product_page/consult_product_controller.dart';
-import 'package:celta_inventario/provider/product_provider.dart';
-import 'package:celta_inventario/provider/quantity_provider.dart';
+import 'package:celta_inventario/pages/product_page/product_inventory_provider.dart';
+import 'package:celta_inventario/provider/quantity_inventory_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -42,8 +42,10 @@ class _ProductPageState extends State<ProductPage> {
 
   @override
   Widget build(BuildContext context) {
-    ProductProvider productProvider = Provider.of(context, listen: true);
-    QuantityProvider quantityProvider = Provider.of(context, listen: true);
+    ProductInventoryProvider productProvider =
+        Provider.of(context, listen: true);
+    QuantityInventoryProvider quantityProvider =
+        Provider.of(context, listen: true);
     final countings = ModalRoute.of(context)!.settings.arguments as Countings;
 
     return Scaffold(

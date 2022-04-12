@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-class ProductProvider with ChangeNotifier {
+class ProductInventoryProvider with ChangeNotifier {
   List<Product> _products = [];
 
   List<Product> get products {
@@ -39,7 +39,7 @@ class ProductProvider with ChangeNotifier {
       var request = http.Request(
         'POST',
         Uri.parse(
-            '$baseUrl/Inventory/GetProductByEan?ean=$ean&enterpriseCode=$enterpriseCode&inventoryProcessCode=$inventoryProcessCode&inventoryCountingCode=$inventoryCountingCode'),
+            '$baseUrl/cmxweb/api/Inventory/GetProductByEan?ean=$ean&enterpriseCode=$enterpriseCode&inventoryProcessCode=$inventoryProcessCode&inventoryCountingCode=$inventoryCountingCode'),
       );
       request.body = json.encode(userIdentity);
       request.headers.addAll(headers);
@@ -121,7 +121,7 @@ class ProductProvider with ChangeNotifier {
 
       http.Response response = await http.post(
         Uri.parse(
-          '$baseUrl/Inventory/GetProductByPlu?plu=$plu&enterpriseCode=$enterpriseCode&inventoryProcessCode=$inventoryProcessCode&inventoryCountingCode=$inventoryCountingCode',
+          '$baseUrl/cmxweb/api/Inventory/GetProductByPlu?plu=$plu&enterpriseCode=$enterpriseCode&inventoryProcessCode=$inventoryProcessCode&inventoryCountingCode=$inventoryCountingCode',
         ),
         headers: {'Content-Type': 'application/json'},
         body: json.encode(userIdentity),

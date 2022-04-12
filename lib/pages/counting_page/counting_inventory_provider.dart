@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:celta_inventario/models/countings.dart';
 import 'package:flutter/cupertino.dart';
 
-class CountingProvider with ChangeNotifier {
+class CountingInventoryProvider with ChangeNotifier {
   List<Countings> _countings = [];
 
   List<Countings> get countings {
@@ -40,7 +40,7 @@ class CountingProvider with ChangeNotifier {
       var request = http.Request(
           'POST',
           Uri.parse(
-              '$baseUrl/Inventory/GetCountings?inventoryProcessCode=$inventoryProcessCode'));
+              '$baseUrl/cmxweb/api/Inventory/GetCountings?inventoryProcessCode=$inventoryProcessCode'));
       request.body = json.encode(
         userIdentity,
       );

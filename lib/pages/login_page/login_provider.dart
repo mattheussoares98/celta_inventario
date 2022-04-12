@@ -67,7 +67,7 @@ class LoginProvider with ChangeNotifier {
     try {
       final response = await http.post(
         Uri.parse(
-          '$baseUrl/Security/UserCanLoginPlain?user=$user&password=$password',
+          '$baseUrl/cmxweb/api/Security/UserCanLoginPlain?user=$user&password=$password',
         ),
       );
 

@@ -1,8 +1,9 @@
+import 'package:celta_inventario/utils/base_url.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-class QuantityProvider with ChangeNotifier {
+class QuantityInventoryProvider with ChangeNotifier {
   bool _isLoadingQuantity = false;
 
   bool get isLoadingQuantity {
@@ -68,8 +69,8 @@ class QuantityProvider with ChangeNotifier {
         'POST',
         Uri.parse(
           isSubtract
-              ? '$baseUrl/Inventory/EntryQuantity?countingCode=$countingCode&productPackingCode=$productPackingCode&quantity=-$quantity'
-              : '$baseUrl/Inventory/EntryQuantity?countingCode=$countingCode&productPackingCode=$productPackingCode&quantity=$quantity',
+              ? '$baseUrl/cmxweb/api/Inventory/EntryQuantity?countingCode=$countingCode&productPackingCode=$productPackingCode&quantity=-$quantity'
+              : '$baseUrl/cmxweb/api/Inventory/EntryQuantity?countingCode=$countingCode&productPackingCode=$productPackingCode&quantity=$quantity',
         ),
       );
       request.body = json.encode(userIdentity);
@@ -109,10 +110,9 @@ class QuantityProvider with ChangeNotifier {
 
   bool isConfirmedAnullQuantity = false;
   Future<void> anullQuantity({
-    String? url,
-    int? countingCode,
-    int? productPackingCode,
-    String? userIdentity,
+    required int countingCode,
+    required int productPackingCode,
+    required String userIdentity,
   }) async {
     isConfirmedAnullQuantity = false;
     _errorMessage = '';
@@ -125,7 +125,7 @@ class QuantityProvider with ChangeNotifier {
       var request = http.Request(
         'POST',
         Uri.parse(
-          '$url/Inventory/AnnulQuantity?countingCode=$countingCode&productPackingCode=$productPackingCode',
+          '${BaseUrl.url}/cmxweb/api/Inventory/AnnulQuantity?countingCode=$countingCode&productPackingCode=$productPackingCode',
         ),
       );
       request.body = json.encode(userIdentity);

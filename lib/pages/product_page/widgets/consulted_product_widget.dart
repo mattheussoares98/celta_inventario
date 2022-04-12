@@ -1,7 +1,8 @@
 import 'package:celta_inventario/pages/product_page/anull_quantity_button.dart';
 import 'package:celta_inventario/pages/product_page/confirm_quantity_button.dart';
-import 'package:celta_inventario/provider/product_provider.dart';
-import 'package:celta_inventario/provider/quantity_provider.dart';
+import 'package:celta_inventario/pages/product_page/product_inventory_provider.dart';
+import 'package:celta_inventario/pages/product_page/product_inventory_provider.dart';
+import 'package:celta_inventario/provider/quantity_inventory_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -41,8 +42,10 @@ class ConsultedProductWidgetState extends State<ConsultedProductWidget> {
 
   @override
   Widget build(BuildContext context) {
-    ProductProvider productProvider = Provider.of(context, listen: true);
-    QuantityProvider quantityProvider = Provider.of(context, listen: true);
+    ProductInventoryProvider productProvider =
+        Provider.of(context, listen: true);
+    QuantityInventoryProvider quantityProvider =
+        Provider.of(context, listen: true);
 
     double? lastQuantityAdded =
         double.tryParse(quantityProvider.lastQuantityAdded);

@@ -4,7 +4,7 @@ import 'package:celta_inventario/models/enterprise.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 
-class EnterpriseProvider with ChangeNotifier {
+class EnterpriseInventoryProvider with ChangeNotifier {
   List<Enterprise> _enterprises = [];
 
   List<Enterprise> get enterprises {
@@ -41,8 +41,8 @@ class EnterpriseProvider with ChangeNotifier {
 
     try {
       var headers = {'Content-Type': 'application/json'};
-      var request =
-          http.Request('POST', Uri.parse('$baseUrl/Enterprise/GetEnterprises'));
+      var request = http.Request(
+          'POST', Uri.parse('$baseUrl/cmxweb/api/Enterprise/GetEnterprises'));
       request.body = json.encode(userIdentity);
       request.headers.addAll(headers);
       http.StreamedResponse response = await request.send();

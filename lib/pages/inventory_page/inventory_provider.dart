@@ -40,7 +40,7 @@ class InventoryProvider with ChangeNotifier {
       var request = http.Request(
         'POST',
         Uri.parse(
-            '$baseUrl/Inventory/GetFroozenProcesses?enterpriseCode=$enterpriseCode'),
+            '$baseUrl/cmxweb/api/Inventory/GetFroozenProcesses?enterpriseCode=$enterpriseCode'),
       );
       request.body = json.encode(userIdentity);
       request.headers.addAll(headers);
