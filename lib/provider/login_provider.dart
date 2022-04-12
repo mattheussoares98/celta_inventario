@@ -22,7 +22,7 @@ class LoginProvider with ChangeNotifier {
     if (error.contains('O usuário não foi encontrado')) {
       _errorMessage = 'Usuário não encontrado!';
     } else if (error.contains('senha está incorreta')) {
-      _errorMessage = 'A senha está incorreta!';
+      _errorMessage = 'O usuário ou a senha está inválido!';
     } else if (error.contains('Connection timed out')) {
       _errorMessage = 'Time out! Tente novamente!';
     } else if (error.contains('Connection')) {
