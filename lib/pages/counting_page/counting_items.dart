@@ -1,3 +1,4 @@
+import 'package:celta_inventario/components/personalized_card.dart';
 import 'package:celta_inventario/pages/counting_page/counting_inventory_provider.dart';
 import 'package:celta_inventario/utils/app_routes.dart';
 import 'package:flutter/material.dart';
@@ -32,15 +33,8 @@ class CountingItems extends StatelessWidget {
                   );
                 },
                 //sem esse Card, não funciona o gesture detector no campo inteiro
-                child: Card(
-                  shape: RoundedRectangleBorder(
-                    side: BorderSide(
-                      width: 2,
-                      color: Theme.of(context).primaryColor,
-                    ),
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                  ),
-                  elevation: 10,
+                child: PersonalizedCard().personalizedCard(
+                  context: context,
                   child: Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: Column(

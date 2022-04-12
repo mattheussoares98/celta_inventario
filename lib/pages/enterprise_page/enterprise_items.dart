@@ -1,3 +1,4 @@
+import 'package:celta_inventario/components/personalized_card.dart';
 import 'package:celta_inventario/pages/enterprise_page/enterprise_inventory_provider.dart';
 import 'package:celta_inventario/pages/product_page/product_inventory_provider.dart';
 import 'package:celta_inventario/utils/app_routes.dart';
@@ -31,18 +32,8 @@ class _EnterpriseItemsState extends State<EnterpriseItems> {
           child: ListView.builder(
             itemCount: enterpriseProvider.enterpriseCount,
             itemBuilder: (ctx, index) {
-              return Card(
-                shape: RoundedRectangleBorder(
-                  side: BorderSide(
-                    width: 2,
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(10),
-                  ),
-                ),
-                elevation: 6,
-                // color: Theme.of(context).colorScheme.primary,
+              return PersonalizedCard().personalizedCard(
+                context: context,
                 child: ListTile(
                   title: Text(
                     enterpriseProvider.enterprises[index].nomeEmpresa,

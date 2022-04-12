@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:celta_inventario/pages/product_page/controller/consult_product_controller.dart';
 import 'package:celta_inventario/pages/product_page/widgets/consult_product_widget.dart';
 import 'package:celta_inventario/pages/product_page/widgets/consulted_product_widget.dart';

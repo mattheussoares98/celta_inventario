@@ -1,3 +1,4 @@
+import 'package:celta_inventario/components/personalized_card.dart';
 import 'package:celta_inventario/pages/inventory_page/inventory_provider.dart';
 import 'package:celta_inventario/pages/product_page/product_inventory_provider.dart';
 import 'package:celta_inventario/utils/app_routes.dart';
@@ -49,14 +50,8 @@ class InventoryItems extends StatelessWidget {
                   );
                 },
                 //sem esse Card, não funciona o gesture detector no campo inteiro
-                child: Card(
-                  shape: RoundedRectangleBorder(
-                    side: BorderSide(
-                      width: 2,
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                  ),
+                child: PersonalizedCard().personalizedCard(
+                  context: context,
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Column(

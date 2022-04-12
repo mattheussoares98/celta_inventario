@@ -16,26 +16,22 @@ class EnterpriseWidget {
             itemBuilder: (context, index) {
               return Column(
                 children: [
-                  CheckboxListTile(
+                  Card(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                       side: BorderSide(
-                        color: Colors.green,
+                        color: Theme.of(context).colorScheme.primary,
+                        width: 1,
                       ),
                     ),
-                    title: Text(
-                      enterpriseSaleRequestProvider.enterprises[index]['name'],
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    value: false,
-                    onChanged: (value) {},
-                    subtitle: Text(
-                      'CNPJ: ' +
-                          enterpriseSaleRequestProvider.enterprises[index]
-                              ['cnpj'],
-                    ),
+                    child: ListTile(
+                        title: Text(enterpriseSaleRequestProvider
+                            .enterprises[index]['name']),
+                        subtitle: Text(
+                          'CNPJ: ' +
+                              enterpriseSaleRequestProvider.enterprises[index]
+                                  ['cnpj'],
+                        )),
                   ),
                   const SizedBox(height: 5),
                 ],

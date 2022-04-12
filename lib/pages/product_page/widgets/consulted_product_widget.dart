@@ -1,3 +1,4 @@
+import 'package:celta_inventario/components/personalized_card.dart';
 import 'package:celta_inventario/pages/product_page/anull_quantity_button.dart';
 import 'package:celta_inventario/pages/product_page/confirm_quantity_button.dart';
 import 'package:celta_inventario/pages/product_page/product_inventory_provider.dart';
@@ -54,15 +55,8 @@ class ConsultedProductWidgetState extends State<ConsultedProductWidget> {
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 5),
-      child: Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-          side: BorderSide(
-            width: 2,
-            color: Theme.of(context).colorScheme.primary,
-          ),
-        ),
-        elevation: 10,
+      child: PersonalizedCard().personalizedCard(
+        context: context,
         child: Padding(
           padding: const EdgeInsets.only(
             left: 10,
