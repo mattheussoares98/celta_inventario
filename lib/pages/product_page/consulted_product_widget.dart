@@ -147,10 +147,12 @@ class ConsultedProductWidgetState extends State<ConsultedProductWidget> {
                         atualQuantity == double
                             ? double.tryParse(atualQuantity.toString())!
                                 .toStringAsFixed(3)
+                                .replaceAll(RegExp(r'\.'), ',')
                             : atualQuantity.toString() == 'null'
                                 ? 'Sem contagem'
                                 : double.tryParse(atualQuantity.toString())!
-                                    .toStringAsFixed(3),
+                                    .toStringAsFixed(3)
+                                    .replaceAll(RegExp(r'\.'), ','),
                         textAlign: TextAlign.left,
                         style: TextStyle(
                           fontSize: 25,
@@ -169,8 +171,8 @@ class ConsultedProductWidgetState extends State<ConsultedProductWidget> {
                   child: Text(
                     quantityProvider.isSubtract &&
                             quantityProvider.isConfirmedQuantity
-                        ? 'Última quantidade adicionada:  -${lastQuantityAdded!.toStringAsFixed(3)} '
-                        : 'Última quantidade adicionada:  ${lastQuantityAdded!.toStringAsFixed(3)} ',
+                        ? 'Última quantidade adicionada:  -${lastQuantityAdded!.toStringAsFixed(3).replaceAll(RegExp(r'\.'), ',')} '
+                        : 'Última quantidade adicionada:  ${lastQuantityAdded!.toStringAsFixed(3).replaceAll(RegExp(r'\.'), ',')} ',
                     style: TextStyle(
                       fontSize: 100,
                       color: Theme.of(context).colorScheme.primary,
