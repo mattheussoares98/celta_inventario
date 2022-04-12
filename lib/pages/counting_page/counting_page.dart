@@ -1,7 +1,7 @@
 import 'package:celta_inventario/pages/counting_page/counting_items.dart';
 import 'package:celta_inventario/utils/error_message.dart';
 import 'package:celta_inventario/models/inventory.dart';
-import 'package:celta_inventario/provider/counting_provider.dart';
+import 'package:celta_inventario/pages/counting_page/counting_inventory_provider.dart';
 import 'package:celta_inventario/utils/base_url.dart';
 import 'package:celta_inventario/utils/consulting_widget.dart';
 import 'package:celta_inventario/utils/user_identity.dart';
@@ -19,7 +19,8 @@ class _CountingPageState extends State<CountingPage> {
   tryAgain() {
     final inventorys = ModalRoute.of(context)!.settings.arguments as Inventory;
 
-    CountingProvider countingProvider = Provider.of(context, listen: true);
+    CountingInventoryProvider countingProvider =
+        Provider.of(context, listen: true);
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -44,7 +45,8 @@ class _CountingPageState extends State<CountingPage> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     final inventorys = ModalRoute.of(context)!.settings.arguments as Inventory;
-    CountingProvider countingProvider = Provider.of(context, listen: true);
+    CountingInventoryProvider countingProvider =
+        Provider.of(context, listen: true);
 
     if (!isLoaded) {
       countingProvider.getCountings(
@@ -58,7 +60,8 @@ class _CountingPageState extends State<CountingPage> {
 
   @override
   Widget build(BuildContext context) {
-    CountingProvider countingProvider = Provider.of(context, listen: true);
+    CountingInventoryProvider countingProvider =
+        Provider.of(context, listen: true);
 
     return Scaffold(
       appBar: AppBar(

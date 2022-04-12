@@ -1,5 +1,5 @@
-import 'package:celta_inventario/provider/inventory_provider.dart';
-import 'package:celta_inventario/provider/product_provider.dart';
+import 'package:celta_inventario/pages/inventory_page/inventory_provider.dart';
+import 'package:celta_inventario/pages/product_page/product_inventory_provider.dart';
 import 'package:celta_inventario/utils/app_routes.dart';
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +11,7 @@ class InventoryItems extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     InventoryProvider inventoryProvider = Provider.of(context);
-    ProductProvider productProvider = Provider.of(context);
+    ProductInventoryProvider productProvider = Provider.of(context);
 
     TextStyle _fontStyle = TextStyle(
       fontSize: 20,

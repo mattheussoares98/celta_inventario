@@ -1,5 +1,5 @@
-import 'package:celta_inventario/provider/product_provider.dart';
-import 'package:celta_inventario/provider/quantity_provider.dart';
+import 'package:celta_inventario/pages/product_page/product_inventory_provider.dart';
+import 'package:celta_inventario/provider/quantity_inventory_provider.dart';
 import 'package:celta_inventario/utils/base_url.dart';
 import 'package:celta_inventario/utils/show_alert_dialog.dart';
 import 'package:celta_inventario/utils/show_error_message.dart';
@@ -22,13 +22,14 @@ class AnullQuantityButton extends StatefulWidget {
 
 class _AnullQuantityButtonState extends State<AnullQuantityButton> {
   anullQuantity() async {
-    QuantityProvider quantityProvider = Provider.of(context, listen: false);
-    ProductProvider productProvider = Provider.of(context, listen: false);
+    QuantityInventoryProvider quantityProvider =
+        Provider.of(context, listen: false);
+    ProductInventoryProvider productProvider =
+        Provider.of(context, listen: false);
     print('teste');
     await quantityProvider.anullQuantity(
       countingCode: widget.countingCode,
       productPackingCode: widget.productPackingCode,
-      url: BaseUrl.url,
       userIdentity: UserIdentity.identity,
     );
     setState(() {
@@ -48,7 +49,8 @@ class _AnullQuantityButtonState extends State<AnullQuantityButton> {
 
   @override
   Widget build(BuildContext context) {
-    QuantityProvider quantityProvider = Provider.of(context, listen: true);
+    QuantityInventoryProvider quantityProvider =
+        Provider.of(context, listen: true);
 
     return ElevatedButton(
       style: ElevatedButton.styleFrom(

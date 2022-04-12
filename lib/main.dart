@@ -8,12 +8,13 @@ import 'package:celta_inventario/pages/product_page/product_page.dart';
 import 'package:celta_inventario/pages/sales_page/sales_page.dart';
 import 'package:celta_inventario/pages/splash_screen/splash_screen.dart';
 import 'package:celta_inventario/pages/stock_page/stock_page.dart';
-import 'package:celta_inventario/provider/counting_provider.dart';
-import 'package:celta_inventario/provider/enterprise_provider.dart';
-import 'package:celta_inventario/provider/inventory_provider.dart';
-import 'package:celta_inventario/provider/login_provider.dart';
-import 'package:celta_inventario/provider/product_provider.dart';
-import 'package:celta_inventario/provider/quantity_provider.dart';
+import 'package:celta_inventario/pages/counting_page/counting_inventory_provider.dart';
+import 'package:celta_inventario/pages/enterprise_page/enterprise_inventory_provider.dart';
+import 'package:celta_inventario/provider/enterprise_salerequest_provider.dart';
+import 'package:celta_inventario/pages/inventory_page/inventory_provider.dart';
+import 'package:celta_inventario/pages/login_page/login_provider.dart';
+import 'package:celta_inventario/pages/product_page/product_inventory_provider.dart';
+import 'package:celta_inventario/provider/quantity_inventory_provider.dart';
 import 'package:celta_inventario/utils/app_routes.dart';
 import 'package:celta_inventario/utils/colors_theme.dart';
 import 'package:celta_inventario/utils/responsive_items.dart';
@@ -26,10 +27,11 @@ void main() {
       providers: [
         ChangeNotifierProvider(create: (_) => LoginProvider()),
         ChangeNotifierProvider(create: (_) => InventoryProvider()),
-        ChangeNotifierProvider(create: (_) => EnterpriseProvider()),
-        ChangeNotifierProvider(create: (_) => CountingProvider()),
-        ChangeNotifierProvider(create: (_) => ProductProvider()),
-        ChangeNotifierProvider(create: (_) => QuantityProvider()),
+        ChangeNotifierProvider(create: (_) => EnterpriseInventoryProvider()),
+        ChangeNotifierProvider(create: (_) => CountingInventoryProvider()),
+        ChangeNotifierProvider(create: (_) => ProductInventoryProvider()),
+        ChangeNotifierProvider(create: (_) => QuantityInventoryProvider()),
+        ChangeNotifierProvider(create: (_) => EnterpriseSaleRequestProvider()),
       ],
       child: MaterialApp(
         theme: ThemeData(

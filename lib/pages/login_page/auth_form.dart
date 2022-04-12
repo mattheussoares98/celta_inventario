@@ -1,4 +1,4 @@
-import 'package:celta_inventario/provider/login_provider.dart';
+import 'package:celta_inventario/pages/login_page/login_provider.dart';
 import 'package:celta_inventario/utils/base_url.dart';
 import 'package:celta_inventario/utils/show_error_message.dart';
 import 'package:flutter/material.dart';

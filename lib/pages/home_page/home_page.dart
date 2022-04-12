@@ -1,5 +1,5 @@
 import 'package:celta_inventario/pages/home_page/image_component.dart';
-import 'package:celta_inventario/provider/login_provider.dart';
+import 'package:celta_inventario/pages/login_page/login_provider.dart';
 import 'package:celta_inventario/utils/app_routes.dart';
 import 'package:celta_inventario/utils/colors_theme.dart';
 import 'package:celta_inventario/utils/show_alert_dialog.dart';

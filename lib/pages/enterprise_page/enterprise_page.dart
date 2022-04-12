@@ -1,6 +1,6 @@
 import 'package:celta_inventario/pages/enterprise_page/enterprise_items.dart';
 import 'package:celta_inventario/utils/error_message.dart';
-import 'package:celta_inventario/provider/enterprise_provider.dart';
+import 'package:celta_inventario/pages/enterprise_page/enterprise_inventory_provider.dart';
 import 'package:celta_inventario/utils/base_url.dart';
 import 'package:celta_inventario/utils/consulting_widget.dart';
 import 'package:celta_inventario/utils/user_identity.dart';
@@ -15,7 +15,7 @@ class EnterprisePage extends StatefulWidget {
 }
 
 class EnterprisePageState extends State<EnterprisePage> {
-  tryAgain(EnterpriseProvider enterpriseProvider) {
+  tryAgain(EnterpriseInventoryProvider enterpriseProvider) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -33,7 +33,7 @@ class EnterprisePageState extends State<EnterprisePage> {
     );
   }
 
-  getEnterprises(EnterpriseProvider enterpriseProvider) async {
+  getEnterprises(EnterpriseInventoryProvider enterpriseProvider) async {
     await enterpriseProvider.getEnterprises(
       userIdentity: UserIdentity.identity,
       baseUrl: BaseUrl.url,
@@ -43,14 +43,15 @@ class EnterprisePageState extends State<EnterprisePage> {
   @override
   void initState() {
     super.initState();
-    EnterpriseProvider enterpriseProvider = Provider.of(context, listen: false);
+    EnterpriseInventoryProvider enterpriseProvider =
+        Provider.of(context, listen: false);
     getEnterprises(enterpriseProvider);
   }
 
   @override
   Widget build(BuildContext context) {
-    EnterpriseProvider enterpriseProvider =
-        Provider.of<EnterpriseProvider>(context, listen: true);
+    EnterpriseInventoryProvider enterpriseProvider =
+        Provider.of<EnterpriseInventoryProvider>(context, listen: true);
 
     return Scaffold(
       appBar: AppBar(
