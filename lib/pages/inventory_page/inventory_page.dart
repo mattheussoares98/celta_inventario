@@ -1,6 +1,6 @@
+import 'package:celta_inventario/models/inventory/enterprise_inventory_model.dart';
 import 'package:celta_inventario/utils/error_message.dart';
 import 'package:celta_inventario/pages/inventory_page/inventory_items.dart';
-import 'package:celta_inventario/models/enterprise.dart';
 import 'package:celta_inventario/pages/inventory_page/inventory_provider.dart';
 import 'package:celta_inventario/utils/base_url.dart';
 import 'package:celta_inventario/utils/consulting_widget.dart';
@@ -17,8 +17,8 @@ class InventoryPage extends StatefulWidget {
 
 class _InventoryPageState extends State<InventoryPage> {
   tryAgain() {
-    Enterprise enterprise =
-        ModalRoute.of(context)!.settings.arguments as Enterprise;
+    EnterpriseInventoryModel enterprise =
+        ModalRoute.of(context)!.settings.arguments as EnterpriseInventoryModel;
 
     InventoryProvider inventoryProvider = Provider.of(
       context,
@@ -49,8 +49,8 @@ class _InventoryPageState extends State<InventoryPage> {
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    Enterprise enterprise =
-        ModalRoute.of(context)!.settings.arguments as Enterprise;
+    EnterpriseInventoryModel enterprise =
+        ModalRoute.of(context)!.settings.arguments as EnterpriseInventoryModel;
 
     if (!_isLoaded) {
       Provider.of<InventoryProvider>(context, listen: false).getInventory(

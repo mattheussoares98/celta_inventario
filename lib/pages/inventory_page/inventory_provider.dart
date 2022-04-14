@@ -1,12 +1,12 @@
-import 'package:celta_inventario/models/inventory.dart';
+import 'package:celta_inventario/models/inventory/inventory_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class InventoryProvider with ChangeNotifier {
-  final List<Inventory> _inventorys = [];
+  final List<InventoryModel> _inventorys = [];
 
-  List<Inventory> get inventorys {
+  List<InventoryModel> get inventorys {
     return [..._inventorys];
   }
 
@@ -63,7 +63,7 @@ class InventoryProvider with ChangeNotifier {
 
       responseAsMap.forEach((id, data) {
         _inventorys.add(
-          Inventory(
+          InventoryModel(
             codigoInternoInventario: data['CodigoInterno_Inventario'],
             dataCriacaoInventario:
                 DateTime.parse(data['DataCriacao_Inventario']),

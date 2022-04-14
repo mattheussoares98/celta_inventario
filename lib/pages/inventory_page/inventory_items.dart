@@ -1,6 +1,6 @@
 import 'package:celta_inventario/components/personalized_card.dart';
 import 'package:celta_inventario/pages/inventory_page/inventory_provider.dart';
-import 'package:celta_inventario/pages/product_page/product_inventory_provider.dart';
+import 'package:celta_inventario/pages/product_inventory_page/product_inventory_provider.dart';
 import 'package:celta_inventario/utils/app_routes.dart';
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';

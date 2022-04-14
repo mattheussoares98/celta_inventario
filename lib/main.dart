@@ -1,20 +1,20 @@
+import 'package:celta_inventario/pages/counting_inventory_page/counting_inventory_page.dart';
+import 'package:celta_inventario/pages/counting_inventory_page/counting_inventory_provider.dart';
+import 'package:celta_inventario/pages/enterprise_inventory_page/enterprise_inventory_page.dart';
+import 'package:celta_inventario/pages/enterprise_inventory_page/enterprise_inventory_provider.dart';
 import 'package:celta_inventario/pages/home_page/home_page.dart';
 import 'package:celta_inventario/pages/login_or_home_page/login_or_home_page.dart';
 import 'package:celta_inventario/pages/login_page/login_page.dart';
-import 'package:celta_inventario/pages/counting_page/counting_page.dart';
-import 'package:celta_inventario/pages/enterprise_page/enterprise_page.dart';
 import 'package:celta_inventario/pages/inventory_page/inventory_page.dart';
-import 'package:celta_inventario/pages/product_page/product_page.dart';
-import 'package:celta_inventario/pages/sales_page/sales_page.dart';
+import 'package:celta_inventario/pages/product_inventory_page/product_inventory_page.dart';
+import 'package:celta_inventario/pages/product_inventory_page/product_inventory_provider.dart';
+import 'package:celta_inventario/pages/product_inventory_page/quantity_inventory_provider.dart';
+import 'package:celta_inventario/pages/salerequest_page/enterprise_salerequest_provider.dart';
+import 'package:celta_inventario/pages/salerequest_page/salesrequest_page.dart';
 import 'package:celta_inventario/pages/splash_screen/splash_screen.dart';
 import 'package:celta_inventario/pages/stock_page/stock_page.dart';
-import 'package:celta_inventario/pages/counting_page/counting_inventory_provider.dart';
-import 'package:celta_inventario/pages/enterprise_page/enterprise_inventory_provider.dart';
-import 'package:celta_inventario/provider/enterprise_salerequest_provider.dart';
 import 'package:celta_inventario/pages/inventory_page/inventory_provider.dart';
 import 'package:celta_inventario/pages/login_page/login_provider.dart';
-import 'package:celta_inventario/pages/product_page/product_inventory_provider.dart';
-import 'package:celta_inventario/provider/quantity_inventory_provider.dart';
 import 'package:celta_inventario/utils/app_routes.dart';
 import 'package:celta_inventario/utils/colors_theme.dart';
 import 'package:celta_inventario/utils/responsive_items.dart';
@@ -93,12 +93,12 @@ void main() {
         routes: {
           APPROUTES.AUTH_OR_HOME_PAGE: (ctx) => const AuthOrHoMePage(),
           APPROUTES.LOGIN_PAGE: (ctx) => const LoginPage(),
-          APPROUTES.ENTERPRISES: (ctx) => const EnterprisePage(),
+          APPROUTES.ENTERPRISES: (ctx) => const EnterpriseInventoryPage(),
           APPROUTES.INVENTORY: (ctx) => const InventoryPage(),
           APPROUTES.STOCK: (ctx) => const StockPage(),
-          APPROUTES.SALES: (ctx) => const SalesPage(),
-          APPROUTES.COUNTINGS: (ctx) => const CountingPage(),
-          APPROUTES.PRODUCTS: (ctx) => const ProductPage(),
+          APPROUTES.SALES: (ctx) => const SaleRequestPage(),
+          APPROUTES.COUNTINGS: (ctx) => const CountingInventoryPage(),
+          APPROUTES.PRODUCTS: (ctx) => const ProductInventoryPage(),
           APPROUTES.SPLASHSCREEN: (ctx) => SplashScreen(),
           APPROUTES.HOME_PAGE: (ctx) => HomePage(),
         },
