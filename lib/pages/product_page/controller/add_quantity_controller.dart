@@ -1,5 +1,5 @@
-import 'package:celta_inventario/pages/product_page/product_inventory_provider.dart';
-import 'package:celta_inventario/provider/quantity_inventory_provider.dart';
+import 'package:celta_inventario/pages/product_page/product_provider.dart';
+import 'package:celta_inventario/provider/quantity_provider.dart';
 import 'package:celta_inventario/utils/base_url.dart';
 import 'package:celta_inventario/utils/show_error_message.dart';
 import 'package:celta_inventario/utils/user_identity.dart';
@@ -16,17 +16,14 @@ class AddQuantityController {
     required bool isSubtract,
     void Function()? alterFocusToConsultedProduct,
   }) async {
-    QuantityInventoryProvider quantityProvider =
-        Provider.of(context, listen: false);
-    ProductInventoryProvider productProvider =
-        Provider.of(context, listen: false);
+    QuantityProvider quantityProvider = Provider.of(context, listen: false);
+    ProductProvider productProvider = Provider.of(context, listen: false);
 
     try {
       await quantityProvider.entryQuantity(
         countingCode: countingCode,
         productPackingCode: productProvider.products[0].codigoInternoProEmb,
         quantity: isIndividual ? '1' : quantity.text,
-        baseUrl: BaseUrl.url,
         userIdentity: UserIdentity.identity,
         isSubtract: isSubtract,
       );
@@ -68,7 +65,7 @@ class AddQuantityController {
       }
     }
 
-    quantity.clear();
+    // quantity.clear();
 
     if (!isIndividual) {
       alterFocusToConsultedProduct!();

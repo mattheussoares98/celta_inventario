@@ -1,13 +1,14 @@
+import 'package:celta_inventario/utils/base_url.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
-import 'package:celta_inventario/models/enterprise.dart';
+import 'package:celta_inventario/models/enterprise_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 
-class EnterpriseInventoryProvider with ChangeNotifier {
-  List<Enterprise> _enterprises = [];
+class EnterpriseProvider with ChangeNotifier {
+  List<EnterpriseModel> _enterprises = [];
 
-  List<Enterprise> get enterprises {
+  List<EnterpriseModel> get enterprises {
     return [..._enterprises];
   }
 
@@ -33,7 +34,6 @@ class EnterpriseInventoryProvider with ChangeNotifier {
 
   Future getEnterprises({
     String? userIdentity,
-    String? baseUrl,
   }) async {
     clearEnterprises();
     _errorMessage = '';
@@ -42,7 +42,7 @@ class EnterpriseInventoryProvider with ChangeNotifier {
     try {
       var headers = {'Content-Type': 'application/json'};
       var request = http.Request(
-          'POST', Uri.parse('$baseUrl/cmxweb/api/Enterprise/GetEnterprises'));
+          'POST', Uri.parse('${BaseUrl.url}/Enterprise/GetEnterprises'));
       request.body = json.encode(userIdentity);
       request.headers.addAll(headers);
       http.StreamedResponse response = await request.send();
@@ -52,7 +52,7 @@ class EnterpriseInventoryProvider with ChangeNotifier {
 
       resultAsMap.forEach((id, data) {
         _enterprises.add(
-          Enterprise(
+          EnterpriseModel(
             codigoInternoEmpresa: data['CodigoInterno_Empresa'],
             codigoEmpresa: data['Codigo_Empresa'],
             nomeEmpresa: data['Nome_Empresa'],

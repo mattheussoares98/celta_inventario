@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:celta_inventario/utils/base_url.dart';
 import 'package:celta_inventario/utils/user_identity.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
@@ -56,9 +57,9 @@ class LoginProvider with ChangeNotifier {
   }
 
   login({
-    String? user,
-    String? password,
-    String? baseUrl,
+    required String? user,
+    required String? password,
+    required String baseUrl,
   }) async {
     _errorMessage = '';
     _isLoading = true;
@@ -67,7 +68,7 @@ class LoginProvider with ChangeNotifier {
     try {
       final response = await http.post(
         Uri.parse(
-          '$baseUrl/cmxweb/api/Security/UserCanLoginPlain?user=$user&password=$password',
+          '$baseUrl/Security/UserCanLoginPlain?user=$user&password=$password',
         ),
       );
 

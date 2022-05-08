@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-class QuantityInventoryProvider with ChangeNotifier {
+class QuantityProvider with ChangeNotifier {
   bool _isLoadingQuantity = false;
 
   bool get isLoadingQuantity {
@@ -47,7 +47,6 @@ class QuantityInventoryProvider with ChangeNotifier {
     required int? productPackingCode,
     required String? quantity,
     required String? userIdentity,
-    required String? baseUrl,
     required bool? isSubtract,
   }) async {
     if (isSubtract!) {
@@ -69,8 +68,8 @@ class QuantityInventoryProvider with ChangeNotifier {
         'POST',
         Uri.parse(
           isSubtract
-              ? '$baseUrl/cmxweb/api/Inventory/EntryQuantity?countingCode=$countingCode&productPackingCode=$productPackingCode&quantity=-$quantity'
-              : '$baseUrl/cmxweb/api/Inventory/EntryQuantity?countingCode=$countingCode&productPackingCode=$productPackingCode&quantity=$quantity',
+              ? '${BaseUrl.url}/Inventory/EntryQuantity?countingCode=$countingCode&productPackingCode=$productPackingCode&quantity=-$quantity'
+              : '${BaseUrl.url}/Inventory/EntryQuantity?countingCode=$countingCode&productPackingCode=$productPackingCode&quantity=$quantity',
         ),
       );
       request.body = json.encode(userIdentity);
@@ -125,7 +124,7 @@ class QuantityInventoryProvider with ChangeNotifier {
       var request = http.Request(
         'POST',
         Uri.parse(
-          '${BaseUrl.url}/cmxweb/api/Inventory/AnnulQuantity?countingCode=$countingCode&productPackingCode=$productPackingCode',
+          '${BaseUrl.url}/Inventory/AnnulQuantity?countingCode=$countingCode&productPackingCode=$productPackingCode',
         ),
       );
       request.body = json.encode(userIdentity);

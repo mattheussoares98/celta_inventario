@@ -1,5 +1,5 @@
 import 'package:celta_inventario/pages/product_page/controller/add_quantity_controller.dart';
-import 'package:celta_inventario/provider/quantity_inventory_provider.dart';
+import 'package:celta_inventario/provider/quantity_provider.dart';
 import 'package:celta_inventario/utils/show_alert_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -83,8 +83,7 @@ class _ConfirmQuantityButtonState extends State<ConfirmQuantityButton> {
 
   @override
   Widget build(BuildContext context) {
-    QuantityInventoryProvider quantityProvider =
-        Provider.of(context, listen: true);
+    QuantityProvider quantityProvider = Provider.of(context, listen: true);
 
     return ElevatedButton(
       style: ElevatedButton.styleFrom(

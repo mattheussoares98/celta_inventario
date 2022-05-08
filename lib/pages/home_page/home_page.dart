@@ -33,7 +33,7 @@ class _HomePageState extends State<HomePage> {
                 function: () async {
                   await loginProvider.logout();
                   Navigator.of(context).pushNamedAndRemoveUntil(
-                      APPROUTES.AUTH_OR_HOME_PAGE, (route) => false);
+                      APPROUTES.LOGIN_OR_HOME_PAGE, (route) => false);
                 },
               );
             },

@@ -1,6 +1,6 @@
 import 'package:celta_inventario/pages/enterprise_page/enterprise_items.dart';
 import 'package:celta_inventario/utils/error_message.dart';
-import 'package:celta_inventario/pages/enterprise_page/enterprise_inventory_provider.dart';
+import 'package:celta_inventario/pages/enterprise_page/enterprise_provider.dart';
 import 'package:celta_inventario/utils/base_url.dart';
 import 'package:celta_inventario/utils/consulting_widget.dart';
 import 'package:celta_inventario/utils/user_identity.dart';
@@ -15,7 +15,7 @@ class EnterprisePage extends StatefulWidget {
 }
 
 class EnterprisePageState extends State<EnterprisePage> {
-  tryAgain(EnterpriseInventoryProvider enterpriseProvider) {
+  tryAgain(EnterpriseProvider enterpriseProvider) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -24,7 +24,6 @@ class EnterprisePageState extends State<EnterprisePage> {
           onPressed: () {
             enterpriseProvider.getEnterprises(
               userIdentity: UserIdentity.identity,
-              baseUrl: BaseUrl.url,
             );
           },
           child: const Text('Tentar novamente'),
@@ -33,25 +32,23 @@ class EnterprisePageState extends State<EnterprisePage> {
     );
   }
 
-  getEnterprises(EnterpriseInventoryProvider enterpriseProvider) async {
+  getEnterprises(EnterpriseProvider enterpriseProvider) async {
     await enterpriseProvider.getEnterprises(
       userIdentity: UserIdentity.identity,
-      baseUrl: BaseUrl.url,
     );
   }
 
   @override
   void initState() {
     super.initState();
-    EnterpriseInventoryProvider enterpriseProvider =
-        Provider.of(context, listen: false);
+    EnterpriseProvider enterpriseProvider = Provider.of(context, listen: false);
     getEnterprises(enterpriseProvider);
   }
 
   @override
   Widget build(BuildContext context) {
-    EnterpriseInventoryProvider enterpriseProvider =
-        Provider.of<EnterpriseInventoryProvider>(context, listen: true);
+    EnterpriseProvider enterpriseProvider =
+        Provider.of<EnterpriseProvider>(context, listen: true);
 
     return Scaffold(
       appBar: AppBar(

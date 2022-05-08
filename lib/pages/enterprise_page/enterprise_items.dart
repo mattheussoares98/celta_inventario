@@ -1,6 +1,6 @@
 import 'package:celta_inventario/components/personalized_card.dart';
-import 'package:celta_inventario/pages/enterprise_page/enterprise_inventory_provider.dart';
-import 'package:celta_inventario/pages/product_page/product_inventory_provider.dart';
+import 'package:celta_inventario/pages/enterprise_page/enterprise_provider.dart';
+import 'package:celta_inventario/pages/product_page/product_provider.dart';
 import 'package:celta_inventario/utils/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -15,9 +15,8 @@ class EnterpriseItems extends StatefulWidget {
 class _EnterpriseItemsState extends State<EnterpriseItems> {
   @override
   Widget build(BuildContext context) {
-    EnterpriseInventoryProvider enterpriseProvider =
-        Provider.of(context, listen: true);
-    ProductInventoryProvider productProvider = Provider.of(context);
+    EnterpriseProvider enterpriseProvider = Provider.of(context, listen: true);
+    ProductProvider productProvider = Provider.of(context);
 
     return Column(
       children: [

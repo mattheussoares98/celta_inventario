@@ -1,5 +1,5 @@
 class APPROUTES {
-  static const AUTH_OR_HOME_PAGE = '/';
+  static const LOGIN_OR_HOME_PAGE = '/';
   static const ENTERPRISES = '/enterprises';
   static const INVENTORY = '/INVENTORY';
   static const SALES = '/SALES';

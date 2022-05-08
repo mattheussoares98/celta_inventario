@@ -1,11 +1,11 @@
-class ProductInventoryModel {
+class ProductModel {
   final String productName;
   final int codigoInternoProEmb;
   final String plu;
   final String codigoProEmb;
   dynamic quantidadeInvContProEmb;
 
-  ProductInventoryModel({
+  ProductModel({
     required this.productName,
     required this.codigoInternoProEmb,
     required this.plu,

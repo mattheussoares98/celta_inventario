@@ -1,20 +1,19 @@
-import 'package:celta_inventario/pages/counting_inventory_page/counting_inventory_page.dart';
-import 'package:celta_inventario/pages/counting_inventory_page/counting_inventory_provider.dart';
-import 'package:celta_inventario/pages/enterprise_inventory_page/enterprise_inventory_page.dart';
-import 'package:celta_inventario/pages/enterprise_inventory_page/enterprise_inventory_provider.dart';
+import 'package:celta_inventario/pages/counting_page/counting_page.dart';
+import 'package:celta_inventario/pages/counting_page/counting_provider.dart';
+import 'package:celta_inventario/pages/enterprise_page/enterprise_page.dart';
+import 'package:celta_inventario/pages/enterprise_page/enterprise_provider.dart';
 import 'package:celta_inventario/pages/home_page/home_page.dart';
 import 'package:celta_inventario/pages/login_or_home_page/login_or_home_page.dart';
 import 'package:celta_inventario/pages/login_page/login_page.dart';
 import 'package:celta_inventario/pages/inventory_page/inventory_page.dart';
-import 'package:celta_inventario/pages/product_inventory_page/product_inventory_page.dart';
-import 'package:celta_inventario/pages/product_inventory_page/product_inventory_provider.dart';
-import 'package:celta_inventario/pages/product_inventory_page/quantity_inventory_provider.dart';
-import 'package:celta_inventario/pages/salerequest_page/enterprise_salerequest_provider.dart';
-import 'package:celta_inventario/pages/salerequest_page/salesrequest_page.dart';
+import 'package:celta_inventario/pages/product_page/product_page.dart';
+import 'package:celta_inventario/pages/product_page/product_provider.dart';
+import 'package:celta_inventario/pages/sales_page/sales_page.dart';
 import 'package:celta_inventario/pages/splash_screen/splash_screen.dart';
 import 'package:celta_inventario/pages/stock_page/stock_page.dart';
 import 'package:celta_inventario/pages/inventory_page/inventory_provider.dart';
 import 'package:celta_inventario/pages/login_page/login_provider.dart';
+import 'package:celta_inventario/provider/quantity_provider.dart';
 import 'package:celta_inventario/utils/app_routes.dart';
 import 'package:celta_inventario/utils/colors_theme.dart';
 import 'package:celta_inventario/utils/responsive_items.dart';
@@ -27,11 +26,10 @@ void main() {
       providers: [
         ChangeNotifierProvider(create: (_) => LoginProvider()),
         ChangeNotifierProvider(create: (_) => InventoryProvider()),
-        ChangeNotifierProvider(create: (_) => EnterpriseInventoryProvider()),
-        ChangeNotifierProvider(create: (_) => CountingInventoryProvider()),
-        ChangeNotifierProvider(create: (_) => ProductInventoryProvider()),
-        ChangeNotifierProvider(create: (_) => QuantityInventoryProvider()),
-        ChangeNotifierProvider(create: (_) => EnterpriseSaleRequestProvider()),
+        ChangeNotifierProvider(create: (_) => EnterpriseProvider()),
+        ChangeNotifierProvider(create: (_) => CountingProvider()),
+        ChangeNotifierProvider(create: (_) => ProductProvider()),
+        ChangeNotifierProvider(create: (_) => QuantityProvider()),
       ],
       child: MaterialApp(
         theme: ThemeData(
@@ -89,16 +87,16 @@ void main() {
               ),
         ),
         debugShowCheckedModeBanner: false,
-        initialRoute: APPROUTES.AUTH_OR_HOME_PAGE,
+        initialRoute: APPROUTES.SPLASHSCREEN,
         routes: {
-          APPROUTES.AUTH_OR_HOME_PAGE: (ctx) => const AuthOrHoMePage(),
+          APPROUTES.LOGIN_OR_HOME_PAGE: (ctx) => const AuthOrHoMePage(),
           APPROUTES.LOGIN_PAGE: (ctx) => const LoginPage(),
-          APPROUTES.ENTERPRISES: (ctx) => const EnterpriseInventoryPage(),
+          APPROUTES.ENTERPRISES: (ctx) => const EnterprisePage(),
           APPROUTES.INVENTORY: (ctx) => const InventoryPage(),
           APPROUTES.STOCK: (ctx) => const StockPage(),
-          APPROUTES.SALES: (ctx) => const SaleRequestPage(),
-          APPROUTES.COUNTINGS: (ctx) => const CountingInventoryPage(),
-          APPROUTES.PRODUCTS: (ctx) => const ProductInventoryPage(),
+          APPROUTES.SALES: (ctx) => const SalesPage(),
+          APPROUTES.COUNTINGS: (ctx) => const CountingPage(),
+          APPROUTES.PRODUCTS: (ctx) => const ProductPage(),
           APPROUTES.SPLASHSCREEN: (ctx) => SplashScreen(),
           APPROUTES.HOME_PAGE: (ctx) => HomePage(),
         },

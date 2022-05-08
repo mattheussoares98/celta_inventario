@@ -1,5 +1,5 @@
 import 'package:celta_inventario/components/personalized_card.dart';
-import 'package:celta_inventario/pages/counting_page/counting_inventory_provider.dart';
+import 'package:celta_inventario/pages/counting_page/counting_provider.dart';
 import 'package:celta_inventario/utils/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -9,8 +9,7 @@ class CountingItems extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    CountingInventoryProvider countingProvider =
-        Provider.of(context, listen: true);
+    CountingProvider countingProvider = Provider.of(context, listen: true);
 
     return Column(
       children: [

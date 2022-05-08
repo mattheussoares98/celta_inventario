@@ -1,12 +1,13 @@
-import 'package:celta_inventario/models/inventory/countings_inventory_model.dart';
+import 'package:celta_inventario/utils/base_url.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:celta_inventario/models/countings_model.dart';
 import 'package:flutter/cupertino.dart';
 
-class CountingInventoryProvider with ChangeNotifier {
-  List<CountingsInventoryModel> _countings = [];
+class CountingProvider with ChangeNotifier {
+  List<CountingsModel> _countings = [];
 
-  List<CountingsInventoryModel> get countings {
+  List<CountingsModel> get countings {
     return [..._countings];
   }
 
@@ -29,7 +30,6 @@ class CountingInventoryProvider with ChangeNotifier {
   getCountings({
     int? inventoryProcessCode,
     String? userIdentity,
-    String? baseUrl,
   }) async {
     _countings.clear();
     _errorMessage = '';
@@ -40,7 +40,7 @@ class CountingInventoryProvider with ChangeNotifier {
       var request = http.Request(
           'POST',
           Uri.parse(
-              '$baseUrl/cmxweb/api/Inventory/GetCountings?inventoryProcessCode=$inventoryProcessCode'));
+              '${BaseUrl.url}/Inventory/GetCountings?inventoryProcessCode=$inventoryProcessCode'));
       request.body = json.encode(
         userIdentity,
       );
@@ -53,7 +53,7 @@ class CountingInventoryProvider with ChangeNotifier {
 
       responseInMap.forEach((id, data) {
         _countings.add(
-          CountingsInventoryModel(
+          CountingsModel(
             codigoInternoInvCont: data['CodigoInterno_InvCont'],
             flagTipoContagemInvCont: data['FlagTipoContagem_InvCont'],
             codigoInternoInventario: data['CodigoInterno_Inventario'],

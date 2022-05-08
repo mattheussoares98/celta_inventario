@@ -1,7 +1,7 @@
 import 'package:celta_inventario/pages/counting_page/counting_items.dart';
 import 'package:celta_inventario/utils/error_message.dart';
-import 'package:celta_inventario/models/inventory.dart';
-import 'package:celta_inventario/pages/counting_page/counting_inventory_provider.dart';
+import 'package:celta_inventario/models/inventory_model.dart';
+import 'package:celta_inventario/pages/counting_page/counting_provider.dart';
 import 'package:celta_inventario/utils/base_url.dart';
 import 'package:celta_inventario/utils/consulting_widget.dart';
 import 'package:celta_inventario/utils/user_identity.dart';
@@ -17,10 +17,10 @@ class CountingPage extends StatefulWidget {
 
 class _CountingPageState extends State<CountingPage> {
   tryAgain() {
-    final inventorys = ModalRoute.of(context)!.settings.arguments as Inventory;
+    final inventorys =
+        ModalRoute.of(context)!.settings.arguments as InventoryModel;
 
-    CountingInventoryProvider countingProvider =
-        Provider.of(context, listen: true);
+    CountingProvider countingProvider = Provider.of(context, listen: true);
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -30,7 +30,6 @@ class _CountingPageState extends State<CountingPage> {
             countingProvider.getCountings(
               inventoryProcessCode: inventorys.codigoInternoInventario,
               userIdentity: UserIdentity.identity,
-              baseUrl: BaseUrl.url,
             );
           },
           child: const Text('Tentar novamente'),
@@ -44,15 +43,14 @@ class _CountingPageState extends State<CountingPage> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    final inventorys = ModalRoute.of(context)!.settings.arguments as Inventory;
-    CountingInventoryProvider countingProvider =
-        Provider.of(context, listen: true);
+    final inventorys =
+        ModalRoute.of(context)!.settings.arguments as InventoryModel;
+    CountingProvider countingProvider = Provider.of(context, listen: true);
 
     if (!isLoaded) {
       countingProvider.getCountings(
         inventoryProcessCode: inventorys.codigoInternoInventario,
         userIdentity: UserIdentity.identity,
-        baseUrl: BaseUrl.url,
       );
     }
     isLoaded = true;
@@ -60,8 +58,7 @@ class _CountingPageState extends State<CountingPage> {
 
   @override
   Widget build(BuildContext context) {
-    CountingInventoryProvider countingProvider =
-        Provider.of(context, listen: true);
+    CountingProvider countingProvider = Provider.of(context, listen: true);
 
     return Scaffold(
       appBar: AppBar(

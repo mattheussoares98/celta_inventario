@@ -19,19 +19,15 @@ TextEditingController _urlController = TextEditingController();
 TextEditingController _userController = TextEditingController();
 TextEditingController _passwordController = TextEditingController();
 
-class _AuthFormState extends State<AuthForm> {
+class _AuthFormState extends State<AuthForm>
+    with SingleTickerProviderStateMixin {
+  AnimationController? _animationController;
+  Animation<double>? _animationWidth;
+  Animation<double>? _animationBorder;
+
   final _userFocusNode = FocusNode();
   final _passwordFocusNode = FocusNode();
   final _urlFocusNode = FocusNode();
-
-  @override //essa função serve para liberar qualquer tipo de memória que esteja sendo utilizado por esses FocusNode e Listner
-  void dispose() {
-    super.dispose();
-    _passwordController.clear();
-    _userFocusNode.dispose();
-    _passwordFocusNode.dispose();
-    _urlFocusNode.dispose();
-  }
 
   _saveUserAndUrl() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -59,6 +55,8 @@ class _AuthFormState extends State<AuthForm> {
         error: loginProvider.errorMessage,
         context: context,
       );
+    } else {
+      _passwordController.clear();
     }
 
     BaseUrl.url = _urlController.text;
@@ -80,12 +78,52 @@ class _AuthFormState extends State<AuthForm> {
   @override
   void initState() {
     super.initState();
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 2),
+    );
+
+    _animationBorder = Tween<double>(
+      begin: 0,
+      end: 20,
+    ).animate(
+      CurvedAnimation(
+        parent: _animationController!,
+        curve: const Interval(
+          0.7,
+          1,
+        ), //esse intervalo é o proporcional do tempo de animação, levando em conta que o tempo de animação é 1. Se a animação for de um segundo, vai executar a animação a partir de 0,6 do tempo de animação até 1 de animação
+      ),
+    );
     _restoreUserAndUrl();
+  }
+
+  @override //essa função serve para liberar qualquer tipo de memória que esteja sendo utilizado por esses FocusNode e Listner
+  void dispose() {
+    _animationController!.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     LoginProvider _loginProvider = Provider.of(context, listen: true);
+
+    _animationWidth = Tween<double>(
+      begin: 0,
+      end: MediaQuery.of(context).size.width,
+    ).animate(
+      CurvedAnimation(
+        parent: _animationController!,
+        curve: const Interval(
+          0,
+          0.7,
+        ), //esse intervalo é o proporcional do tempo de animação, levando em conta que o tempo de animação é 1.
+      ),
+    ); //precisei colocar o _animationWidget aqui porque
+    //executando no initState da erro, pois o mediaquery ainda não havia
+    //conseguido pegar o tamanho da largura do dispositivo
+
+    _animationController!.forward();
 
     return Card(
       margin: const EdgeInsets.all(20),
@@ -94,146 +132,199 @@ class _AuthFormState extends State<AuthForm> {
         padding: const EdgeInsets.all(15),
         child: Form(
           key: widget.formKey,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextFormField(
-                enabled: _loginProvider.isLoading ? false : true,
-                controller: _userController,
-                focusNode: _userFocusNode,
-                onFieldSubmitted: (_) =>
-                    FocusScope.of(context).requestFocus(_passwordFocusNode),
-                validator: (_name) {
-                  _name = _userController.text;
-                  if (_userController.text.trim().isEmpty) {
-                    return 'Preencha o nome';
-                  }
-                  return null;
-                },
-                style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  fontFamily: 'OpenSans',
-                  decorationColor: Colors.black,
-                  color: Colors.black,
-                  fontSize: 20,
-                ),
-                decoration: InputDecoration(
-                  labelStyle: TextStyle(
-                    color: Colors.black,
-                  ),
-                  labelText: 'Usuário',
-                  counterStyle: TextStyle(
-                    color: Colors.black,
-                  ),
-                ),
-              ),
-              TextFormField(
-                controller: _passwordController,
-                enabled: _loginProvider.isLoading ? false : true,
-                focusNode: _passwordFocusNode,
-                onFieldSubmitted: (_) =>
-                    FocusScope.of(context).requestFocus(_urlFocusNode),
-                style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  fontFamily: 'OpenSans',
-                  decorationColor: Colors.black,
-                  color: Colors.black,
-                  fontSize: 20,
-                ),
-                validator: (_name) {
-                  _name = _passwordController.text;
-                  if (_passwordController.text.trim().isEmpty) {
-                    return 'Preencha a senha';
-                  }
-                  return null;
-                },
-                decoration: const InputDecoration(
-                  labelText: 'Senha',
-                  labelStyle: TextStyle(
-                    color: Colors.black,
-                  ),
-                ),
-                obscureText: true,
-              ),
-              TextFormField(
-                enabled: _loginProvider.isLoading ? false : true,
-                controller: _urlController,
-                onFieldSubmitted: (_) => _submit(loginProvider: _loginProvider),
-                focusNode: _urlFocusNode,
-                style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  fontFamily: 'OpenSans',
-                  decorationColor: Colors.black,
-                  color: Colors.black,
-                  fontSize: 20,
-                ),
-                validator: (_url) {
-                  _url = _urlController.text;
-                  if (_urlController.text.trim().isEmpty) {
-                    return 'Preencha a url';
-                  } else if (!_urlController.text.contains('http') ||
-                      !_urlController.text.contains('//') ||
-                      !_urlController.text.contains(':')) {
-                    return 'URL inválida';
-                  }
-                  return null;
-                },
-                decoration: const InputDecoration(
-                  labelText: 'URL',
-                  labelStyle: TextStyle(
-                    color: Colors.black,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  minimumSize: Size(double.infinity, 60),
-                  maximumSize: Size(double.infinity, 60),
-                ),
-                onPressed: _loginProvider.isLoading
-                    ? null
-                    : () => _submit(
-                          loginProvider: _loginProvider,
-                        ),
-                child: _loginProvider.isLoading
-                    ? Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: FittedBox(
-                          child: Row(
-                            children: [
-                              const Text(
-                                'Efetuando login...',
-                                style: TextStyle(
-                                  fontSize: 20,
-                                ),
-                              ),
-                              const SizedBox(width: 8),
-                              Container(
-                                height: 16,
-                                width: 16,
-                                child: const CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                  color: Colors.grey,
-                                ),
-                              ),
-                            ],
+          child: AnimatedBuilder(
+            animation: _animationController!,
+            builder: (context, widget) {
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SizedBox(
+                    width: _animationWidth!.value,
+                    child: TextFormField(
+                      enabled: _loginProvider.isLoading ? false : true,
+                      controller: _userController,
+                      focusNode: _userFocusNode,
+                      onFieldSubmitted: (_) => FocusScope.of(context)
+                          .requestFocus(_passwordFocusNode),
+                      validator: (_name) {
+                        _name = _userController.text;
+                        if (_userController.text.trim().isEmpty) {
+                          return 'Preencha o nome';
+                        }
+                        return null;
+                      },
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontFamily: 'OpenSans',
+                        decorationColor: Colors.black,
+                        color: Colors.black,
+                        fontSize: 20,
+                      ),
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(
+                            color: Theme.of(context).colorScheme.primary,
                           ),
                         ),
-                      )
-                    : FittedBox(
-                        child: Padding(
-                          padding: const EdgeInsets.all(20.0),
-                          child: Text(
-                            'Login',
-                            style: TextStyle(
-                              fontSize: 20,
-                            ),
-                          ),
+                        labelStyle: TextStyle(
+                          color: Colors.grey,
+                        ),
+                        labelText: 'Usuário',
+                        counterStyle: TextStyle(
+                          color: Colors.black,
                         ),
                       ),
-              ),
-            ],
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  SizedBox(
+                    width: _animationWidth!.value,
+                    child: TextFormField(
+                      controller: _passwordController,
+                      enabled: _loginProvider.isLoading ? false : true,
+                      focusNode: _passwordFocusNode,
+                      onFieldSubmitted: (_) =>
+                          FocusScope.of(context).requestFocus(_urlFocusNode),
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontFamily: 'OpenSans',
+                        decorationColor: Colors.black,
+                        color: Colors.black,
+                        fontSize: 20,
+                      ),
+                      validator: (_name) {
+                        _name = _passwordController.text;
+                        if (_passwordController.text.trim().isEmpty) {
+                          return 'Preencha a senha';
+                        }
+                        return null;
+                      },
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                        ),
+                        labelText: 'Senha',
+                        labelStyle: TextStyle(
+                          color: Colors.grey,
+                        ),
+                      ),
+                      obscureText: true,
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  SizedBox(
+                    width: _animationWidth!.value,
+                    child: TextFormField(
+                      enabled: _loginProvider.isLoading ? false : true,
+                      controller: _urlController,
+                      onFieldSubmitted: (_) =>
+                          _submit(loginProvider: _loginProvider),
+                      focusNode: _urlFocusNode,
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontFamily: 'OpenSans',
+                        decorationColor: Colors.black,
+                        color: Colors.black,
+                        fontSize: 20,
+                      ),
+                      validator: (_url) {
+                        _url = _urlController.text;
+                        if (_urlController.text.trim().isEmpty) {
+                          return 'Preencha a url';
+                        } else if (!_urlController.text.contains('http') ||
+                            !_urlController.text.contains('//') ||
+                            !_urlController.text.contains(':')) {
+                          return 'URL inválida';
+                        }
+                        return null;
+                      },
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                        ),
+                        labelText: 'URL',
+                        labelStyle: TextStyle(
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  GestureDetector(
+                    onTap: _loginProvider.isLoading
+                        ? null
+                        : () => _submit(
+                              loginProvider: _loginProvider,
+                            ),
+                    child: _loginProvider.isLoading
+                        ? Container(
+                            decoration: BoxDecoration(
+                              color: Colors.green,
+                              borderRadius: BorderRadius.circular(
+                                _animationBorder!.value,
+                              ),
+                            ),
+                            height: 60,
+                            width: _animationWidth!.value,
+                            child: Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: FittedBox(
+                                child: Row(
+                                  children: [
+                                    const Text(
+                                      'Efetuando login...',
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 8),
+                                    Container(
+                                      height: 16,
+                                      width: 16,
+                                      child: const CircularProgressIndicator(
+                                        strokeWidth: 2,
+                                        color: Colors.grey,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          )
+                        : Container(
+                            decoration: BoxDecoration(
+                              color: Colors.green,
+                              borderRadius: BorderRadius.circular(
+                                _animationBorder!.value,
+                              ),
+                            ),
+                            height: 60,
+                            width: _animationWidth!.value,
+                            child: FittedBox(
+                              child: Padding(
+                                padding: const EdgeInsets.all(20.0),
+                                child: Text(
+                                  'Login',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                  ),
+                ],
+              );
+            },
           ),
         ),
       ),

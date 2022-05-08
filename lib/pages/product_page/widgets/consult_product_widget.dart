@@ -1,7 +1,7 @@
-import 'package:celta_inventario/models/countings.dart';
+import 'package:celta_inventario/models/countings_model.dart';
 import 'package:celta_inventario/pages/product_page/controller/consult_product_controller.dart';
-import 'package:celta_inventario/pages/product_page/product_inventory_provider.dart';
-import 'package:celta_inventario/provider/quantity_inventory_provider.dart';
+import 'package:celta_inventario/pages/product_page/product_provider.dart';
+import 'package:celta_inventario/provider/quantity_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -34,7 +34,8 @@ class _ConsultProductWidgetState extends State<ConsultProductWidget> {
   }
 
   Future<void> consultAndAddProduct() async {
-    final countings = ModalRoute.of(context)!.settings.arguments as Countings;
+    final countings =
+        ModalRoute.of(context)!.settings.arguments as CountingsModel;
 
     await ConsultProductController.instance.consultAndAddProduct(
       context: context,
@@ -47,10 +48,8 @@ class _ConsultProductWidgetState extends State<ConsultProductWidget> {
 
   @override
   Widget build(BuildContext context) {
-    QuantityInventoryProvider quantityProvider =
-        Provider.of(context, listen: true);
-    ProductInventoryProvider productProvider =
-        Provider.of(context, listen: true);
+    QuantityProvider quantityProvider = Provider.of(context, listen: true);
+    ProductProvider productProvider = Provider.of(context, listen: true);
 
     return Column(
       children: [

@@ -1,4 +1,4 @@
-import 'package:celta_inventario/pages/product_page/product_inventory_provider.dart';
+import 'package:celta_inventario/pages/product_page/product_provider.dart';
 import 'package:celta_inventario/utils/base_url.dart';
 import 'package:celta_inventario/utils/show_error_message.dart';
 import 'package:celta_inventario/utils/user_identity.dart';
@@ -42,8 +42,7 @@ class ConsultProductController {
     required FocusNode consultProductFocusNode,
     required bool isIndividual,
   }) async {
-    ProductInventoryProvider productProvider =
-        Provider.of(context, listen: false);
+    ProductProvider productProvider = Provider.of(context, listen: false);
     final AddQuantityController addQuantityController = AddQuantityController();
 
     await productProvider.getProductByEan(
@@ -52,7 +51,6 @@ class ConsultProductController {
       inventoryProcessCode: productProvider.codigoInternoInventario!,
       inventoryCountingCode: codigoInternoInvCont,
       userIdentity: UserIdentity.identity,
-      baseUrl: BaseUrl.url,
     );
 
     //só pesquisa o PLU se não encontrar pelo EAN
@@ -64,7 +62,6 @@ class ConsultProductController {
         inventoryProcessCode: productProvider.codigoInternoInventario!,
         inventoryCountingCode: codigoInternoInvCont,
         userIdentity: UserIdentity.identity,
-        baseUrl: BaseUrl.url,
       );
     }
 
@@ -96,7 +93,7 @@ class ConsultProductController {
     required BuildContext context,
     required FocusNode consultProductFocusNode,
   }) {
-    Future.delayed(Duration(milliseconds: 100), () {
+    Future.delayed(Duration(milliseconds: 300), () {
       //se não colocar em um future pra mudar o foco, não funciona corretamente
       FocusScope.of(context).requestFocus(consultProductFocusNode);
     });

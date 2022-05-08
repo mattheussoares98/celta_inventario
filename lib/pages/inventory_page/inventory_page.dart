@@ -1,4 +1,4 @@
-import 'package:celta_inventario/models/inventory/enterprise_inventory_model.dart';
+import 'package:celta_inventario/models/enterprise_model.dart';
 import 'package:celta_inventario/utils/error_message.dart';
 import 'package:celta_inventario/pages/inventory_page/inventory_items.dart';
 import 'package:celta_inventario/pages/inventory_page/inventory_provider.dart';
@@ -17,8 +17,8 @@ class InventoryPage extends StatefulWidget {
 
 class _InventoryPageState extends State<InventoryPage> {
   tryAgain() {
-    EnterpriseInventoryModel enterprise =
-        ModalRoute.of(context)!.settings.arguments as EnterpriseInventoryModel;
+    EnterpriseModel enterprise =
+        ModalRoute.of(context)!.settings.arguments as EnterpriseModel;
 
     InventoryProvider inventoryProvider = Provider.of(
       context,
@@ -34,7 +34,6 @@ class _InventoryPageState extends State<InventoryPage> {
               inventoryProvider.getInventory(
                 enterpriseCode: enterprise.codigoInternoEmpresa.toString(),
                 userIdentity: UserIdentity.identity,
-                baseUrl: BaseUrl.url,
               );
             });
           },
@@ -49,14 +48,13 @@ class _InventoryPageState extends State<InventoryPage> {
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    EnterpriseInventoryModel enterprise =
-        ModalRoute.of(context)!.settings.arguments as EnterpriseInventoryModel;
+    EnterpriseModel enterprise =
+        ModalRoute.of(context)!.settings.arguments as EnterpriseModel;
 
     if (!_isLoaded) {
       Provider.of<InventoryProvider>(context, listen: false).getInventory(
         enterpriseCode: enterprise.codigoInternoEmpresa.toString(),
         userIdentity: UserIdentity.identity,
-        baseUrl: BaseUrl.url,
       );
       _isLoaded = true;
     }
