@@ -19,7 +19,7 @@ class _LoginPageState extends State<LoginPage>
   void initState() {
     _animationController = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 3),
+      duration: const Duration(seconds: 2),
     );
 
     _animationOpacity = Tween<double>(

@@ -80,7 +80,7 @@ class _AuthFormState extends State<AuthForm>
     super.initState();
     _animationController = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 2),
+      duration: const Duration(seconds: 1),
     );
 
     _animationBorder = Tween<double>(
