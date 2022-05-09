@@ -153,7 +153,7 @@ class _AuthFormState extends State<AuthForm>
                         }
                         return null;
                       },
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontWeight: FontWeight.w500,
                         fontFamily: 'OpenSans',
                         decorationColor: Colors.black,
@@ -167,17 +167,17 @@ class _AuthFormState extends State<AuthForm>
                             color: Theme.of(context).colorScheme.primary,
                           ),
                         ),
-                        labelStyle: TextStyle(
+                        labelStyle: const TextStyle(
                           color: Colors.grey,
                         ),
                         labelText: 'Usuário',
-                        counterStyle: TextStyle(
+                        counterStyle: const TextStyle(
                           color: Colors.black,
                         ),
                       ),
                     ),
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   SizedBox(
                     width: _animationWidth!.value,
                     child: TextFormField(
@@ -186,7 +186,7 @@ class _AuthFormState extends State<AuthForm>
                       focusNode: _passwordFocusNode,
                       onFieldSubmitted: (_) =>
                           FocusScope.of(context).requestFocus(_urlFocusNode),
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontWeight: FontWeight.w500,
                         fontFamily: 'OpenSans',
                         decorationColor: Colors.black,
@@ -208,14 +208,14 @@ class _AuthFormState extends State<AuthForm>
                           ),
                         ),
                         labelText: 'Senha',
-                        labelStyle: TextStyle(
+                        labelStyle: const TextStyle(
                           color: Colors.grey,
                         ),
                       ),
                       obscureText: true,
                     ),
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   SizedBox(
                     width: _animationWidth!.value,
                     child: TextFormField(
@@ -224,7 +224,7 @@ class _AuthFormState extends State<AuthForm>
                       onFieldSubmitted: (_) =>
                           _submit(loginProvider: _loginProvider),
                       focusNode: _urlFocusNode,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontWeight: FontWeight.w500,
                         fontFamily: 'OpenSans',
                         decorationColor: Colors.black,
@@ -250,7 +250,7 @@ class _AuthFormState extends State<AuthForm>
                           ),
                         ),
                         labelText: 'URL',
-                        labelStyle: TextStyle(
+                        labelStyle: const TextStyle(
                           color: Colors.grey,
                         ),
                       ),
@@ -280,7 +280,7 @@ class _AuthFormState extends State<AuthForm>
                                   children: [
                                     const Text(
                                       'Efetuando login...',
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         fontSize: 20,
                                         color: Colors.white,
                                       ),
@@ -308,12 +308,12 @@ class _AuthFormState extends State<AuthForm>
                             ),
                             height: 60,
                             width: _animationWidth!.value,
-                            child: FittedBox(
+                            child: const FittedBox(
                               child: Padding(
                                 padding: const EdgeInsets.all(20.0),
                                 child: Text(
                                   'Login',
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 20,
                                     color: Colors.white,
                                   ),

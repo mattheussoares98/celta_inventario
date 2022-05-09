@@ -41,7 +41,7 @@ class CountingItems extends StatelessWidget {
                       children: [
                         Row(
                           children: [
-                            Text(
+                            const Text(
                               'Número da contagem: ',
                               style: TextStyle(
                                 fontSize: 20,
@@ -53,7 +53,7 @@ class CountingItems extends StatelessWidget {
                               countingProvider
                                   .countings[index].numeroContagemInvCont
                                   .toString(),
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontFamily: 'OpenSans',
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
@@ -65,9 +65,9 @@ class CountingItems extends StatelessWidget {
                         const SizedBox(height: 8),
                         Row(
                           children: [
-                            Text(
+                            const Text(
                               'Observações: ',
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontFamily: 'OpenSans',
                                 fontSize: 20,
                                 color: Colors.black,

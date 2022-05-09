@@ -2,7 +2,6 @@ import 'package:celta_inventario/components/personalized_card.dart';
 import 'package:celta_inventario/pages/product_page/anull_quantity_button.dart';
 import 'package:celta_inventario/pages/product_page/confirm_quantity_button.dart';
 import 'package:celta_inventario/pages/product_page/product_provider.dart';
-import 'package:celta_inventario/pages/product_page/product_provider.dart';
 import 'package:celta_inventario/provider/quantity_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -70,9 +69,9 @@ class ConsultedProductWidgetState extends State<ConsultedProductWidget> {
                 child: Row(
                   // mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
+                    const Text(
                       'Produto: ',
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 20,
                       ),
                     ),
@@ -93,7 +92,7 @@ class ConsultedProductWidgetState extends State<ConsultedProductWidget> {
                                     '\n\(',
                                   )
                           : productProvider.products[0].productName,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                       ),
@@ -105,15 +104,15 @@ class ConsultedProductWidgetState extends State<ConsultedProductWidget> {
               Row(
                 // mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
+                  const Text(
                     'PLU: ',
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 20,
                     ),
                   ),
                   Text(
                     productProvider.products[0].plu,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                     ),
@@ -125,11 +124,11 @@ class ConsultedProductWidgetState extends State<ConsultedProductWidget> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   //precisei colocar o flexible porque pelo fittedbox não estava funcionando como queria
-                  Flexible(
+                  const Flexible(
                     flex: 20,
                     child: Text(
                       'Quantidade contada: ',
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 20,
                       ),
                       textAlign: TextAlign.left,
@@ -149,7 +148,7 @@ class ConsultedProductWidgetState extends State<ConsultedProductWidget> {
                                     .toStringAsFixed(3)
                                     .replaceAll(RegExp(r'\.'), ','),
                         textAlign: TextAlign.left,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 25,
                           fontWeight: FontWeight.bold,
                           fontFamily: 'OpenSans',
@@ -231,7 +230,7 @@ class ConsultedProductWidgetState extends State<ConsultedProductWidget> {
                                 },
                                 decoration: InputDecoration(
                                   labelText: 'Digite a quantidade aqui',
-                                  errorStyle: TextStyle(
+                                  errorStyle: const TextStyle(
                                     fontSize: 17,
                                   ),
                                   disabledBorder: OutlineInputBorder(
@@ -258,7 +257,7 @@ class ConsultedProductWidgetState extends State<ConsultedProductWidget> {
                                         Theme.of(context).colorScheme.primary,
                                   ),
                                 ),
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 20,
                                 ),
                                 keyboardType: TextInputType.number,

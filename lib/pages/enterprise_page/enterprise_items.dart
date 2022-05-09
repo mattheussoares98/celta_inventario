@@ -36,7 +36,7 @@ class _EnterpriseItemsState extends State<EnterpriseItems> {
                 child: ListTile(
                   title: Text(
                     enterpriseProvider.enterprises[index].nomeEmpresa,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontFamily: 'OpenSans',
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
@@ -45,7 +45,7 @@ class _EnterpriseItemsState extends State<EnterpriseItems> {
                   leading: Text(
                     enterpriseProvider.enterprises[index].codigoEmpresa
                         .toString(),
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.black,
                       fontFamily: 'OpenSans',
                     ),

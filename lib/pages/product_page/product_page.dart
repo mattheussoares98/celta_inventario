@@ -67,13 +67,13 @@ class _ProductPageState extends State<ProductPage> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
+                      const Text(
                         'Inserir produto individualmente',
                         style: TextStyle(
                           fontSize: 30,
                         ),
                       ),
-                      SizedBox(width: 20),
+                      const SizedBox(width: 20),
                       Switch(
                         value: isIndividual,
                         onChanged: productProvider.isLodingEanOrPlu ||

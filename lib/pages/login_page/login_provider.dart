@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:celta_inventario/utils/base_url.dart';
 import 'package:celta_inventario/utils/user_identity.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;

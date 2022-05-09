@@ -11,7 +11,7 @@ class PersonalizedCard {
           width: 2,
           color: Theme.of(context).colorScheme.primary,
         ),
-        borderRadius: BorderRadius.all(
+        borderRadius: const BorderRadius.all(
           Radius.circular(10),
         ),
       ),

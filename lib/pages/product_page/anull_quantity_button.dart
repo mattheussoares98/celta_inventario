@@ -1,6 +1,5 @@
 import 'package:celta_inventario/pages/product_page/product_provider.dart';
 import 'package:celta_inventario/provider/quantity_provider.dart';
-import 'package:celta_inventario/utils/base_url.dart';
 import 'package:celta_inventario/utils/show_alert_dialog.dart';
 import 'package:celta_inventario/utils/show_error_message.dart';
 import 'package:celta_inventario/utils/user_identity.dart';
@@ -82,7 +81,7 @@ class _AnullQuantityButtonState extends State<AnullQuantityButton> {
                   Container(
                     height: 25,
                     width: 25,
-                    child: CircularProgressIndicator(
+                    child: const CircularProgressIndicator(
                       color: Colors.black,
                     ),
                   ),

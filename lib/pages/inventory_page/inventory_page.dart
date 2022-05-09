@@ -2,7 +2,6 @@ import 'package:celta_inventario/models/enterprise_model.dart';
 import 'package:celta_inventario/utils/error_message.dart';
 import 'package:celta_inventario/pages/inventory_page/inventory_items.dart';
 import 'package:celta_inventario/pages/inventory_page/inventory_provider.dart';
-import 'package:celta_inventario/utils/base_url.dart';
 import 'package:celta_inventario/utils/consulting_widget.dart';
 import 'package:celta_inventario/utils/user_identity.dart';
 import 'package:flutter/material.dart';
@@ -75,7 +74,7 @@ class _InventoryPageState extends State<InventoryPage> {
               .consultingWidget(title: 'Consultando inventários')
           : inventoryProvider.errorMessage != ''
               ? tryAgain()
-              : InventoryItems(),
+              : const InventoryItems(),
     );
   }
 }

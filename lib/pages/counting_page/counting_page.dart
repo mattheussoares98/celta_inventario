@@ -2,7 +2,6 @@ import 'package:celta_inventario/pages/counting_page/counting_items.dart';
 import 'package:celta_inventario/utils/error_message.dart';
 import 'package:celta_inventario/models/inventory_model.dart';
 import 'package:celta_inventario/pages/counting_page/counting_provider.dart';
-import 'package:celta_inventario/utils/base_url.dart';
 import 'package:celta_inventario/utils/consulting_widget.dart';
 import 'package:celta_inventario/utils/user_identity.dart';
 import 'package:flutter/material.dart';
@@ -70,7 +69,7 @@ class _CountingPageState extends State<CountingPage> {
           ? ConsultingWidget().consultingWidget(title: 'Consultando contagens')
           : countingProvider.errorMessage != ''
               ? tryAgain()
-              : CountingItems(),
+              : const CountingItems(),
     );
   }
 }

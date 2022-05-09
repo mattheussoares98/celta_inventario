@@ -1,5 +1,4 @@
 import 'package:celta_inventario/pages/product_page/product_provider.dart';
-import 'package:celta_inventario/utils/base_url.dart';
 import 'package:celta_inventario/utils/show_error_message.dart';
 import 'package:celta_inventario/utils/user_identity.dart';
 import 'package:flutter/cupertino.dart';
@@ -71,7 +70,7 @@ class ConsultProductController {
         context: context,
       );
 
-      Future.delayed(Duration(milliseconds: 100), () {
+      Future.delayed(const Duration(milliseconds: 100), () {
         //se não colocar em um future pra mudar o foco, não funciona corretamente
         FocusScope.of(context).requestFocus(consultProductFocusNode);
       });
@@ -93,7 +92,7 @@ class ConsultProductController {
     required BuildContext context,
     required FocusNode consultProductFocusNode,
   }) {
-    Future.delayed(Duration(milliseconds: 300), () {
+    Future.delayed(const Duration(milliseconds: 300), () {
       //se não colocar em um future pra mudar o foco, não funciona corretamente
       FocusScope.of(context).requestFocus(consultProductFocusNode);
     });

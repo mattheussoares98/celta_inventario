@@ -37,13 +37,13 @@ void main() {
           secondaryHeaderColor: ColorsTheme.text,
           backgroundColor: Colors.lightGreen[100],
           appBarTheme: ThemeData().appBarTheme.copyWith(
-                actionsIconTheme: IconThemeData(
+                actionsIconTheme: const IconThemeData(
                   color: Colors.black,
                 ),
                 toolbarHeight: ResponsiveItems.appBarToolbarHeight,
                 backgroundColor: ColorsTheme.principalColor,
                 centerTitle: true,
-                titleTextStyle: TextStyle(
+                titleTextStyle: const TextStyle(
                   letterSpacing: 0.7,
                   color: ColorsTheme.appBarText,
                   fontFamily: 'BebasNeue',
@@ -52,7 +52,7 @@ void main() {
               ),
           elevatedButtonTheme: ElevatedButtonThemeData(
             style: ElevatedButton.styleFrom(
-              textStyle: TextStyle(
+              textStyle: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontFamily: 'OpenSans',
                 color: ColorsTheme.elevatedButtonTextColor,
@@ -66,14 +66,14 @@ void main() {
           ),
         ).copyWith(
           textTheme: ThemeData.light().textTheme.copyWith(
-                headline6: TextStyle(
+                headline6: const TextStyle(
                   letterSpacing: 1,
                   fontWeight: FontWeight.bold,
                   color: ColorsTheme.headline6,
                   fontSize: ResponsiveItems.headline6,
                   fontFamily: 'BebasNeue',
                 ),
-                bodyText1: TextStyle(
+                bodyText1: const TextStyle(
                   fontFamily: 'OpenSans',
                   color: ColorsTheme.headline6,
                   fontWeight: FontWeight.bold,
@@ -98,7 +98,7 @@ void main() {
           APPROUTES.COUNTINGS: (ctx) => const CountingPage(),
           APPROUTES.PRODUCTS: (ctx) => const ProductPage(),
           APPROUTES.SPLASHSCREEN: (ctx) => SplashScreen(),
-          APPROUTES.HOME_PAGE: (ctx) => HomePage(),
+          APPROUTES.HOME_PAGE: (ctx) => const HomePage(),
         },
       ),
     ),

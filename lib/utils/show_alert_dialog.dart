@@ -19,12 +19,12 @@ class ShowAlertDialog {
               ? null
               : Text(
                   subtitle,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 32,
                   ),
                   textAlign: TextAlign.center,
                 ),
-          actionsPadding: EdgeInsets.all(10),
+          actionsPadding: const EdgeInsets.all(10),
           actions: [
             FittedBox(
               child: Row(
@@ -41,9 +41,9 @@ class ShowAlertDialog {
                       function();
                       Navigator.of(context).pop();
                     },
-                    child: Padding(
-                      padding: const EdgeInsets.all(30),
-                      child: const Text(
+                    child: const Padding(
+                      padding: EdgeInsets.all(30),
+                      child: Text(
                         'SIM',
                         style: TextStyle(
                           fontSize: 300,
@@ -51,7 +51,7 @@ class ShowAlertDialog {
                       ),
                     ),
                   ),
-                  SizedBox(width: 50),
+                  const SizedBox(width: 50),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                         primary: Colors.red,
@@ -61,9 +61,9 @@ class ShowAlertDialog {
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
-                    child: Padding(
-                      padding: const EdgeInsets.all(30),
-                      child: const Text(
+                    child: const Padding(
+                      padding: EdgeInsets.all(30),
+                      child: Text(
                         'NÃO',
                         style: TextStyle(
                           fontSize: 300,

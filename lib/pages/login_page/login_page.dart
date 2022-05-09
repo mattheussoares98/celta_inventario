@@ -52,7 +52,7 @@ class _LoginPageState extends State<LoginPage>
       body: Stack(
         children: [
           Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               gradient: LinearGradient(
                 colors: [
                   Color.fromRGBO(51, 255, 51, 1),

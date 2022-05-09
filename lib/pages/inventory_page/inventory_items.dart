@@ -15,12 +15,12 @@ class InventoryItems extends StatelessWidget {
     InventoryProvider inventoryProvider = Provider.of(context);
     ProductProvider productProvider = Provider.of(context);
 
-    TextStyle _fontStyle = TextStyle(
+    TextStyle _fontStyle = const TextStyle(
       fontSize: 20,
       color: Colors.black,
       fontFamily: 'OpenSans',
     );
-    TextStyle _fontBoldStyle = TextStyle(
+    TextStyle _fontBoldStyle = const TextStyle(
       fontFamily: 'OpenSans',
       fontSize: 20,
       fontWeight: FontWeight.bold,

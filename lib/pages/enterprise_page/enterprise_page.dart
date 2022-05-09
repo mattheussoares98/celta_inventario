@@ -1,7 +1,6 @@
 import 'package:celta_inventario/pages/enterprise_page/enterprise_items.dart';
 import 'package:celta_inventario/utils/error_message.dart';
 import 'package:celta_inventario/pages/enterprise_page/enterprise_provider.dart';
-import 'package:celta_inventario/utils/base_url.dart';
 import 'package:celta_inventario/utils/consulting_widget.dart';
 import 'package:celta_inventario/utils/user_identity.dart';
 import 'package:flutter/material.dart';
@@ -60,7 +59,7 @@ class EnterprisePageState extends State<EnterprisePage> {
           ? ConsultingWidget().consultingWidget(title: 'Consultando empresas')
           : enterpriseProvider.errorMessage != ''
               ? tryAgain(enterpriseProvider)
-              : EnterpriseItems(),
+              : const EnterpriseItems(),
     );
   }
 }

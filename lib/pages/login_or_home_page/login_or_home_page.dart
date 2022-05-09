@@ -21,9 +21,9 @@ class _AuthOrHoMePageState extends State<AuthOrHoMePage> {
         stream: loginProvider.authStream,
         builder: (context, snapshot) {
           if (snapshot.data == false || snapshot.data == null) {
-            return LoginPage();
+            return const LoginPage();
           } else {
-            return HomePage();
+            return const HomePage();
           }
         },
       ),

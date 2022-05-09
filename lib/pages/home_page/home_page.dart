@@ -39,8 +39,8 @@ class _HomePageState extends State<HomePage> {
             },
           ),
         ],
-        title: Center(
-          child: FittedBox(
+        title: const Center(
+          child: const FittedBox(
             child: Text(
               'Selecione a rotina desejada',
             ),

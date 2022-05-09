@@ -32,7 +32,7 @@ class _ConfirmQuantityButtonState extends State<ConfirmQuantityButton> {
   bool isIndividual = false;
 
   alterFocusToConsultedProduct() {
-    Future.delayed(Duration(milliseconds: 400), () {
+    Future.delayed(const Duration(milliseconds: 400), () {
       //se não colocar em um future, da erro pra alterar o foco porque tenta trocar enquanto o campo está desabilitado
       FocusScope.of(context).requestFocus(widget.consultedProductFocusNode);
     });
@@ -87,8 +87,8 @@ class _ConfirmQuantityButtonState extends State<ConfirmQuantityButton> {
 
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        minimumSize: Size(double.infinity, 70),
-        maximumSize: Size(double.infinity, 70),
+        minimumSize: const Size(double.infinity, 70),
+        maximumSize: const Size(double.infinity, 70),
       ),
       onPressed: quantityProvider.isLoadingQuantity
           ? null
@@ -109,7 +109,7 @@ class _ConfirmQuantityButtonState extends State<ConfirmQuantityButton> {
                   Container(
                     height: 40,
                     width: 40,
-                    child: CircularProgressIndicator(
+                    child: const CircularProgressIndicator(
                       color: Colors.black,
                     ),
                   ),

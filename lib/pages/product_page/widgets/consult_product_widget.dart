@@ -144,8 +144,8 @@ class _ConsultProductWidgetState extends State<ConsultProductWidget> {
               Expanded(
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    minimumSize: Size(double.infinity, 70),
-                    maximumSize: Size(double.infinity, 70),
+                    minimumSize: const Size(double.infinity, 70),
+                    maximumSize: const Size(double.infinity, 70),
                   ),
                   child: productProvider.isLodingEanOrPlu ||
                           quantityProvider.isLoadingQuantity
@@ -156,18 +156,18 @@ class _ConsultProductWidgetState extends State<ConsultProductWidget> {
                                 quantityProvider.isLoadingQuantity
                                     ? 'ADICIONANDO QUANTIDADE...'
                                     : 'CONSULTANDO O PRODUTO...',
-                                style: TextStyle(
+                                style: const TextStyle(
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold,
                                   fontFamily: 'OpenSans',
                                   fontSize: 100,
                                 ),
                               ),
-                              SizedBox(width: 30),
+                              const SizedBox(width: 30),
                               Container(
                                 height: 100,
                                 width: 100,
-                                child: CircularProgressIndicator(
+                                child: const CircularProgressIndicator(
                                   color: Colors.black,
                                 ),
                               ),
@@ -197,7 +197,7 @@ class _ConsultProductWidgetState extends State<ConsultProductWidget> {
                                 size: 70,
                               ),
                               if (widget.isIndividual)
-                                Text(
+                                const Text(
                                   '1',
                                   style: TextStyle(
                                     fontSize: 70,

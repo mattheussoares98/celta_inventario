@@ -22,7 +22,7 @@ class ImageComponent {
       child: Card(
         elevation: 10,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(
+          borderRadius: const BorderRadius.all(
             Radius.circular(10),
           ),
           side: BorderSide(
