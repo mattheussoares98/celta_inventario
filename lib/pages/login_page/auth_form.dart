@@ -257,66 +257,29 @@ class _AuthFormState extends State<AuthForm>
                     ),
                   ),
                   const SizedBox(height: 20),
-                  GestureDetector(
-                    onTap: _loginProvider.isLoading
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: const Size(double.infinity, 60),
+                      maximumSize: const Size(double.infinity, 60),
+                    ),
+                    onPressed: _loginProvider.isLoading
                         ? null
                         : () => _submit(
                               loginProvider: _loginProvider,
                             ),
                     child: _loginProvider.isLoading
-                        ? Container(
-                            decoration: BoxDecoration(
-                              color: Colors.green,
-                              borderRadius: BorderRadius.circular(
-                                _animationBorder!.value,
-                              ),
-                            ),
-                            height: 60,
-                            width: _animationWidth!.value,
-                            child: Padding(
-                              padding: const EdgeInsets.all(12.0),
-                              child: FittedBox(
-                                child: Row(
-                                  children: [
-                                    const Text(
-                                      'Efetuando login...',
-                                      style: const TextStyle(
-                                        fontSize: 20,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                    const SizedBox(width: 8),
-                                    Container(
-                                      height: 16,
-                                      width: 16,
-                                      child: const CircularProgressIndicator(
-                                        strokeWidth: 2,
-                                        color: Colors.grey,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
+                        ? const CircularProgressIndicator(
+                            strokeWidth: 4,
+                            color: Colors.grey,
                           )
-                        : Container(
-                            decoration: BoxDecoration(
-                              color: Colors.green,
-                              borderRadius: BorderRadius.circular(
-                                _animationBorder!.value,
-                              ),
-                            ),
-                            height: 60,
-                            width: _animationWidth!.value,
-                            child: const FittedBox(
-                              child: Padding(
-                                padding: const EdgeInsets.all(20.0),
-                                child: Text(
-                                  'Login',
-                                  style: const TextStyle(
-                                    fontSize: 20,
-                                    color: Colors.white,
-                                  ),
+                        : const FittedBox(
+                            child: Padding(
+                              padding: const EdgeInsets.all(20.0),
+                              child: Text(
+                                'Login',
+                                style: const TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.white,
                                 ),
                               ),
                             ),
