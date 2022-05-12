@@ -47,11 +47,10 @@ class _ConfirmQuantityButtonState extends State<ConfirmQuantityButton> {
       return;
     }
 
-    double quantity = double.tryParse(widget.consultedProductController.text)!;
+    double quantity = double.tryParse(
+        widget.consultedProductController.text.replaceAll(RegExp(r','), '.'))!;
 
-    if (double.tryParse(widget.consultedProductController.text
-            .replaceAll(RegExp(r','), '.'))! >=
-        10000) {
+    if (quantity >= 10000) {
       //se a quantidade digitada for maior que 10.000, vai abrir um alertDialog pra confirmar a quantidade
       ShowAlertDialog().showAlertDialog(
         context: context,

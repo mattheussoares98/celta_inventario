@@ -40,8 +40,9 @@ class ConsultProductController {
     required int codigoInternoInvCont,
     required FocusNode consultProductFocusNode,
     required bool isIndividual,
+    required ProductProvider productProvider,
   }) async {
-    ProductProvider productProvider = Provider.of(context, listen: false);
+    // ProductProvider productProvider = Provider.of(context, listen: false);
     final AddQuantityController addQuantityController = AddQuantityController();
 
     await productProvider.getProductByEan(

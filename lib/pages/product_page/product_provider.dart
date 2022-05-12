@@ -11,7 +11,7 @@ class ProductProvider with ChangeNotifier {
     return [..._products];
   }
 
-  static bool _isLodingEanOrPlu = false;
+  bool _isLodingEanOrPlu = false;
 
   bool get isLodingEanOrPlu {
     return _isLodingEanOrPlu;
@@ -63,6 +63,7 @@ class ProductProvider with ChangeNotifier {
         return;
       } else if (responseInString.contains('O EAN informado não é válido')) {
         productErrorMessage = 'O EAN informado não é válido';
+
         notifyListeners();
         return;
       }
@@ -83,6 +84,8 @@ class ProductProvider with ChangeNotifier {
       });
     } catch (e) {
       productErrorMessage = 'Servidor não encontrado. Verifique a sua internet';
+      _isLodingEanOrPlu = false;
+      notifyListeners();
     }
 
     if (products.isNotEmpty) {
@@ -104,20 +107,6 @@ class ProductProvider with ChangeNotifier {
     notifyListeners();
 
     try {
-      /// Antes estava usando essa forma comentada pra retornar os dados
-      /// coloquei pra usar de outra forma pra ter as duas documentadas
-      // var headers = {'Content-Type': 'application/json'};
-      // var request = http.Request(
-      //   'POST',
-      //   Uri.parse(
-      //     '$baseUrl/Inventory/GetProductByPlu?plu=$plu&enterpriseCode=$enterpriseCode&inventoryProcessCode=$inventoryProcessCode&inventoryCountingCode=$inventoryCountingCode',
-      //   ),
-      // );
-      // request.body = json.encode(userIdentity);
-      // request.headers.addAll(headers);
-      // http.StreamedResponse response = await request.send();
-      // String responseInString = await response.stream.bytesToString();
-
       http.Response response = await http.post(
         Uri.parse(
           '${BaseUrl.url}/Inventory/GetProductByPlu?plu=$plu&enterpriseCode=$enterpriseCode&inventoryProcessCode=$inventoryProcessCode&inventoryCountingCode=$inventoryCountingCode',
@@ -133,12 +122,14 @@ class ProductProvider with ChangeNotifier {
       if (responseInString.contains('O produto não foi encontrado')) {
         productErrorMessage =
             'O produto não foi encontrado na contagem do processo de inventário.';
+        _isLodingEanOrPlu = false;
         notifyListeners();
         return;
       } else if (responseInString
           .contains("tentativa de atender um serviço de integração 'cross'")) {
         productErrorMessage =
             "Ocorreu um erro durante a tentativa de atender um serviço de integração 'cross'";
+        _isLodingEanOrPlu = false;
         notifyListeners();
         return;
       }
@@ -160,7 +151,9 @@ class ProductProvider with ChangeNotifier {
     } catch (e) {
       print('erro pra obter o produto pelo plu: $e');
       productErrorMessage = 'Servidor não encontrado. Verifique a sua internet';
-    } finally {}
+      _isLodingEanOrPlu = false;
+      notifyListeners();
+    }
     _isLodingEanOrPlu = false;
     notifyListeners();
   }

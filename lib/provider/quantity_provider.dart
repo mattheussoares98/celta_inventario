@@ -100,9 +100,8 @@ class QuantityProvider with ChangeNotifier {
     } catch (e) {
       _errorMessage =
           'Erro para confirmar. Verifique a sua internet e tente novamente';
-    } finally {
-      _isLoadingQuantity = false;
-    }
+    } finally {}
+    _isLoadingQuantity = false;
     _canChangeTheFocus = true;
     notifyListeners();
   }

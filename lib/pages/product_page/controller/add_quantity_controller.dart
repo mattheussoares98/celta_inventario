@@ -39,32 +39,30 @@ class AddQuantityController {
     }
 
     if (quantityProvider.isConfirmedQuantity) {
+      var quantityInvContProEmb =
+          productProvider.products[0].quantidadeInvContProEmb;
+
       //se estiver como nulo, é porque nenhuma informação foi
       //adicionada ainda. Por isso precisa deixar o valor como '0'
-      if (productProvider.products[0].quantidadeInvContProEmb.toString() ==
-          'null') {
-        productProvider.products[0].quantidadeInvContProEmb = int.tryParse('0');
+      if (quantityInvContProEmb.toString() == 'null') {
+        quantityInvContProEmb = int.tryParse('0');
       }
 
       if (isIndividual) {
-        productProvider.products[0].quantidadeInvContProEmb =
-            productProvider.products[0].quantidadeInvContProEmb +
-                double.tryParse('1');
+        quantityInvContProEmb = quantityInvContProEmb + double.tryParse('1');
         return;
       }
 
       if (isSubtract) {
-        productProvider.products[0].quantidadeInvContProEmb =
-            productProvider.products[0].quantidadeInvContProEmb -
-                double.tryParse(quantity.text.replaceAll(RegExp(r','), '.'));
+        quantityInvContProEmb = quantityInvContProEmb -
+            double.tryParse(quantity.text.replaceAll(RegExp(r','), '.'));
       } else {
-        productProvider.products[0].quantidadeInvContProEmb =
-            productProvider.products[0].quantidadeInvContProEmb +
-                double.tryParse(quantity.text.replaceAll(RegExp(r','), '.'));
+        quantityInvContProEmb = quantityInvContProEmb +
+            double.tryParse(quantity.text.replaceAll(RegExp(r','), '.'));
       }
     }
 
-    // quantity.clear();
+    quantity.clear();
 
     if (!isIndividual) {
       alterFocusToConsultedProduct!();

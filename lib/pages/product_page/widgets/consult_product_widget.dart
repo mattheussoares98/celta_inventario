@@ -33,7 +33,7 @@ class _ConsultProductWidgetState extends State<ConsultProductWidget> {
     );
   }
 
-  Future<void> consultAndAddProduct() async {
+  Future<void> consultAndAddProduct(ProductProvider productProvider) async {
     final countings =
         ModalRoute.of(context)!.settings.arguments as CountingsModel;
 
@@ -43,6 +43,7 @@ class _ConsultProductWidgetState extends State<ConsultProductWidget> {
       codigoInternoInvCont: countings.codigoInternoInvCont,
       consultProductFocusNode: widget.consultProductFocusNode,
       isIndividual: widget.isIndividual,
+      productProvider: productProvider,
     );
   }
 
@@ -65,7 +66,7 @@ class _ConsultProductWidgetState extends State<ConsultProductWidget> {
                   key: widget.formKey,
                   child: TextFormField(
                     onFieldSubmitted: (value) async {
-                      await consultAndAddProduct();
+                      await consultAndAddProduct(productProvider);
                       widget.consultProductController.clear();
                     },
                     focusNode: widget.consultProductFocusNode,
@@ -222,7 +223,7 @@ class _ConsultProductWidgetState extends State<ConsultProductWidget> {
 
                           //se ler algum código, vai consultar o produto
                           if (widget.consultProductController.text.isNotEmpty) {
-                            await consultAndAddProduct();
+                            await consultAndAddProduct(productProvider);
                           }
 
                           if (productProvider.products.isNotEmpty &&

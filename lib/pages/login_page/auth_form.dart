@@ -257,33 +257,43 @@ class _AuthFormState extends State<AuthForm>
                     ),
                   ),
                   const SizedBox(height: 20),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      minimumSize: const Size(double.infinity, 60),
-                      maximumSize: const Size(double.infinity, 60),
-                    ),
-                    onPressed: _loginProvider.isLoading
-                        ? null
-                        : () => _submit(
-                              loginProvider: _loginProvider,
-                            ),
-                    child: _loginProvider.isLoading
-                        ? const CircularProgressIndicator(
-                            strokeWidth: 4,
-                            color: Colors.grey,
-                          )
-                        : const FittedBox(
-                            child: Padding(
-                              padding: const EdgeInsets.all(20.0),
-                              child: Text(
-                                'Login',
-                                style: const TextStyle(
-                                  fontSize: 20,
-                                  color: Colors.white,
+                  AnimatedBuilder(
+                    animation: _animationController!,
+                    builder: (context, widget) => ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: Size(_animationWidth!.value, 60),
+                        maximumSize: Size(_animationWidth!.value, 60),
+                        primary: _loginProvider.isLoading
+                            ? Colors.grey
+                            : Theme.of(context).colorScheme.primary,
+                        shape: RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.circular(_animationBorder!.value),
+                        ),
+                      ),
+                      onPressed: _loginProvider.isLoading
+                          ? null
+                          : () => _submit(
+                                loginProvider: _loginProvider,
+                              ),
+                      child: _loginProvider.isLoading
+                          ? const CircularProgressIndicator(
+                              strokeWidth: 4,
+                              color: Colors.grey,
+                            )
+                          : const FittedBox(
+                              child: Padding(
+                                padding: const EdgeInsets.all(20.0),
+                                child: Text(
+                                  'Login',
+                                  style: const TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.white,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
+                    ),
                   ),
                 ],
               );
