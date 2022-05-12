@@ -51,19 +51,20 @@ class _ProductPageState extends State<ProductPage> {
       ),
       body: SafeArea(
         child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              ConsultProductWidget(
-                formKey: _formKey,
-                isIndividual: isIndividual,
-                consultProductFocusNode: _consultProductFocusNode,
-                consultProductController: _consultProductController,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 10, right: 10, top: 4),
-                child: FittedBox(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 8, right: 8, top: 15),
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                ConsultProductWidget(
+                  formKey: _formKey,
+                  isIndividual: isIndividual,
+                  consultProductFocusNode: _consultProductFocusNode,
+                  consultProductController: _consultProductController,
+                ),
+                const SizedBox(height: 8),
+                FittedBox(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -91,14 +92,15 @@ class _ProductPageState extends State<ProductPage> {
                     ],
                   ),
                 ),
-              ),
-              if (productProvider.products.isNotEmpty)
-                ConsultedProductWidget(
-                  isIndividual: isIndividual,
-                  countingCode: countings.codigoInternoInvCont,
-                  productPackingCode: countings.numeroContagemInvCont,
-                ),
-            ],
+                const SizedBox(height: 8),
+                if (productProvider.products.isNotEmpty)
+                  ConsultedProductWidget(
+                    isIndividual: isIndividual,
+                    countingCode: countings.codigoInternoInvCont,
+                    productPackingCode: countings.numeroContagemInvCont,
+                  ),
+              ],
+            ),
           ),
         ),
       ),
