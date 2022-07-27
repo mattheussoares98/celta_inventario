@@ -6,6 +6,35 @@ import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
 class AddQuantityController {
+  _updateLastQuantityAdded({
+    required ProductProvider productProvider,
+    required bool isSubtract,
+    required dynamic quantity,
+  }) {
+    //se o valor atual for nulo, precisa atribuir o valor de 0 para não dar erro
+    //na soma/subtração
+    if (productProvider.products[0].quantidadeInvContProEmb == "null") {
+      productProvider.products[0].quantidadeInvContProEmb = 0;
+    }
+
+    //se for subtração e o resultado da subtração não for menor que 0,
+    //vai subtrair o valor atual pelo valor digitado
+    if (isSubtract &&
+        productProvider.products[0].quantidadeInvContProEmb -
+                double.tryParse(quantity.text)! >=
+            0) {
+      //como não resultou num valor abaixo de 0, pode atualizar o valor da "quantidade contada"
+      productProvider.products[0].quantidadeInvContProEmb =
+          productProvider.products[0].quantidadeInvContProEmb -
+              double.tryParse(quantity.text);
+    } else {
+      //se não adição, vai somar o valor atual pelo valor digitado
+      productProvider.products[0].quantidadeInvContProEmb =
+          productProvider.products[0].quantidadeInvContProEmb +
+              double.tryParse(quantity.text);
+    }
+  }
+
   addQuantity({
     required bool isIndividual,
     required BuildContext context,
@@ -25,6 +54,15 @@ class AddQuantityController {
         quantity: isIndividual ? '1' : quantity.text,
         userIdentity: UserIdentity.identity,
         isSubtract: isSubtract,
+      );
+
+      //só vai chegar nessa parte do código se o valor a somar/subtrair digitado
+      //pelo usuário for maior que 0. Portanto, pode tentar fazer a soma/subtração
+      //do valor digitado pelo usuário
+      _updateLastQuantityAdded(
+        productProvider: productProvider,
+        isSubtract: isSubtract,
+        quantity: quantity,
       );
     } catch (e) {
       e;

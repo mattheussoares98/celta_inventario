@@ -6,7 +6,6 @@ import 'package:provider/provider.dart';
 
 class ConfirmQuantityButton extends StatefulWidget {
   final int countingCode;
-  final int productPackingCode;
   final TextEditingController consultedProductController;
   final bool isSubtract;
   final GlobalKey<FormState> formKey;
@@ -16,7 +15,6 @@ class ConfirmQuantityButton extends StatefulWidget {
   ConfirmQuantityButton({
     required this.consultedProductController,
     required this.countingCode,
-    required this.productPackingCode,
     required this.isSubtract,
     required this.formKey,
     required this.isIndividual,

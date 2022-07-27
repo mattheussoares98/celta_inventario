@@ -283,8 +283,6 @@ class ConsultedProductWidgetState extends State<ConsultedProductWidget> {
                           consultedProductController:
                               _consultedProductController,
                           countingCode: widget.countingCode,
-                          productPackingCode:
-                              productProvider.products[0].codigoInternoProEmb,
                           isSubtract: false,
                           formKey: _formKey,
                           consultedProductFocusNode: _consultedProductFocusNode,
@@ -298,8 +296,6 @@ class ConsultedProductWidgetState extends State<ConsultedProductWidget> {
                           consultedProductController:
                               _consultedProductController,
                           countingCode: widget.countingCode,
-                          productPackingCode:
-                              productProvider.products[0].codigoInternoProEmb,
                           isSubtract: true,
                           formKey: _formKey,
                           consultedProductFocusNode: _consultedProductFocusNode,
